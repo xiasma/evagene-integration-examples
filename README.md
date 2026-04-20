@@ -1,12 +1,12 @@
 # Evagene integration examples
 
-Small, focused examples showing how to integrate with [**Evagene**](https://evagene.net) — a clinical-grade pedigree drawing, management, and risk analysis platform. Each demo solves one concrete job for one type of user, and ships in the languages that make sense for it. **Python**, **Node.js / TypeScript**, **.NET (C#)**, **R**, and **Go** are all represented.
+Small, focused examples showing how to integrate with [**Evagene**](https://evagene.com) — a clinical-grade pedigree drawing, management, and risk analysis platform. Each demo solves one concrete job for one type of user, and ships in the languages that make sense for it. **Python**, **Node.js / TypeScript**, **.NET (C#)**, **R**, and **Go** are all represented.
 
 If you've ever wanted to hook a family-history intake form, a clinic webhook listener, a research risk calculator, an AI agent, a Slack bot, an EHR browser extension, or a teaching notebook up to Evagene — start here.
 
 ## Start here
 
-**[getting-started.md](./getting-started.md)** — register at [evagene.net](https://evagene.net), mint an API key, configure `EVAGENE_API_KEY` and `EVAGENE_BASE_URL`. One read, then every demo below is a `README.md` and a `run` command.
+**[getting-started.md](./getting-started.md)** — register at [evagene.com](https://evagene.com), mint an API key, configure `EVAGENE_API_KEY` and `EVAGENE_BASE_URL`. One read, then every demo below is a `README.md` and a `run` command.
 
 ## The demos
 
@@ -108,7 +108,7 @@ Evagene exposes several integration mechanisms; these demos collectively cover t
 - **R sidecar** — BayesMendel cancer-risk models (BRCAPRO, MMRpro, PancPRO) served via the main REST API. See [bayesmendel-comparator](./bayesmendel-comparator/).
 - **SVG export** — print-quality figures. See [publication-figure-renderer](./publication-figure-renderer/), [tumour-board-briefing](./tumour-board-briefing/).
 
-Authoritative endpoint reference: **[https://evagene.net/docs](https://evagene.net/docs)** (Swagger) and **[https://evagene.net/redoc](https://evagene.net/redoc)**.
+Authoritative endpoint reference: **[https://evagene.net/help/](https://evagene.net/help/)**
 
 ## Licence
 
