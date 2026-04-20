@@ -1,0 +1,18 @@
+{
+  "model": "BRCAPRO",
+  "counselee_id": "5f7d122a-ceed-4435-a807-0203363eaad8",
+  "counselee_name": "Emma",
+  "carrier_probabilities": {
+    "Pr(Being a carrier)": 0.5604,
+    "Pr(BRCA1 mutation)": 0.4239,
+    "Pr(BRCA2 mutation)": 0.1338,
+    "Pr(Both genes mutated)": 0.0027
+  },
+  "future_risks": [
+    {"age": 50, "risks": {"Breast Ca Risk": 0.1713, "Ovarian Ca Risk": 0.0477}},
+    {"age": 70, "risks": {"Breast Ca Risk": 0.3247, "Ovarian Ca Risk": 0.1937}},
+    {"age": 85, "risks": {"Breast Ca Risk": 0.3848, "Ovarian Ca Risk": 0.2846}}
+  ],
+  "warnings": [],
+  "error": null
+}

@@ -1,0 +1,10 @@
+{
+  "event": "pedigree.created",
+  "delivered_at": "2026-04-20T09:15:22Z",
+  "pedigree_id": "a1cfe665-3b2d-4f5e-9c1a-8d7e6f5a4b3c",
+  "user_id": "0f9e8d7c-6b5a-4c3d-2e1f-0a1b2c3d4e5f",
+  "data": {
+    "id": "a1cfe665-3b2d-4f5e-9c1a-8d7e6f5a4b3c",
+    "display_name": "Windsor family (BRCA1 carrier branch)"
+  }
+}

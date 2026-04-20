@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Evagene Pedigree Lookup - Options</title>
+    <link rel="stylesheet" href="sidePanel.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Settings</h1>
+      <p>
+        Your API key is stored in this browser only (<code>storage.local</code>) and never
+        synced across devices. Create keys at
+        <a href="https://evagene.net" target="_blank" rel="noopener noreferrer">evagene.net</a>
+        and grant the narrowest scope the extension needs (<code>read</code>).
+      </p>
+
+      <form id="form">
+        <p>
+          <label for="apiKey">API key</label><br />
+          <input id="apiKey" name="apiKey" type="password" autocomplete="off" placeholder="evg_..." required />
+        </p>
+        <p>
+          <label for="baseUrl">Base URL</label><br />
+          <input id="baseUrl" name="baseUrl" type="url" required />
+        </p>
+        <p>
+          <label for="patternSource">Patient-ID pattern (regex)</label><br />
+          <input id="patternSource" name="patternSource" type="text" required />
+        </p>
+        <p>
+          <button type="submit">Save</button>
+        </p>
+        <p id="status" hidden></p>
+        <p id="error" hidden></p>
+      </form>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

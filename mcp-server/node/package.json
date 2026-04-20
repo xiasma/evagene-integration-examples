@@ -1,0 +1,34 @@
+{
+  "name": "evagene-mcp-server",
+  "version": "0.1.0",
+  "description": "Evagene integration example: Model Context Protocol server over the public REST API.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "bin": {
+    "evagene-mcp-server": "dist/main.js"
+  },
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "test": "node --import tsx --test test/config.test.ts test/evageneClient.test.ts test/toolHandlers.test.ts test/serverProtocol.test.ts",
+    "lint": "eslint src test",
+    "format": "prettier --write src test",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.16.0",
+    "@types/node": "22.10.2",
+    "eslint": "9.16.0",
+    "prettier": "3.4.2",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.18.1"
+  }
+}

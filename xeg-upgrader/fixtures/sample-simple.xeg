@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Evagene v1 .xeg sample: three-generation family with a breast-cancer case.
+
+  Used by the xeg-upgrader demo as a well-formed input for both the parse
+  preview and the create-and-import paths.  Synthetic data only.
+-->
+<Pedigree>
+  <StudyDiseases>
+    <StudyDisease>
+      <Guid>disease-breast</Guid>
+      <Name>Breast Cancer</Name>
+      <Colour><R>255</R><G>105</G><B>180</B></Colour>
+    </StudyDisease>
+  </StudyDiseases>
+
+  <Individuals>
+    <!-- Generation I -->
+    <Individual>
+      <Guid>ind-grandmother</Guid>
+      <Name>Anne Hill</Name>
+      <Sex>Female</Sex>
+      <Generation>0</Generation>
+      <X>200</X><Y>100</Y>
+      <Living>Alive</Living>
+      <DefinedFields>
+        <DefinedField><Name>Surname</Name><Value>Hill</Value></DefinedField>
+        <DefinedField><Name>Given names</Name><Value>Anne</Value></DefinedField>
+      </DefinedFields>
+      <Events>
+        <Event><Status>NaturalDelivery</Status><Date>04/03/1945 00:00:00</Date><Name>Birth</Name></Event>
+      </Events>
+    </Individual>
+
+    <Individual>
+      <Guid>ind-grandfather</Guid>
+      <Name>Peter Hill</Name>
+      <Sex>Male</Sex>
+      <Generation>0</Generation>
+      <X>400</X><Y>100</Y>
+      <Living>Alive</Living>
+      <DefinedFields>
+        <DefinedField><Name>Surname</Name><Value>Hill</Value></DefinedField>
+        <DefinedField><Name>Given names</Name><Value>Peter</Value></DefinedField>
+      </DefinedFields>
+      <Events>
+        <Event><Status>NaturalDelivery</Status><Date>12/07/1943 00:00:00</Date><Name>Birth</Name></Event>
+      </Events>
+    </Individual>
+
+    <!-- Generation II -->
+    <Individual>
+      <Guid>ind-mother</Guid>
+      <Name>Mary Hill</Name>
+      <Sex>Female</Sex>
+      <Generation>1</Generation>
+      <X>200</X><Y>300</Y>
+      <Living>Alive</Living>
+      <Affection>Affected</Affection>
+      <DefinedFields>
+        <DefinedField><Name>Surname</Name><Value>Hill</Value></DefinedField>
+        <DefinedField><Name>Given names</Name><Value>Mary</Value></DefinedField>
+      </DefinedFields>
+      <Events>
+        <Event><Status>NaturalDelivery</Status><Date>18/11/1970 00:00:00</Date><Name>Birth</Name></Event>
+        <Event><Status>Diagnosis</Status><Date>05/04/2015 00:00:00</Date><Name>Breast cancer diagnosis</Name></Event>
+      </Events>
+      <Manifestations>
+        <Manifestation StudyDiseaseRef="disease-breast" />
+      </Manifestations>
+    </Individual>
+
+    <Individual>
+      <Guid>ind-father</Guid>
+      <Name>John Hill</Name>
+      <Sex>Male</Sex>
+      <Generation>1</Generation>
+      <X>400</X><Y>300</Y>
+      <Living>Alive</Living>
+      <DefinedFields>
+        <DefinedField><Name>Surname</Name><Value>Hill</Value></DefinedField>
+        <DefinedField><Name>Given names</Name><Value>John</Value></DefinedField>
+      </DefinedFields>
+      <Events>
+        <Event><Status>NaturalDelivery</Status><Date>23/02/1968 00:00:00</Date><Name>Birth</Name></Event>
+      </Events>
+    </Individual>
+
+    <!-- Generation III -->
+    <Individual>
+      <Guid>ind-proband</Guid>
+      <Name>Helen Hill</Name>
+      <Sex>Female</Sex>
+      <Generation>2</Generation>
+      <X>200</X><Y>500</Y>
+      <Living>Alive</Living>
+      <Proband>1</Proband>
+      <ProbandText>P</ProbandText>
+      <DefinedFields>
+        <DefinedField><Name>Surname</Name><Value>Hill</Value></DefinedField>
+        <DefinedField><Name>Given names</Name><Value>Helen</Value></DefinedField>
+      </DefinedFields>
+      <Events>
+        <Event><Status>NaturalDelivery</Status><Date>10/09/1995 00:00:00</Date><Name>Birth</Name></Event>
+      </Events>
+    </Individual>
+  </Individuals>
+
+  <Marriages>
+    <Marriage>
+      <Guid>mar-grandparents</Guid>
+      <Spouse1Ref>ind-grandmother</Spouse1Ref>
+      <Spouse2Ref>ind-grandfather</Spouse2Ref>
+    </Marriage>
+    <Marriage>
+      <Guid>mar-parents</Guid>
+      <Spouse1Ref>ind-mother</Spouse1Ref>
+      <Spouse2Ref>ind-father</Spouse2Ref>
+    </Marriage>
+  </Marriages>
+
+  <PregnancyLists>
+    <PregnancyList MarriageRef="mar-grandparents">
+      <Pregnancy><Guid>preg-mother</Guid><MarriageRef>mar-grandparents</MarriageRef></Pregnancy>
+    </PregnancyList>
+    <PregnancyList MarriageRef="mar-parents">
+      <Pregnancy><Guid>preg-proband</Guid><MarriageRef>mar-parents</MarriageRef></Pregnancy>
+    </PregnancyList>
+  </PregnancyLists>
+
+  <EggLists>
+    <EggList><PregnancyRef>preg-mother</PregnancyRef>
+      <Egg><Siblings><Individual IndividualRef="ind-mother" /></Siblings></Egg>
+    </EggList>
+    <EggList><PregnancyRef>preg-proband</PregnancyRef>
+      <Egg><Siblings><Individual IndividualRef="ind-proband" /></Siblings></Egg>
+    </EggList>
+  </EggLists>
+</Pedigree>

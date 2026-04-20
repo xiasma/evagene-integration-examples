@@ -1,0 +1,18 @@
+{
+  "model": "MMRpro",
+  "counselee_id": "5f7d122a-ceed-4435-a807-0203363eaad8",
+  "counselee_name": "Emma",
+  "carrier_probabilities": {
+    "Pr(Being a carrier)": 0.0009,
+    "Pr(MLH1 mutation)": 0.0004,
+    "Pr(MSH2 mutation)": 0.0004,
+    "Pr(MSH6)": 0.0002
+  },
+  "future_risks": [
+    {"age": 50, "risks": {"Colorectal Ca Risk": 0.0021, "Endometrial Ca Risk": 0.0018}},
+    {"age": 70, "risks": {"Colorectal Ca Risk": 0.015, "Endometrial Ca Risk": 0.0125}},
+    {"age": 85, "risks": {"Colorectal Ca Risk": 0.0326, "Endometrial Ca Risk": 0.0193}}
+  ],
+  "warnings": [],
+  "error": null
+}

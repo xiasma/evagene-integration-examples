@@ -1,0 +1,12 @@
+# Block audio recordings by default. The sample fixture is named explicitly
+# below; anything else is assumed to be the user's own voice and must not
+# be committed.
+*.wav
+*.m4a
+*.mp3
+*.webm
+*.ogg
+*.flac
+*.aac
+
+!fixtures/sample-counselling.wav

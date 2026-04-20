@@ -1,0 +1,16 @@
+Package: researchCohortAnonymiser
+Type: Package
+Title: Evagene Integration Example - Research Cohort Anonymiser
+Version: 0.1.0
+Description: Fetches an Evagene pedigree, strips direct identifiers (names,
+    precise dates of birth, free-text notes), and emits a research-safe
+    JSON bundle or creates a fresh anonymised pedigree on the account.
+    Structural only - not HIPAA Safe-Harbor compliant.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports:
+    httr2 (>= 1.0.0),
+    jsonlite (>= 1.8.0)
+Suggests:
+    testthat (>= 3.2.0)

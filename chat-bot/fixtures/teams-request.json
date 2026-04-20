@@ -1,0 +1,11 @@
+{
+  "description": "Canonical Microsoft Teams outgoing-webhook delivery the bot expects on POST /teams/evagene. `body` is the raw JSON bytes Teams sends (identical to fixtures/teams-request.txt, newline-stripped). `signing_secret` is the base64 HMAC token returned when the outgoing webhook was created; `authorization_header` is what Teams sends as Authorization for these bytes.",
+  "method": "POST",
+  "path": "/teams/evagene",
+  "headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Authorization": "HMAC <compute base64(HMAC_SHA256(base64-decode(signing_secret), body)) at send time>"
+  },
+  "body": "{\"type\":\"message\",\"id\":\"1713614400000\",\"timestamp\":\"2026-04-20T09:00:00.000Z\",\"localTimestamp\":\"2026-04-20T10:00:00.000+01:00\",\"serviceUrl\":\"https://smba.trafficmanager.net/emea/\",\"channelId\":\"msteams\",\"from\":{\"id\":\"29:1hy...\",\"name\":\"Dr Smith\"},\"conversation\":{\"conversationType\":\"channel\",\"id\":\"19:abc@thread.tacv2\"},\"recipient\":{\"id\":\"28:evagene-bot\",\"name\":\"Evagene\"},\"text\":\"<at>Evagene</at> 7c8d4d6a-2f3a-4c1e-9a0b-5c2d3e4f5a6b\"}",
+  "signing_secret": "QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVphYmNkZWY="
+}

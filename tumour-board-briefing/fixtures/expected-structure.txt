@@ -1,0 +1,25 @@
+Tumour-board briefing
+Pedigree: Worked example: BRCA-suspicious family
+Proband: Jane Example (proband)
+Family-history summary
+Risk summary
+Model
+Headline
+CLAUS
+COUCH
+FRANK
+MANCHESTER
+NICE
+Tyrer-Cuzick output is an IBIS-style approximation
+High risk (NICE >=30% lifetime)
+Triggers and criteria met
+Two or more first-degree relatives with breast cancer <50.
+Caveats
+Claus lifetime breast-cancer risk
+Couch BRCA1 probability
+Frank / Myriad empirical tables
+Manchester Scoring System
+NICE CG164 / NG101
+Tyrer-Cuzick output is an IBIS-style approximation
+BOADICEA is not bundled
+Not a validated clinical tool

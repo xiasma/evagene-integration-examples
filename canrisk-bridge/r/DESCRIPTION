@@ -1,0 +1,15 @@
+Package: canriskBridge
+Type: Package
+Title: Evagene Integration Example - CanRisk 2.0 Pedigree Export
+Version: 0.1.0
+Description: A minimal Evagene REST API integration that fetches a pedigree
+    as a ##CanRisk 2.0 file, saves it to disk, and optionally opens
+    canrisk.org for upload to the BOADICEA assessment.  Distributed as an
+    example; not a validated clinical tool.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports:
+    httr2 (>= 1.0.0)
+Suggests:
+    testthat (>= 3.2.0)

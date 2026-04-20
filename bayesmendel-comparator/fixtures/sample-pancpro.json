@@ -1,0 +1,15 @@
+{
+  "model": "PancPRO",
+  "counselee_id": "5f7d122a-ceed-4435-a807-0203363eaad8",
+  "counselee_name": "Emma",
+  "carrier_probabilities": {
+    "Pr(Being a carrier)": 0.0054
+  },
+  "future_risks": [
+    {"age": 50, "risks": {"Pancreatic Ca Risk": 0.0003}},
+    {"age": 70, "risks": {"Pancreatic Ca Risk": 0.0035}},
+    {"age": 85, "risks": {"Pancreatic Ca Risk": 0.0138}}
+  ],
+  "warnings": [],
+  "error": null
+}

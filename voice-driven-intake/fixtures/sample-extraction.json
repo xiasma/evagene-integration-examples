@@ -1,0 +1,52 @@
+{
+  "proband": {
+    "display_name": "Emma Carter",
+    "biological_sex": "female",
+    "year_of_birth": 1985,
+    "notes": null
+  },
+  "mother": {
+    "display_name": "Grace",
+    "year_of_birth": 1957,
+    "notes": "Aged 68, no cancers."
+  },
+  "father": {
+    "display_name": "Henry",
+    "year_of_birth": 1955,
+    "notes": "Aged 70, well."
+  },
+  "maternal_grandmother": {
+    "display_name": "Edith",
+    "year_of_birth": null,
+    "notes": "Ovarian cancer in late fifties; deceased."
+  },
+  "maternal_grandfather": {
+    "display_name": "Cecil",
+    "year_of_birth": null,
+    "notes": "Alive in his nineties, no health issues."
+  },
+  "paternal_grandmother": {
+    "display_name": "Margaret",
+    "year_of_birth": null,
+    "notes": "Died before the proband was born."
+  },
+  "paternal_grandfather": {
+    "display_name": "Arthur",
+    "year_of_birth": null,
+    "notes": "Prostate cancer in his seventies."
+  },
+  "siblings": [
+    {
+      "display_name": "Alice",
+      "relation": "sister",
+      "year_of_birth": null,
+      "notes": "Aged 42, breast cancer diagnosed at 41."
+    },
+    {
+      "display_name": "Ben",
+      "relation": "half_brother",
+      "year_of_birth": null,
+      "notes": "Paternal half-brother, around 50, healthy."
+    }
+  ]
+}

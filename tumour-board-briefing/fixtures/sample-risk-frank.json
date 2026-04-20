@@ -1,0 +1,17 @@
+{
+  "model": "FRANK",
+  "counselee_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+  "counselee_name": "Jane Example (proband)",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "FRANK",
+    "frank_brca1_probability": 0.16,
+    "frank_brca2_probability": 0.09,
+    "frank_combined_probability": 0.2356,
+    "frank_scenario": "proband_bc_with_family_oc",
+    "notes": [
+      "Frank-table scenario: proband bc with family oc."
+    ]
+  }
+}

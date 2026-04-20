@@ -1,0 +1,54 @@
+{
+  "proband": {
+    "display_name": "Emma",
+    "biological_sex": "female",
+    "affection_status": "clear",
+    "year_of_birth": null,
+    "notes": "Age 40 written under symbol; arrow indicates proband."
+  },
+  "mother": {
+    "display_name": "Grace",
+    "affection_status": "clear",
+    "year_of_birth": null,
+    "notes": "Age 68 written under symbol."
+  },
+  "father": {
+    "display_name": "Henry",
+    "affection_status": "clear",
+    "year_of_birth": null,
+    "notes": "Age 70 written under symbol."
+  },
+  "maternal_grandmother": {
+    "display_name": "Edith",
+    "affection_status": "affected",
+    "year_of_birth": null,
+    "notes": "Filled circle, slash through symbol; label reads 'd.59' -- deceased at 59."
+  },
+  "maternal_grandfather": {
+    "display_name": "Cecil",
+    "affection_status": "clear",
+    "year_of_birth": null,
+    "notes": "Age 92 written under symbol."
+  },
+  "paternal_grandmother": {
+    "display_name": "Margaret",
+    "affection_status": "clear",
+    "year_of_birth": null,
+    "notes": "Slash through symbol; deceased. No age given."
+  },
+  "paternal_grandfather": {
+    "display_name": "Arthur",
+    "affection_status": "affected",
+    "year_of_birth": null,
+    "notes": "Filled square; age 78 written under symbol."
+  },
+  "siblings": [
+    {
+      "display_name": "Alice",
+      "relation": "sister",
+      "affection_status": "affected",
+      "year_of_birth": null,
+      "notes": "Filled circle; age 42 written under symbol."
+    }
+  ]
+}

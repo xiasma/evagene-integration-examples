@@ -1,0 +1,21 @@
+{
+  "model": "TYRER_CUZICK",
+  "counselee_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+  "counselee_name": "Jane Example (proband)",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "TYRER_CUZICK",
+    "tc_ten_year_risk": 0.0942,
+    "tc_lifetime_risk": 0.3816,
+    "tc_relative_risk": 2.31,
+    "tc_proband_age": 42,
+    "tc_components": {
+      "age_component": 0.42,
+      "family_history_component": 2.31
+    },
+    "notes": [
+      "Tyrer-Cuzick-style approximation based on Tyrer, Duffy & Cuzick 2004 and subsequent updates. This is not the official IBIS Breast Cancer Risk Evaluator. CanRisk is the NICE-recommended alternative when multi-gene or polygenic-risk-score information is available \u2014 export the pedigree as ##CanRisk 2.0 and upload it at canrisk.org."
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "individual_id": "11111111-1111-1111-1111-111111111111",
+  "ancestry_set": true,
+  "ancestries": [
+    {
+      "ancestry_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "ancestry_name": "Mediterranean",
+      "proportion": 1.0,
+      "population_key": "mediterranean"
+    }
+  ],
+  "risks": [
+    {
+      "disease_id": "dddddddd-dddd-dddd-dddd-dddddddddd01",
+      "disease_name": "Sickle cell anaemia",
+      "inheritance_pattern": "autosomal_recessive",
+      "carrier_frequency": 0.07,
+      "source": "explicit:mediterranean",
+      "notes": [],
+      "couple_offspring_risk": 0.001225,
+      "panel_detection_rate": 0.99,
+      "residual_carrier_frequency": 0.000706,
+      "residual_couple_offspring_risk": 0.0000001246
+    },
+    {
+      "disease_id": "dddddddd-dddd-dddd-dddd-dddddddddd02",
+      "disease_name": "Cystic fibrosis",
+      "inheritance_pattern": "autosomal_recessive",
+      "carrier_frequency": 0.04,
+      "source": "explicit:mediterranean",
+      "notes": [],
+      "couple_offspring_risk": 0.0004,
+      "panel_detection_rate": null,
+      "residual_carrier_frequency": null,
+      "residual_couple_offspring_risk": null
+    },
+    {
+      "disease_id": "dddddddd-dddd-dddd-dddd-dddddddddd03",
+      "disease_name": "Duchenne muscular dystrophy",
+      "inheritance_pattern": "x_linked_recessive",
+      "carrier_frequency": 0.0001,
+      "source": "fallback:general",
+      "notes": ["No explicit Mediterranean rate; falling back to general."],
+      "couple_offspring_risk": 0.000025,
+      "panel_detection_rate": null,
+      "residual_carrier_frequency": null,
+      "residual_couple_offspring_risk": null
+    }
+  ],
+  "message": null
+}

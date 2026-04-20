@@ -1,0 +1,39 @@
+0 HEAD
+1 SOUR Evagene archive-triage-runner fixture
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+0 @I1@ INDI
+1 NAME Jane /Smith/
+1 SEX F
+1 BIRT
+2 DATE 1 JAN 1978
+1 _PROBAND 1
+1 FAMC @F1@
+0 @I2@ INDI
+1 NAME Mary /Smith/
+1 SEX F
+1 BIRT
+2 DATE 1 JAN 1950
+1 FACT Breast cancer, age 38
+1 FAMS @F1@
+0 @I3@ INDI
+1 NAME John /Smith/
+1 SEX M
+1 BIRT
+2 DATE 1 JAN 1948
+1 FAMS @F1@
+0 @I4@ INDI
+1 NAME Alice /Smith/
+1 SEX F
+1 BIRT
+2 DATE 1 JAN 1975
+1 FACT Breast cancer, age 42
+1 FAMC @F1@
+0 @F1@ FAM
+1 HUSB @I3@
+1 WIFE @I2@
+1 CHIL @I1@
+1 CHIL @I4@
+0 TRLR

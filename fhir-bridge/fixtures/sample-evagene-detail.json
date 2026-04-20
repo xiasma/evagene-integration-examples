@@ -1,0 +1,112 @@
+{
+  "id": "11111111-1111-1111-1111-111111111111",
+  "display_name": "Chen family (BRCA illustrative)",
+  "notes": "Synthetic example used by the fhir-bridge demo's tests.",
+  "individuals": [
+    {
+      "id": "p-proband",
+      "display_name": "Emma Chen",
+      "biological_sex": "female",
+      "proband": 1,
+      "properties": { "year_of_birth": 1985 },
+      "events": [
+        { "id": "ev-1", "type": "birth", "date_start": "1985-05-12" }
+      ],
+      "diseases": []
+    },
+    {
+      "id": "p-mother",
+      "display_name": "Linda Chen",
+      "biological_sex": "female",
+      "proband": 0,
+      "properties": { "year_of_birth": 1962 },
+      "events": [
+        { "id": "ev-2", "type": "birth", "date_start": "1962-09-14" }
+      ],
+      "diseases": [
+        { "disease_id": "Breast Cancer", "affection_status": "affected" }
+      ]
+    },
+    {
+      "id": "p-father",
+      "display_name": "David Chen",
+      "biological_sex": "male",
+      "proband": 0,
+      "properties": { "year_of_birth": 1960 },
+      "events": [
+        { "id": "ev-3", "type": "birth", "date_start": "1960-05-18" }
+      ],
+      "diseases": []
+    },
+    {
+      "id": "p-mgm",
+      "display_name": "Mary Chen",
+      "biological_sex": "female",
+      "proband": 0,
+      "properties": { "year_of_birth": 1938 },
+      "events": [
+        { "id": "ev-4", "type": "birth", "date_start": "1938-11-22" },
+        { "id": "ev-5", "type": "death", "date_start": "1998-06-30" }
+      ],
+      "diseases": [
+        { "disease_id": "Ovarian Cancer", "affection_status": "affected" }
+      ]
+    },
+    {
+      "id": "p-mgf",
+      "display_name": "Robert Chen",
+      "biological_sex": "male",
+      "proband": 0,
+      "properties": { "year_of_birth": 1935 },
+      "events": [
+        { "id": "ev-6", "type": "birth", "date_start": "1935-03-10" },
+        { "id": "ev-7", "type": "death", "date_start": "2005-08-14" }
+      ],
+      "diseases": []
+    },
+    {
+      "id": "p-brother",
+      "display_name": "James Chen",
+      "biological_sex": "male",
+      "proband": 0,
+      "properties": { "year_of_birth": 1988 },
+      "events": [
+        { "id": "ev-8", "type": "birth", "date_start": "1988-02-03" }
+      ],
+      "diseases": []
+    },
+    {
+      "id": "p-son",
+      "display_name": "Noah Chen",
+      "biological_sex": "male",
+      "proband": 0,
+      "properties": { "year_of_birth": 2014 },
+      "events": [
+        { "id": "ev-9", "type": "birth", "date_start": "2014-07-01" }
+      ],
+      "diseases": []
+    },
+    {
+      "id": "p-partner",
+      "display_name": "Sam Park",
+      "biological_sex": "male",
+      "proband": 0,
+      "properties": { "year_of_birth": 1984 },
+      "events": [
+        { "id": "ev-10", "type": "birth", "date_start": "1984-01-20" }
+      ],
+      "diseases": []
+    }
+  ],
+  "relationships": [
+    { "id": "r-parents",  "members": ["p-mother",  "p-father"] },
+    { "id": "r-mgrand",   "members": ["p-mgm",     "p-mgf"] },
+    { "id": "r-proband",  "members": ["p-proband", "p-partner"] }
+  ],
+  "eggs": [
+    { "id": "e-proband-of-parents", "individual_id": "p-proband", "relationship_id": "r-parents" },
+    { "id": "e-brother-of-parents", "individual_id": "p-brother", "relationship_id": "r-parents" },
+    { "id": "e-mother-of-mgrand",   "individual_id": "p-mother",  "relationship_id": "r-mgrand" },
+    { "id": "e-son-of-proband",     "individual_id": "p-son",     "relationship_id": "r-proband" }
+  ]
+}

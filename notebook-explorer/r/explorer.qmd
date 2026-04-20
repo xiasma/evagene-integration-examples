@@ -1,0 +1,422 @@
+---
+title: "Evagene risk explorer (R / Quarto)"
+author: "Evagene integration examples"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+---
+
+A **what-if** tour of Evagene's risk outputs — one code chunk per question,
+one chart per answer. The narrative mirrors the Python / Jupyter variant;
+pick whichever kernel matches your toolchain.
+
+This notebook is a Quarto document. Render it with `quarto render
+explorer.qmd` (produces `explorer.html`) or preview interactively with
+`quarto preview explorer.qmd`. Full widget-style interactivity in a
+rendered HTML file requires [Shinylive](https://quarto-ext.github.io/shinylive/)
+or `quarto preview`; the static render below re-executes with a modest
+parameter grid so the charts still read cleanly.
+
+**The scratch pedigree is created in Section 4 and deleted in Section 7.**
+If the document aborts mid-way, find the orphan in the Evagene web UI
+(it is named `[scratch] notebook-explorer ...`) and delete it by hand.
+
+## 1. Setup
+
+The notebook uses a tiny R module (`R/client.R`) whose only job is to
+make the chunks below short. The key lives in an environment variable —
+never in a chunk.
+
+> **First-time setup:** copy `.Renviron.example` to `.Renviron` in this
+> folder, paste in your Evagene API key (scopes `read` + `write` +
+> `analyze`), and restart R.
+
+```{r setup, message=FALSE}
+r_dir <- normalizePath("R", mustWork = TRUE)
+for (f in list.files(r_dir, pattern = "\\.R$", full.names = TRUE)) {
+  source(f, local = FALSE)
+}
+
+# Walk up a few levels looking for a .env file.  Convenient when the
+# notebook is rendered from a fresh R session.
+load_dotenv_walking <- function() {
+  here <- normalizePath(".", mustWork = TRUE)
+  for (i in seq_len(5)) {
+    candidate <- file.path(here, ".env")
+    if (file.exists(candidate)) {
+      lines <- readLines(candidate, warn = FALSE)
+      for (line in lines) {
+        line <- trimws(line)
+        if (!nzchar(line) || startsWith(line, "#") || !grepl("=", line)) next
+        parts <- strsplit(line, "=", fixed = TRUE)[[1L]]
+        key <- trimws(parts[[1L]])
+        value <- trimws(paste(parts[-1L], collapse = "="))
+        if (Sys.getenv(key, unset = "") == "") {
+          do.call(Sys.setenv, stats::setNames(list(value), key))
+        }
+      }
+      return(invisible(NULL))
+    }
+    parent <- dirname(here)
+    if (parent == here) break
+    here <- parent
+  }
+}
+load_dotenv_walking()
+
+library(ggplot2)
+library(knitr)
+
+config <- load_config(as.list(Sys.getenv()))
+gateway <- make_httr2_gateway()
+client <- evagene_client(gateway, config$base_url, config$api_key)
+sprintf("Ready. Base URL: %s", config$base_url)
+```
+
+## 2. Pick a pedigree
+
+The list is pulled from `GET /api/pedigrees`. Each row links back to the
+web UI.
+
+```{r list-pedigrees, results='asis'}
+pedigrees <- client$get_pedigrees()
+rows <- lapply(pedigrees, function(p) {
+  data.frame(
+    Name = p$display_name %||% "(untitled)",
+    Link = sprintf("[open](%s)", client$evagene_url(p$id)),
+    ID = sprintf("`%s`", p$id),
+    stringsAsFactors = FALSE
+  )
+})
+knitr::kable(do.call(rbind, rows))
+```
+
+Default: prefer a pedigree whose display name mentions "breast" (so the
+NICE and Tyrer-Cuzick sections produce meaningful numbers); fall back to
+the first pedigree otherwise. Override by setting `PEDIGREE_ID` below.
+
+```{r pick-pedigree}
+selected_idx <- which(
+  vapply(pedigrees, function(p) grepl("breast", tolower(p$display_name %||% "")), logical(1L))
+)[1]
+if (is.na(selected_idx)) selected_idx <- 1L
+selected <- pedigrees[[selected_idx]]
+PEDIGREE_ID <- selected$id
+cat(sprintf("Selected: %s\n", selected$display_name))
+cat(sprintf("Link:     %s\n", client$evagene_url(PEDIGREE_ID)))
+```
+
+## 3. Baseline NICE category
+
+One call to `POST /api/pedigrees/{id}/risk/calculate` with `model=NICE`.
+The response carries `cancer_risk$nice_category` (one of `near_population`,
+`moderate`, `high`), the triggers that fired, and human-readable notes.
+
+```{r baseline-nice}
+TRAFFIC_LIGHTS <- c(
+  near_population = "GREEN",
+  moderate = "AMBER",
+  high = "RED"
+)
+
+summarise_nice <- function(payload) {
+  cr <- payload$cancer_risk %||% list()
+  category <- cr$nice_category %||% "unknown"
+  triggers <- cr$nice_triggers %||% list()
+  notes <- cr$notes %||% list()
+  light <- TRAFFIC_LIGHTS[category] %||% "unknown"
+  paste(
+    sprintf("NICE category: %s (%s)", toupper(category), light),
+    sprintf("Triggers: %s",
+            if (length(triggers) == 0L) "none" else paste(unlist(triggers), collapse = "; ")),
+    if (length(notes) > 0L) sprintf("Note: %s", notes[[1L]]) else NULL,
+    sep = "\n"
+  )
+}
+
+baseline_nice <- client$run_risk(PEDIGREE_ID, "NICE")
+cat(summarise_nice(baseline_nice))
+```
+
+## 4. What if we add affected first-degree relatives?
+
+This is where the scratch clone comes in. The notebook:
+
+1. Clones the pedigree via a GEDCOM round-trip (export → create → import).
+2. Adds a synthetic sister to the proband; flags the sister and (if
+   present) the mother affected with breast cancer.
+3. Re-runs the NICE calculation on the scratch copy.
+
+Two affected first-degree relatives is the textbook NICE "moderate"
+(amber) trigger.
+
+```{r clone-pedigree}
+scratch_suffix <- format(Sys.time(), "%Y-%m-%d %H:%M UTC", tz = "UTC")
+SCRATCH_ID <- client$clone_pedigree_for_exploration(PEDIGREE_ID, scratch_suffix)
+cat(sprintf("Scratch pedigree: %s\n", client$evagene_url(SCRATCH_ID)))
+```
+
+```{r pick-disease}
+# We need the scratch proband's ID and a "Breast Cancer" disease ID.
+register <- client$get_register(SCRATCH_ID)
+proband_id <- register$proband_id
+cat(sprintf("Scratch proband: %s\n", proband_id))
+
+# Look up the breast-cancer disease by display name in the catalogue,
+# so the demo works regardless of which diseases were attached to the
+# pedigree you picked.
+diseases_request <- list(
+  method = "GET",
+  url = sprintf("%s/api/diseases", config$base_url),
+  headers = c("X-API-Key" = config$api_key, "Accept" = "application/json")
+)
+disease_catalogue <- jsonlite::fromJSON(
+  gateway(diseases_request)$body_string, simplifyVector = FALSE
+)
+breast_cancer <- NULL
+for (d in disease_catalogue) {
+  if (identical(trimws(d$display_name %||% ""), "Breast Cancer")) {
+    breast_cancer <- d
+    break
+  }
+}
+if (is.null(breast_cancer)) {
+  stop("No 'Breast Cancer' disease in your catalogue; cannot continue section 4.")
+}
+BREAST_CANCER_ID <- breast_cancer$id
+cat(sprintf("Breast Cancer disease id: %s\n", BREAST_CANCER_ID))
+client$add_disease_to_pedigree(SCRATCH_ID, BREAST_CANCER_ID)
+```
+
+```{r add-affected}
+sister <- client$add_relative(
+  SCRATCH_ID,
+  relative_of = proband_id,
+  relative_type = "sister",
+  display_name = "Synthetic sister",
+  biological_sex = "female"
+)
+sister_id <- sister$individual$id
+cat(sprintf("Sister id: %s\n", sister_id))
+
+client$add_disease_to_individual(
+  sister_id,
+  disease_id = BREAST_CANCER_ID,
+  age_at_diagnosis = 38L
+)
+
+# Also mark the mother affected (two affected first-degree relatives is
+# the textbook NICE "moderate" trigger — one affected sister alone does
+# not reliably cross the threshold for every family structure).
+mother_row <- NULL
+for (row in register$rows) {
+  if (identical(row$relationship_to_proband, "Mother")) {
+    mother_row <- row
+    break
+  }
+}
+if (!is.null(mother_row)) {
+  client$add_disease_to_individual(
+    mother_row$individual_id,
+    disease_id = BREAST_CANCER_ID,
+    age_at_diagnosis = 45L
+  )
+  cat("Marked sister and mother affected with Breast Cancer.\n")
+} else {
+  cat("Marked sister affected with Breast Cancer (no mother in the pedigree).\n")
+}
+```
+
+```{r rerun-nice}
+after_nice <- client$run_risk(SCRATCH_ID, "NICE")
+cat("BEFORE:\n")
+cat(summarise_nice(baseline_nice), "\n\n")
+cat("AFTER:\n")
+cat(summarise_nice(after_nice))
+```
+
+## 5. Tyrer-Cuzick slider
+
+`TYRER_CUZICK` reads the **proband's** reproductive-history fields:
+`age_at_menarche`, `parity`, `age_at_first_live_birth`,
+`breast_density_birads` (BI-RADS 1–4), `hormone_therapy_years`, and so
+on. They live on the individual record, not the risk-request body — so
+this chunk mutates them on the scratch proband and re-runs TC for each
+combination. The grid is deliberately small (so the chunk executes
+inside a minute); for richer sweeps, increase the vectors below when
+rendering locally. The `httr2` gateway retries on HTTP 429 transparently.
+
+```{r tc-sweep}
+MENARCHE_AGES <- c(10L, 13L)
+PARITIES <- c(0L, 2L)
+BIRADS_LEVELS <- 1:4
+
+tc_results <- list()
+for (menarche in MENARCHE_AGES) {
+  for (parity in PARITIES) {
+    for (birads in BIRADS_LEVELS) {
+      client$patch_individual(
+        proband_id,
+        fields = list(
+          age_at_menarche = menarche,
+          parity = parity,
+          breast_density_birads = birads,
+          age_at_first_live_birth = if (parity > 0) 28L else NULL
+        )
+      )
+      Sys.sleep(0.4)  # headroom under the 60/min limit
+      tc <- client$run_risk(SCRATCH_ID, "TYRER_CUZICK")
+      cancer_risk <- tc$cancer_risk %||% list()
+      tc_results[[length(tc_results) + 1L]] <- data.frame(
+        menarche = menarche,
+        parity = parity,
+        birads = birads,
+        ten_year = cancer_risk$tc_ten_year_risk %||% NA_real_,
+        lifetime = cancer_risk$tc_lifetime_risk %||% NA_real_,
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+}
+tc_df <- do.call(rbind, tc_results)
+tc_df$series <- paste0("menarche ", tc_df$menarche, ", parity ", tc_df$parity)
+sprintf("TC results: %d points", nrow(tc_df))
+```
+
+```{r tc-plot, fig.width=8, fig.height=5}
+ggplot(tc_df, aes(x = birads, y = ten_year * 100, colour = series)) +
+  geom_line() + geom_point(size = 2) +
+  scale_x_continuous(breaks = 1:4) +
+  labs(
+    x = "BI-RADS breast density (1 = almost entirely fatty, 4 = extremely dense)",
+    y = "Tyrer-Cuzick 10-year risk (%)",
+    colour = NULL,
+    title = "Tyrer-Cuzick 10-year risk vs breast density, by reproductive history"
+  ) +
+  theme_minimal()
+```
+
+Reading the chart: each curve holds `age_at_menarche` and `parity`
+constant while BI-RADS walks from 1 (fatty) to 4 (extremely dense).
+Denser breasts drag risk up steeply; higher parity (with age at first
+live birth fixed at 28) shifts the whole curve down — the classic
+protective effect.
+
+## 6. Multifactorial under varied heritability
+
+The multifactorial (Falconer liability-threshold) model takes a disease's
+`heritability` ($h^2$) and `population_prevalence` ($K$), plus the
+affected-relative structure, and returns a recurrence risk for the
+proband.
+
+`/risk/calculate` does **not** accept a request-level $h^2$ override, so
+to trace the curve the notebook runs the model once per disease against
+the (sister-is-affected) scratch family. Each disease is a point on the
+$h^2$ axis.
+
+```{r pick-heritable}
+heritable <- Filter(function(d) !is.null(d$heritability), disease_catalogue)
+by_name <- setNames(heritable, vapply(heritable, `[[`, character(1L), "display_name"))
+NAMES <- c(
+  "Major Depressive Disorder (Familial)",
+  "Type 2 Diabetes (Familial)",
+  "Epilepsy (Familial)",
+  "Cleft Lip With or Without Cleft Palate",
+  "Schizophrenia (Familial)",
+  "Bipolar Disorder (Familial)",
+  "Coeliac Disease",
+  "Ankylosing Spondylitis"
+)
+picks <- by_name[intersect(NAMES, names(by_name))]
+sprintf("%d heritable diseases available; using %d for the plot.",
+        length(heritable), length(picks))
+```
+
+```{r mf-sweep}
+mf_rows <- list()
+for (d in picks) {
+  did <- d$id
+  client$add_disease_to_pedigree(SCRATCH_ID, did)
+  Sys.sleep(0.3)
+  client$add_disease_to_individual(
+    sister_id, disease_id = did, age_at_diagnosis = 30L
+  )
+  Sys.sleep(0.3)
+  out <- client$run_risk(SCRATCH_ID, "MULTIFACTORIAL", extra = list(disease_id = did))
+  block <- out$multifactorial %||% list()
+  mf_rows[[length(mf_rows) + 1L]] <- data.frame(
+    disease = d$display_name,
+    h2 = d$heritability,
+    K = d$population_prevalence %||% NA_real_,
+    final_risk = block$final_risk %||% NA_real_,
+    base_risk = block$base_risk %||% NA_real_,
+    stringsAsFactors = FALSE
+  )
+}
+mf_df <- do.call(rbind, mf_rows)
+knitr::kable(mf_df)
+```
+
+```{r mf-plot, fig.width=8, fig.height=5}
+ggplot(mf_df, aes(x = h2, y = final_risk * 100)) +
+  geom_point(size = 3) +
+  geom_text(aes(label = disease), nudge_y = 1.5, size = 3, check_overlap = TRUE) +
+  labs(
+    x = "Disease heritability of liability (h²)",
+    y = "Multifactorial recurrence risk for proband (%)\nwith one affected first-degree relative",
+    title = paste(
+      "Recurrence risk rises with heritability under",
+      "the Falconer liability-threshold model"
+    )
+  ) +
+  theme_minimal()
+```
+
+Each point is a real disease, run through Evagene's multifactorial
+engine against the same synthetic family structure (one affected
+first-degree relative, otherwise unaffected). Population prevalence
+varies across diseases and also drives the curve — the Falconer model
+is a joint function of $h^2$ and $K$, so the points do not fall on a
+single line. That is the teaching point: heritability is a lever, not
+a knob.
+
+## 7. Caveats and cleanup
+
+The final chunk deletes the scratch pedigree. If a preceding chunk
+errored, knit will stop before reaching here — run this chunk manually
+before retrying, otherwise the scratch copy stays in your account.
+
+```{r cleanup}
+client$delete_pedigree(SCRATCH_ID)
+cat(sprintf(
+  "Scratch pedigree %s deleted. Your original is untouched.\n", SCRATCH_ID
+))
+```
+
+### Caveats
+
+- **Tyrer-Cuzick** is an IBIS-style approximation, not the licensed
+  IBIS tool. **BOADICEA** is not bundled; for the full multi-gene /
+  polygenic-risk-score version, export a CanRisk v2 file from the
+  pedigree and upload at [canrisk.org](https://canrisk.org).
+- **Multifactorial recurrence risk** shown here is Evagene's Falconer
+  liability-threshold output with Carter-effect and consanguinity
+  modifiers. Published empirical recurrence tables (when they exist)
+  are a better source for the specific disease.
+- These are example integrations, **not validated clinical tools**.
+
+### Suggested reading
+
+- Falconer DS. *Ann Hum Genet* 1965 — the liability-threshold foundation.
+- Tyrer J, Duffy SW, Cuzick J. *Stat Med* 2004 — the IBIS breast-cancer
+  model.
+- NICE CG164 / NG101 — family-history triage rules driving the NICE
+  category shown in Section 3.
+- Parmigiani et al. *Am J Hum Genet* 1998 — BRCAPRO, the Bayesian
+  counterpart.

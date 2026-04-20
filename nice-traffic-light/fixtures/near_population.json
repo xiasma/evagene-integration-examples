@@ -1,0 +1,16 @@
+{
+  "model": "NICE",
+  "counselee_id": "00000000-0000-0000-0000-000000000001",
+  "counselee_name": "Counselee, Near-Population",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "NICE",
+    "nice_category": "near_population",
+    "nice_refer_genetics": false,
+    "nice_triggers": [],
+    "notes": [
+      "Near-population risk (NICE <17% lifetime) \u2014 no enhanced surveillance required; reassure and discharge to primary care."
+    ]
+  }
+}

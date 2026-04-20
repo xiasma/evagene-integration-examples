@@ -1,0 +1,8 @@
+{
+  "models": [
+    {"id": "NICE", "display_name": "NICE CG164 / NG101"},
+    {"id": "TYRER_CUZICK", "display_name": "Tyrer-Cuzick (IBIS-style)"},
+    {"id": "CLAUS", "display_name": "Claus"},
+    {"id": "BRCAPRO", "display_name": "BRCAPRO (R sidecar)"}
+  ]
+}

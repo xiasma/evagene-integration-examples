@@ -1,0 +1,15 @@
+{
+  "id": "3d7b9b2e-4f3a-4b2d-9a1c-2e0a2b3c4d5e",
+  "display_name": "BRCA family (illustrative)",
+  "individuals": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "display_name": "Proband",
+      "biological_sex": "female",
+      "proband": 1
+    }
+  ],
+  "relationships": [],
+  "eggs": [],
+  "disease_ids": []
+}

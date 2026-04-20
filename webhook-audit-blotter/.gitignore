@@ -1,0 +1,5 @@
+# SQLite audit logs — never commit a running blotter's data.
+*.db
+*.db-journal
+*.db-shm
+*.db-wal

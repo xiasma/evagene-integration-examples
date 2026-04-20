@@ -1,0 +1,19 @@
+Package: notebookExplorer
+Type: Package
+Title: Evagene Integration Example - Jupyter and Quarto What-If Risk Explorer
+Version: 0.1.0
+Description: A minimal Evagene REST API integration that backs a Quarto (R)
+    notebook for interactive "what-if" exploration of risk outputs.  The
+    package is intentionally small: it exposes the five client operations
+    the notebook cells call.  Distributed as an example; not a validated
+    clinical tool.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports:
+    httr2 (>= 1.0.0),
+    jsonlite (>= 1.8.0),
+    ggplot2 (>= 3.5.0),
+    knitr (>= 1.46)
+Suggests:
+    testthat (>= 3.2.0)

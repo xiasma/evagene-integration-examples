@@ -1,0 +1,10 @@
+{
+  "model": "NICE",
+  "counselee_id": "11111111-1111-1111-1111-111111111111",
+  "cancer_risk": {
+    "nice_category": "moderate",
+    "triggers": [
+      "Single first-degree relative with breast cancer <40."
+    ]
+  }
+}

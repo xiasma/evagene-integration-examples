@@ -1,0 +1,15 @@
+{
+  "model": "COUCH",
+  "counselee_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+  "counselee_name": "Jane Example (proband)",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "COUCH",
+    "couch_brca1_probability": 0.1847,
+    "couch_threshold_met": true,
+    "notes": [
+      "Average age at breast-cancer diagnosis 44. Ovarian cancer in family."
+    ]
+  }
+}

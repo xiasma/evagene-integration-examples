@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Evagene v1 .xeg sample with minor, recoverable inconsistencies.
+
+  Used by the xeg-upgrader demo to exercise the summary printer's warning
+  paths.  The file is still well-formed XML and the parser accepts it —
+  but the summary will flag individuals with an unknown biological sex
+  and eggs whose pregnancy points at a marriage the file never defines.
+
+  Synthetic data only.
+-->
+<Pedigree>
+  <StudyDiseases>
+    <StudyDisease>
+      <Guid>disease-breast</Guid>
+      <Name>Breast Cancer</Name>
+      <Colour><R>255</R><G>105</G><B>180</B></Colour>
+    </StudyDisease>
+  </StudyDiseases>
+
+  <Individuals>
+    <Individual>
+      <Guid>ind-mother</Guid>
+      <Name>Mary Hill</Name>
+      <Sex>Female</Sex>
+      <Generation>0</Generation>
+      <X>200</X><Y>100</Y>
+      <Living>Alive</Living>
+      <Affection>Affected</Affection>
+      <DefinedFields>
+        <DefinedField><Name>Surname</Name><Value>Hill</Value></DefinedField>
+        <DefinedField><Name>Given names</Name><Value>Mary</Value></DefinedField>
+      </DefinedFields>
+      <Events>
+        <Event><Status>Diagnosis</Status><Date>05/04/2015 00:00:00</Date><Name>Breast cancer diagnosis</Name></Event>
+      </Events>
+      <Manifestations>
+        <Manifestation StudyDiseaseRef="disease-breast" />
+      </Manifestations>
+    </Individual>
+
+    <Individual>
+      <Guid>ind-father</Guid>
+      <Name>John Hill</Name>
+      <Sex>Male</Sex>
+      <Generation>0</Generation>
+      <X>400</X><Y>100</Y>
+      <Living>Alive</Living>
+    </Individual>
+
+    <!-- Twin sibling of proband with unknown sex: triggers a warning. -->
+    <Individual>
+      <Guid>ind-twin</Guid>
+      <Name>Sibling Hill</Name>
+      <Sex>Unknown</Sex>
+      <Generation>1</Generation>
+      <X>100</X><Y>300</Y>
+      <Living>Alive</Living>
+    </Individual>
+
+    <Individual>
+      <Guid>ind-proband</Guid>
+      <Name>Helen Hill</Name>
+      <Sex>Female</Sex>
+      <Generation>1</Generation>
+      <X>300</X><Y>300</Y>
+      <Living>Alive</Living>
+      <Proband>1</Proband>
+    </Individual>
+  </Individuals>
+
+  <Marriages>
+    <Marriage>
+      <Guid>mar-parents</Guid>
+      <Spouse1Ref>ind-mother</Spouse1Ref>
+      <Spouse2Ref>ind-father</Spouse2Ref>
+    </Marriage>
+  </Marriages>
+
+  <PregnancyLists>
+    <PregnancyList MarriageRef="mar-parents">
+      <Pregnancy><Guid>preg-proband</Guid><MarriageRef>mar-parents</MarriageRef></Pregnancy>
+    </PregnancyList>
+    <!-- Dangling pregnancy: points to a marriage the file does not define. -->
+    <PregnancyList MarriageRef="mar-missing">
+      <Pregnancy><Guid>preg-twin</Guid><MarriageRef>mar-missing</MarriageRef></Pregnancy>
+    </PregnancyList>
+  </PregnancyLists>
+
+  <EggLists>
+    <EggList><PregnancyRef>preg-proband</PregnancyRef>
+      <Egg><Siblings><Individual IndividualRef="ind-proband" /></Siblings></Egg>
+    </EggList>
+    <EggList><PregnancyRef>preg-twin</PregnancyRef>
+      <Egg><Siblings><Individual IndividualRef="ind-twin" /></Siblings></Egg>
+    </EggList>
+  </EggLists>
+</Pedigree>

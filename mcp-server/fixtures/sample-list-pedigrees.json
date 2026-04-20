@@ -1,0 +1,18 @@
+[
+  {
+    "id": "3d7b9b2e-4f3a-4b2d-9a1c-2e0a2b3c4d5e",
+    "display_name": "BRCA family (illustrative)",
+    "date_represented": "2024-06-01",
+    "disease_ids": [
+      "b7d1f2c0-1111-4aaa-8bbb-111111111111"
+    ],
+    "owner": "user-1"
+  },
+  {
+    "id": "5c8b1a0e-aaaa-4bbb-9ccc-ddddeeeeffff",
+    "display_name": "Lynch family (illustrative)",
+    "date_represented": "2024-07-15",
+    "disease_ids": [],
+    "owner": "user-1"
+  }
+]

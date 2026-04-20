@@ -1,0 +1,91 @@
+{
+  "individuals": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "display_name": "Anne Hill",
+      "biological_sex": "female",
+      "events": [
+        {"id": "00000000-0000-0000-0000-000000000101", "type": "birth", "display_name": "Birth"}
+      ],
+      "diseases": []
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "display_name": "Peter Hill",
+      "biological_sex": "male",
+      "events": [
+        {"id": "00000000-0000-0000-0000-000000000102", "type": "birth", "display_name": "Birth"}
+      ],
+      "diseases": []
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "display_name": "Mary Hill",
+      "biological_sex": "female",
+      "events": [
+        {"id": "00000000-0000-0000-0000-000000000103", "type": "birth", "display_name": "Birth"},
+        {"id": "00000000-0000-0000-0000-000000000104", "type": "diagnosis", "display_name": "Breast cancer diagnosis"}
+      ],
+      "diseases": [
+        {"disease_id": "00000000-0000-0000-0000-0000000000aa"}
+      ]
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000004",
+      "display_name": "John Hill",
+      "biological_sex": "male",
+      "events": [
+        {"id": "00000000-0000-0000-0000-000000000105", "type": "birth", "display_name": "Birth"}
+      ],
+      "diseases": []
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000005",
+      "display_name": "Helen Hill",
+      "biological_sex": "female",
+      "proband": 1.0,
+      "events": [
+        {"id": "00000000-0000-0000-0000-000000000106", "type": "birth", "display_name": "Birth"}
+      ],
+      "diseases": []
+    }
+  ],
+  "relationships": [
+    {
+      "id": "00000000-0000-0000-0000-0000000000b1",
+      "members": [
+        "00000000-0000-0000-0000-000000000001",
+        "00000000-0000-0000-0000-000000000002"
+      ],
+      "events": []
+    },
+    {
+      "id": "00000000-0000-0000-0000-0000000000b2",
+      "members": [
+        "00000000-0000-0000-0000-000000000003",
+        "00000000-0000-0000-0000-000000000004"
+      ],
+      "events": []
+    }
+  ],
+  "eggs": [
+    {
+      "id": "00000000-0000-0000-0000-0000000000c1",
+      "individual_id": "00000000-0000-0000-0000-000000000003",
+      "relationship_id": "00000000-0000-0000-0000-0000000000b1",
+      "events": []
+    },
+    {
+      "id": "00000000-0000-0000-0000-0000000000c2",
+      "individual_id": "00000000-0000-0000-0000-000000000005",
+      "relationship_id": "00000000-0000-0000-0000-0000000000b2",
+      "events": []
+    }
+  ],
+  "diseases": [
+    {
+      "id": "00000000-0000-0000-0000-0000000000aa",
+      "display_name": "Breast Cancer"
+    }
+  ]
+}

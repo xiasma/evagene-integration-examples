@@ -1,0 +1,19 @@
+{
+  "model": "NICE",
+  "counselee_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+  "counselee_name": "Jane Example (proband)",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "NICE",
+    "nice_category": "high",
+    "nice_refer_genetics": true,
+    "nice_triggers": [
+      "Two or more first-degree relatives with breast cancer <50.",
+      "Breast and ovarian cancer in the same woman."
+    ],
+    "notes": [
+      "Meets at least one NICE high-risk trigger \u2014 refer for genetics assessment."
+    ]
+  }
+}

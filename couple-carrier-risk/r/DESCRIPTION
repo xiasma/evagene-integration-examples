@@ -1,0 +1,18 @@
+Package: coupleCarrierRisk
+Type: Package
+Title: Evagene Integration Example - Couple Carrier-Risk Screening
+Version: 0.1.0
+Description: A minimal Evagene REST API integration that takes two
+    23andMe raw genotype files, uploads them to scratch individuals,
+    retrieves each partner's population-conditioned carrier-frequency
+    table, and prints a combined couple-offspring-risk table for
+    autosomal-recessive and X-linked-recessive diseases.  Distributed
+    as an example; not a validated clinical tool.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports:
+    httr2 (>= 1.0.0),
+    jsonlite (>= 1.8.0)
+Suggests:
+    testthat (>= 3.2.0)

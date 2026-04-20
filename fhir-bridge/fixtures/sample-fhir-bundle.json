@@ -1,0 +1,132 @@
+{
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:fmh-mother",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "fmh-mother",
+        "status": "completed",
+        "patient": { "reference": "Patient/patient-emma" },
+        "name": "Linda Chen",
+        "relationship": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode", "code": "MTH", "display": "mother" }
+          ]
+        },
+        "sex": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/administrative-gender", "code": "female" }
+          ]
+        },
+        "bornDate": "1962-09-14"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fmh-father",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "fmh-father",
+        "status": "completed",
+        "patient": { "reference": "Patient/patient-emma" },
+        "name": "David Chen",
+        "relationship": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode", "code": "FTH", "display": "father" }
+          ]
+        },
+        "sex": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/administrative-gender", "code": "male" }
+          ]
+        },
+        "bornDate": "1960-05-18"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fmh-mgm",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "fmh-mgm",
+        "status": "completed",
+        "patient": { "reference": "Patient/patient-emma" },
+        "name": "Mary Chen",
+        "relationship": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode", "code": "MGRMTH", "display": "maternal grandmother" }
+          ]
+        },
+        "sex": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/administrative-gender", "code": "female" }
+          ]
+        },
+        "bornDate": "1938-11-22"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fmh-mgf",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "fmh-mgf",
+        "status": "completed",
+        "patient": { "reference": "Patient/patient-emma" },
+        "name": "Robert Chen",
+        "relationship": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode", "code": "MGRFTH", "display": "maternal grandfather" }
+          ]
+        },
+        "sex": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/administrative-gender", "code": "male" }
+          ]
+        },
+        "bornDate": "1935-03-10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fmh-brother",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "fmh-brother",
+        "status": "completed",
+        "patient": { "reference": "Patient/patient-emma" },
+        "name": "James Chen",
+        "relationship": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode", "code": "BRO", "display": "brother" }
+          ]
+        },
+        "sex": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/administrative-gender", "code": "male" }
+          ]
+        },
+        "bornDate": "1988-02-03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fmh-son",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "fmh-son",
+        "status": "completed",
+        "patient": { "reference": "Patient/patient-emma" },
+        "name": "Noah Chen",
+        "relationship": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode", "code": "SON", "display": "son" }
+          ]
+        },
+        "sex": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/administrative-gender", "code": "male" }
+          ]
+        },
+        "bornDate": "2014-07-01"
+      }
+    }
+  ]
+}

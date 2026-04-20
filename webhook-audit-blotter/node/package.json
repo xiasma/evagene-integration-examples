@@ -1,0 +1,33 @@
+{
+  "name": "webhook-audit-blotter",
+  "version": "0.1.0",
+  "description": "Evagene integration example: HMAC-verified, hash-chained audit log of webhook deliveries.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "test": "node --import tsx --test test/signatureVerifier.test.ts test/eventStore.test.ts test/webhookHandler.test.ts test/server.test.ts",
+    "lint": "eslint src test",
+    "format": "prettier --write src test",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "better-sqlite3": "11.7.0",
+    "express": "5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.16.0",
+    "@types/better-sqlite3": "7.6.12",
+    "@types/express": "5.0.0",
+    "@types/node": "22.10.2",
+    "eslint": "9.16.0",
+    "prettier": "3.4.2",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.18.1"
+  }
+}

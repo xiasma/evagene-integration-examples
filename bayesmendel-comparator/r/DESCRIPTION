@@ -1,0 +1,16 @@
+Package: bayesmendelComparator
+Type: Package
+Title: Evagene Integration Example - BayesMendel Model Comparator
+Version: 0.1.0
+Description: A minimal Evagene REST API integration that calls the three
+    BayesMendel cancer-risk models (BRCAPRO, MMRpro, PancPRO) for a single
+    pedigree and prints a side-by-side comparison.  Distributed as an
+    example; not a validated clinical tool.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports:
+    httr2 (>= 1.0.0),
+    jsonlite (>= 1.8.0)
+Suggests:
+    testthat (>= 3.2.0)

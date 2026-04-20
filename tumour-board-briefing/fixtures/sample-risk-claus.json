@@ -1,0 +1,16 @@
+{
+  "model": "CLAUS",
+  "counselee_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+  "counselee_name": "Jane Example (proband)",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "CLAUS",
+    "claus_lifetime_risk": 0.2884,
+    "claus_relative_risk": 2.622,
+    "claus_source": "claus_two_first_degree[40-49]",
+    "notes": [
+      "Lifetime breast-cancer risk estimated from the Claus/CASH table for two first-degree relatives diagnosed at 40-49."
+    ]
+  }
+}

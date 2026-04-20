@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Intentionally malformed: the closing tag does not match and there is no root Pedigree element. -->
+<NotAPedigree>
+  <Individual>
+    <Guid>ind-broken</Guid>
+    <Name>Unclosed element
+  </Individual>
+</NotAPedigree>

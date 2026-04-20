@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Evagene Pedigree</title>
+    <link rel="stylesheet" href="sidePanel.css" />
+  </head>
+  <body>
+    <main id="app">
+      <p id="empty">Click a "View on Evagene" button on any page to see a pedigree summary here.</p>
+      <section id="summary" hidden>
+        <h1 id="name"></h1>
+        <p id="proband"></p>
+        <h2>Diseases in family</h2>
+        <ul id="diseases"></ul>
+        <p><a id="viewLink" target="_blank" rel="noopener noreferrer">Open in Evagene</a></p>
+      </section>
+      <p id="error" hidden></p>
+    </main>
+    <script type="module" src="sidePanel.js"></script>
+  </body>
+</html>

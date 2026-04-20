@@ -1,0 +1,13 @@
+{
+  "description": "Canonical Slack slash-command delivery the bot expects on POST /slack/commands/evagene. `body` is the raw form-encoded request body (exactly the bytes in fixtures/slack-request.txt, newline-stripped). `signing_secret` is the Slack app's signing secret; `timestamp` is the value of X-Slack-Request-Timestamp; `signature_header` is what X-Slack-Signature should be for these bytes.",
+  "method": "POST",
+  "path": "/slack/commands/evagene",
+  "headers": {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "X-Slack-Request-Timestamp": "1713614400",
+    "X-Slack-Signature": "v0=<compute HMAC_SHA256(signing_secret, 'v0:' + timestamp + ':' + body) at send time>"
+  },
+  "body": "token=gIkuvaNzQIHg97ATvDxqgjtO&team_id=T0001&team_domain=example&channel_id=C2147483705&channel_name=test&user_id=U2147483697&user_name=counsellor&command=%2Fevagene&text=7c8d4d6a-2f3a-4c1e-9a0b-5c2d3e4f5a6b&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2F1234%2F5678",
+  "signing_secret": "shhh",
+  "timestamp": "1713614400"
+}

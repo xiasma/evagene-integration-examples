@@ -1,0 +1,146 @@
+# Cascade screening letters
+
+**Draft a personalised cascade-screening invitation letter for every at-risk relative in a pedigree, in one command.** Point this at an [Evagene](https://evagene.net) pedigree whose proband carries a clinically actionable variant and the tool asks the Evagene register who the first- and second-degree relatives are, runs an analysis template against the pedigree to generate a conservative, family-specific letter body, and writes one Markdown file per relative into a folder the counsellor can proof-read before sending.
+
+> **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
+
+---
+
+## Who this is for
+
+- **Genetic counsellors** and **genetic nurses** running cascade-screening programmes — when a proband's variant is identified, you owe a letter to every relative who might share it. This tool does the first draft so you spend your time reviewing, not typing.
+- **Cancer-genetics services** with a back-log of families to contact after a positive BRCA1 / BRCA2 / Lynch-syndrome result.
+- **Integrators / developers** wanting a worked example of combining the Evagene family register with the analysis-templates endpoint.
+
+## What it does, step by step
+
+1. Calls `GET /api/pedigrees/{id}/register` to list everyone in the pedigree with their relationship label to the proband.
+2. Filters that list to first-degree relatives (parent / child / sibling) and second-degree relatives (grandparent / aunt / uncle / niece / nephew / half-sibling).
+3. Finds or creates a conservative analysis template named `cascade-screening-letter` via `GET /api/templates` and `POST /api/templates`.
+4. Runs the template once against the pedigree via `POST /api/templates/{id}/run?pedigree_id=...` to produce a family-specific letter body (proband name, disease list, risk summary injected).
+5. Composes one letter per at-risk relative locally — a personalised salutation and relationship sentence followed by the template body — and writes it to a Markdown file.
+
+The counsellor reviews each file, adds clinic letterhead and contact details, and sends it.
+
+## What Evagene surfaces this uses
+
+- **REST API — family register** — `GET /api/pedigrees/{pedigree_id}/register`.
+- **REST API — analysis templates** — `GET /api/templates`, `POST /api/templates`, `POST /api/templates/{template_id}/run?pedigree_id=...`.
+- **Authentication** — long-lived API key via `X-API-Key: evg_...`. Scope `analyze` is sufficient (covers both reads and template execution).
+- **Interactive API reference** — [https://evagene.net/docs](https://evagene.net/docs) (Swagger) or [https://evagene.net/redoc](https://evagene.net/redoc).
+
+## Prerequisites
+
+1. An Evagene account and an API key with `analyze` scope — see [getting-started.md](../getting-started.md).
+2. A pedigree with a designated **proband**, at least one **at-risk relative** in the first- or second-degree circle, and a disease recorded on the family (the tool reads the register and the template's disease-list variable).
+3. A recent runtime for the language you prefer — only one is needed.
+
+## Configuration
+
+Every language reads the same environment variables. Each language folder ships a `.env.example` you can copy to `.env` and fill in.
+
+| Variable | Required | Default | Example |
+|---|---|---|---|
+| `EVAGENE_BASE_URL` | no | `https://evagene.net` | `https://evagene.net` |
+| `EVAGENE_API_KEY`  | yes | — | `evg_...` |
+
+## Command-line contract
+
+Both implementations accept the same invocation:
+
+```
+cascade-letters <pedigree-id> [--output-dir <dir>] [--template <id>] [--dry-run]
+```
+
+- `pedigree-id` — UUID of the pedigree.
+- `--output-dir` — directory to write letters into; defaults to `./letters` (created if missing).
+- `--template` — UUID of the analysis template to use; defaults to auto-discover or create one named `cascade-screening-letter`.
+- `--dry-run` — print the list of relatives a letter would be generated for, then stop. No template execution, no files written.
+
+Stdout: one line per generated file — the file's path — so the output pipes cleanly into `xargs` or a review tool.
+
+### Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Success — letters written (or dry-run completed). |
+| `64` | Usage error (missing or malformed arguments). |
+| `69` | Evagene API unreachable or returned a non-2xx response. |
+| `70` | Register has no at-risk relatives, or no proband is designated. |
+
+## One-line run per language
+
+| Language | First-time setup | Run |
+|---|---|---|
+| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m cascade_letters <pedigree-id>` |
+| **Node 20+**     | `npm install` | `npm start -- <pedigree-id>` |
+
+## Expected output
+
+Dry run against a BRCA family pedigree:
+
+```
+$ python -m cascade_letters a1cfe665-2e95-4386-9eb8-53d46095478a --dry-run
+Margaret Ward (Mother)
+David Ward (Father)
+Sarah Ward (Sister)
+Thomas Ward (Brother)
+Joan Pembroke (Aunt (maternal))
+Elizabeth Pembroke (Grandmother (maternal))
+```
+
+Full run, writing Markdown files:
+
+```
+$ python -m cascade_letters a1cfe665-2e95-4386-9eb8-53d46095478a
+letters/01-margaret-ward.md
+letters/02-david-ward.md
+letters/03-sarah-ward.md
+letters/04-thomas-ward.md
+letters/05-joan-pembroke.md
+letters/06-elizabeth-pembroke.md
+```
+
+A generated letter looks like the one at `fixtures/sample-template-run.md` — see that file for the full format.
+
+## Architecture
+
+Both languages follow the same shape; each module has a single responsibility.
+
+```
+ CLI args + env  ─┐
+                  ├─► Config (value object, validated)
+ EVAGENE_API_KEY ─┘             │
+                                ▼
+                         EvageneClient ◄── HttpGateway (abstraction)
+                                │
+                ┌───────────────┼────────────────────┐
+                ▼               ▼                    ▼
+        fetch_register   template_resolver      run_template
+                │               │                    │
+                ▼               ▼                    ▼
+       RelativeSelector  (find or create)     LetterWriter  (sink)
+                │
+                └────────────► CascadeService (orchestrator)
+```
+
+- **Config** — immutable value object; validates `EVAGENE_API_KEY` is present and that IDs are UUIDs.
+- **HttpGateway** — narrow abstraction the tests fake.
+- **EvageneClient** — one method per endpoint (`fetch_register`, `list_templates`, `create_template`, `run_template`).
+- **RelativeSelector** — pure filter: `RegisterData` in, list of letter targets out (first- and second-degree only, skips the proband, skips rows without a display name).
+- **TemplateResolver** — either returns the user-provided template ID, or looks one up by name, or creates a fresh one with a conservative default body.
+- **LetterWriter** — composes the final Markdown locally (personalised salutation + template body) and writes it to an injected sink. `DiskLetterSink` writes files; tests use an in-memory sink.
+- **CascadeService** — orchestrator; selector + resolver + one `run_template` call + writer.
+- **App** — composition root.
+
+## Test fixtures
+
+- `fixtures/sample-register.json` — a realistic BRCA family register response.
+- `fixtures/sample-template-run.md` — an example of what a generated letter looks like after local composition.
+
+## Caveats
+
+- **Generated letters are drafts.** A counsellor must read every one before it is sent. The tool does not replace clinical review; it removes the typing.
+- **Personal and medical information** ends up in the output folder. Keep it on a trusted disk, and delete files once they have been sent. The demo does not encrypt anything.
+- **The auto-created default template is conservative** ("you may wish to consider speaking with your genetic counsellor about...") but it is still a starting point. Review the template text at [https://evagene.net](https://evagene.net) under your account's analysis templates before production use, and edit or replace it to match your service's house style.
+- **Consent, data-protection and governance are the clinician's responsibility.** This is an example integration, not a validated clinical workflow. Clinical governance, patient-consent rules, and local data-protection obligations apply in the usual way — the tool enforces none of them.

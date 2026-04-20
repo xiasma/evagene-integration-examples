@@ -1,0 +1,104 @@
+{
+  "proband_id": "a0000000-0000-0000-0000-000000000001",
+  "disease_columns": [
+    {
+      "id": "d0000000-0000-0000-0000-00000000b001",
+      "display_name": "Breast cancer",
+      "color": "#e67e22"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-00000000b002",
+      "display_name": "Ovarian cancer",
+      "color": "#9b59b6"
+    }
+  ],
+  "rows": [
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000001",
+      "display_name": "Helen Ward",
+      "biological_sex": "female",
+      "relationship_to_proband": "Proband",
+      "visible": true,
+      "death_status": "",
+      "diseases": {
+        "d0000000-0000-0000-0000-00000000b001": "affected"
+      }
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000002",
+      "display_name": "Margaret Ward",
+      "biological_sex": "female",
+      "relationship_to_proband": "Mother",
+      "visible": true,
+      "death_status": "dead",
+      "diseases": {
+        "d0000000-0000-0000-0000-00000000b002": "affected"
+      }
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000003",
+      "display_name": "David Ward",
+      "biological_sex": "male",
+      "relationship_to_proband": "Father",
+      "visible": true,
+      "death_status": "",
+      "diseases": {}
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000004",
+      "display_name": "Sarah Ward",
+      "biological_sex": "female",
+      "relationship_to_proband": "Sister",
+      "visible": true,
+      "death_status": "",
+      "diseases": {}
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000005",
+      "display_name": "Thomas Ward",
+      "biological_sex": "male",
+      "relationship_to_proband": "Brother",
+      "visible": true,
+      "death_status": "",
+      "diseases": {}
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000006",
+      "display_name": "Joan Pembroke",
+      "biological_sex": "female",
+      "relationship_to_proband": "Aunt (maternal)",
+      "visible": true,
+      "death_status": "",
+      "diseases": {
+        "d0000000-0000-0000-0000-00000000b001": "affected"
+      }
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000007",
+      "display_name": "Elizabeth Pembroke",
+      "biological_sex": "female",
+      "relationship_to_proband": "Grandmother (maternal)",
+      "visible": true,
+      "death_status": "dead",
+      "diseases": {}
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000008",
+      "display_name": "Annabel Hargreaves",
+      "biological_sex": "female",
+      "relationship_to_proband": "First cousin (maternal)",
+      "visible": true,
+      "death_status": "",
+      "diseases": {}
+    },
+    {
+      "individual_id": "a0000000-0000-0000-0000-000000000009",
+      "display_name": "",
+      "biological_sex": "female",
+      "relationship_to_proband": "Half-sister",
+      "visible": true,
+      "death_status": "",
+      "diseases": {}
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "model": "NICE",
+  "counselee_id": "00000000-0000-0000-0000-000000000002",
+  "counselee_name": "Counselee, Moderate",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "NICE",
+    "nice_category": "moderate",
+    "nice_refer_genetics": true,
+    "nice_triggers": [
+      "Single first-degree relative with breast cancer <40."
+    ],
+    "notes": [
+      "Moderate risk (NICE lifetime 17-30%) \u2014 routine surveillance and specialist advice; refer if further significant history emerges."
+    ]
+  }
+}

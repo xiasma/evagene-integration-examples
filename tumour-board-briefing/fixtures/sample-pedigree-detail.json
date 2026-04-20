@@ -1,0 +1,66 @@
+{
+  "id": "11111111-1111-1111-1111-111111111111",
+  "display_name": "Worked example: BRCA-suspicious family",
+  "date_represented": "2026-01-15",
+  "owner": "demo",
+  "notes": "Illustrative three-generation family history with breast and ovarian cancers across the maternal line.",
+  "properties": {},
+  "events": [],
+  "created_at": "2026-01-10T09:15:00Z",
+  "updated_at": "2026-01-15T11:42:00Z",
+  "disease_ids": [],
+  "clinical_test_type_ids": [],
+  "ancestry_ids": [],
+  "treatment_type_ids": [],
+  "individual_ids": [
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2",
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3",
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4",
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5"
+  ],
+  "relationship_ids": [],
+  "egg_ids": [],
+  "is_public": false,
+  "owner_name": "Demo Owner",
+  "deleted_at": null,
+  "individuals": [
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+      "display_name": "Jane Example (proband)",
+      "biological_sex": "female",
+      "proband": 360.0,
+      "proband_text": "proband"
+    },
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2",
+      "display_name": "Jane's mother",
+      "biological_sex": "female",
+      "proband": 0.0
+    },
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3",
+      "display_name": "Maternal aunt",
+      "biological_sex": "female",
+      "proband": 0.0
+    },
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4",
+      "display_name": "Maternal grandmother",
+      "biological_sex": "female",
+      "proband": 0.0
+    },
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5",
+      "display_name": "Father",
+      "biological_sex": "male",
+      "proband": 0.0
+    }
+  ],
+  "relationships": [
+    {"id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1"},
+    {"id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2"},
+    {"id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb3"}
+  ],
+  "eggs": []
+}

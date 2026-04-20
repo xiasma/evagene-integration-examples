@@ -1,0 +1,14 @@
+Since 2026-04-15 (3 days):
+
++ Added: Mary Jones (maternal aunt, age 57)
+  + Diagnosed with Ovarian Cancer, age 52
+
+~ Updated: Emma Smith (proband)
+  - Date of birth corrected: 1985-07-05 -> 1987-07-05
+
+- Removed: John Smith (paternal uncle, was recorded as affected with Unknown Cancer)
+
++ Parent link added: Frank Jones -> Mary Jones
++ Parent link added: Susan Jones -> Mary Jones
+- Parent link removed: George Smith -> John Smith
+- Parent link removed: Helen Smith -> John Smith

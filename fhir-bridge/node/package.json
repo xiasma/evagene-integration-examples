@@ -1,0 +1,27 @@
+{
+  "name": "fhir-bridge",
+  "version": "0.1.0",
+  "description": "Evagene integration example: round-trip a pedigree between Evagene and a FHIR R5 server via FamilyMemberHistory.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "test": "node --import tsx --test test/config.test.ts test/relationMap.test.ts test/pedigreeToFhir.test.ts test/fhirToIntake.test.ts test/fhirClient.test.ts test/evageneClient.test.ts test/roundTrip.test.ts",
+    "lint": "eslint src test",
+    "format": "prettier --write src test",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.16.0",
+    "@types/node": "22.10.2",
+    "eslint": "9.16.0",
+    "prettier": "3.4.2",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.18.1"
+  }
+}

@@ -1,0 +1,16 @@
+Package: niceTrafficLight
+Type: Package
+Title: Evagene Integration Example - NICE Familial Breast Cancer Traffic Light
+Version: 0.1.0
+Description: A minimal Evagene REST API integration that classifies a pedigree
+    against NICE CG164 / NG101 familial breast cancer criteria and prints a
+    green/amber/red result plus the triggers that fired.  Distributed as an
+    example; not a validated clinical tool.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports:
+    httr2 (>= 1.0.0),
+    jsonlite (>= 1.8.0)
+Suggests:
+    testthat (>= 3.2.0)

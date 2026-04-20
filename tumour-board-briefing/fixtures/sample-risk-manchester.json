@@ -1,0 +1,25 @@
+{
+  "model": "MANCHESTER",
+  "counselee_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+  "counselee_name": "Jane Example (proband)",
+  "warnings": [],
+  "error": null,
+  "cancer_risk": {
+    "model_name": "MANCHESTER",
+    "manchester_brca1_score": 13,
+    "manchester_brca2_score": 9,
+    "manchester_combined_score": 22,
+    "manchester_brca1_over_10pct": false,
+    "manchester_brca2_over_10pct": false,
+    "manchester_combined_over_20pct": true,
+    "manchester_contributions": [
+      "Jane Example: female breast, age 44 \u2014 BRCA1 +3, BRCA2 +3",
+      "Jane's mother: female breast, age 48 \u2014 BRCA1 +3, BRCA2 +3",
+      "Maternal aunt: ovarian, age 54 \u2014 BRCA1 +8, BRCA2 +5",
+      "Maternal grandmother: female breast, age 62 \u2014 BRCA1 +1, BRCA2 +1"
+    ],
+    "notes": [
+      "BRCA1 score 13 (>=16 \u2248 10% probability); BRCA2 score 9 (>=16 \u2248 10% probability); combined 22 (>=20 \u2248 20% probability)."
+    ]
+  }
+}

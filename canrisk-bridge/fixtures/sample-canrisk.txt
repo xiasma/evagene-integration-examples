@@ -1,0 +1,21 @@
+##CanRisk 2.0
+##FamID=BRCA001
+##Name=Example BRCA family
+##Country=UK
+##BOADICEA-version=6.0.0
+##menarche=12
+##parity=0
+##first_child=N/A
+##last_child=N/A
+##oc_use=N
+##mht_use=N
+##BMI=24.0
+##height=165.0
+##hgt=165.0
+##alcohol=0.0
+##TL=N
+##endo=N
+FamID	Name	Target	IndivID	FathID	MothID	Sex	MZtwin	Dead	Age	Yob	BC1	BC2	OC	PRO	PAN	Ashkn	BRCA1	BRCA2	PALB2	ATM	CHEK2	BARD1	RAD51D	RAD51C	BRIP1	ER:PR:HER2:CK14:CK56
+BRCA001	proband	1	IND001	IND002	IND003	F	0	0	42	1984	42	0	0	0	0	0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0
+BRCA001	father	0	IND002	0	0	M	0	1	70	1954	0	0	0	0	0	0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0
+BRCA001	mother	0	IND003	0	0	F	0	1	65	1959	48	0	0	0	0	0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0	0:0:0:0:0

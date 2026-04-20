@@ -1,0 +1,15 @@
+File: sample-simple.xeg
+Mode: preview (no pedigree created)
+
+Counts
+  individuals    5
+  relationships  2
+  eggs           2
+  diseases       1
+  events         6
+
+Diseases
+  - Breast Cancer
+
+Warnings
+  (none)
