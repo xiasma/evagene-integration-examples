@@ -81,6 +81,8 @@ Only a Python implementation ships: the pipeline depends on `pdf2image` and the 
 
 ### Run it in Python 3.11+
 
+**System prerequisite (only when input is a PDF):** install **Poppler** and put it on `PATH` — `pdf2image` shells out to it for the PDF→PNG step. `.png` / `.jpg` input does *not* need Poppler. Windows: grab a build from <https://github.com/oschwartz10612/poppler-windows/releases> and add its `bin/` to `PATH`. macOS: `brew install poppler`. Linux: `apt-get install poppler-utils` / `dnf install poppler-utils`.
+
 ```bash
 cd python
 
@@ -93,8 +95,8 @@ python -m venv .venv
 # macOS / Linux:
 source .venv/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt -r requirements-dev.txt
+# Install the demo package + its dev tools (editable install so python -m <pkg> works)
+pip install -e ".[dev]"
 
 # Set your API keys (one shell session)
 # Windows PowerShell:

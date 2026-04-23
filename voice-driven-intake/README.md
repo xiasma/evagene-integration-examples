@@ -95,6 +95,8 @@ The sample WAV in `fixtures/` is a **synthetic placeholder** (tones and silence,
 
 ### Run it in Python 3.11+
 
+**System prerequisite:** install **ffmpeg** and make sure it is on `PATH` — `pydub` (audio loading) and the OpenAI Whisper API audio-upload path both depend on it. Windows: `choco install ffmpeg` or download from <https://ffmpeg.org/download.html>. macOS: `brew install ffmpeg`. Linux: `apt-get install ffmpeg` / `dnf install ffmpeg`.
+
 ```bash
 cd python
 
@@ -107,8 +109,8 @@ python -m venv .venv
 # macOS / Linux:
 source .venv/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt -r requirements-dev.txt
+# Install the demo package + its dev tools (editable install so python -m <pkg> works)
+pip install -e ".[dev]"
 
 # Set your API keys (one shell session)
 # Windows PowerShell:

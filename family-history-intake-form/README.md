@@ -69,8 +69,8 @@ python -m venv .venv
 # macOS / Linux:
 source .venv/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt -r requirements-dev.txt
+# Install the demo package + its dev tools (editable install so python -m <pkg> works)
+pip install -e ".[dev]"
 
 # Set your Evagene API key (one shell session)
 # Windows PowerShell:

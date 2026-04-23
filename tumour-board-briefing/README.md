@@ -76,6 +76,8 @@ Only a Python implementation ships: the PDF rendering pipeline (`reportlab` + `s
 
 ### Run it in Python 3.11+
 
+**Note on PDF rendering:** this demo embeds the Evagene SVG pedigree directly as a ReportLab `Drawing` (via `svglib`) — no Cairo, no ImageMagick, no separate raster pipeline. `svglib` falls back to Helvetica when an SVG font face isn't available locally, so the figure glyphs in the generated PDF may not be pixel-identical to the Evagene web UI — this is cosmetic, not clinical.
+
 ```bash
 cd python
 
@@ -88,8 +90,8 @@ python -m venv .venv
 # macOS / Linux:
 source .venv/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt -r requirements-dev.txt
+# Install the demo package + its dev tools (editable install so python -m <pkg> works)
+pip install -e ".[dev]"
 
 # Set your Evagene API key (one shell session)
 # Windows PowerShell:
