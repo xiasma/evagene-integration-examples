@@ -45,16 +45,77 @@ Both kernels read the same environment variables. Each language folder ships a `
 | `EVAGENE_BASE_URL` | no | `https://evagene.net` | `https://evagene.net` |
 | `EVAGENE_API_KEY`  | yes | — | `evg_...` |
 
-## One-line run per kernel
+## Run it
 
-Work from the language-specific subfolder.
+Both kernels expect `EVAGENE_API_KEY` to be set in the environment. The notebook saves its executed outputs so a GitHub preview renders charts and tables without a runtime.
 
-| Kernel | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+ / Jupyter** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `jupyter lab explorer.ipynb` (interactive) or `jupyter nbconvert --execute --to notebook --inplace explorer.ipynb` (headless) |
-| **R 4.3+ / Quarto 1.4+**   | `R -e 'install.packages(c("httr2","jsonlite","ggplot2","knitr","testthat","rmarkdown"))'` | `quarto render explorer.qmd` (renders to `explorer.html`) or `quarto preview explorer.qmd` (interactive). If Quarto is not installed, `Rscript _render_fallback.R` produces the same `explorer.html` via `rmarkdown`. |
+### Run it in Python 3.11+
 
-The notebook saves its executed outputs so a GitHub preview renders charts and tables without a runtime.
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Open the notebook interactively
+jupyter lab explorer.ipynb
+
+# Or run it headless
+jupyter nbconvert --execute --to notebook --inplace explorer.ipynb
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict notebook_explorer
+```
+
+### Run it in R 4.3+ / Quarto 1.4+
+
+```bash
+cd r
+
+# Install dependencies (user library)
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); if (!dir.exists(loc)) dir.create(loc, recursive = TRUE, showWarnings = FALSE); .libPaths(c(loc, .libPaths())); install.packages(c("httr2", "jsonlite", "ggplot2", "knitr", "rmarkdown", "testthat"), repos = "https://cloud.r-project.org")'
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Render the notebook (Quarto)
+quarto render explorer.qmd
+
+# Or preview interactively
+quarto preview explorer.qmd
+
+# If Quarto is not installed, fall back to rmarkdown
+Rscript _render_fallback.R
+```
+
+Run the tests (optional):
+
+```bash
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); .libPaths(c(loc, .libPaths())); testthat::test_dir("tests/testthat")'
+```
 
 ## What you should see
 

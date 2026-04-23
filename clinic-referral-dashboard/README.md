@@ -57,21 +57,47 @@ Copy `node/.env.example` to `node/.env` and fill in the values.
 | `GET`  | `/pedigree-card/:id`   | Server-rendered HTML fragment: the Evagene embed SVG, the NICE category, and the pedigree display name. |
 | `GET`  | `/healthz`             | `200 ok` liveness probe. |
 
-## Run
+## Run it
 
-```bash
-cd node
-npm install
-npm start
-```
-
-Startup prints:
+Only a Node implementation ships. Startup prints:
 
 ```
 Clinic referral dashboard listening on http://localhost:4000/
 ```
 
 Open `http://localhost:4000/` in a browser. The header shows "Live" once the SSE connection is up. Trigger a pedigree create in Evagene (or synthesise a signed delivery — see below) and a card appears at the top of the list.
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your API key, webhook secret, and optional overrides (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+$env:EVAGENE_WEBHOOK_SECRET = "replace_with_secret_from_webhook_creation_response"
+$env:PORT = "4000"
+$env:SQLITE_PATH = "./dashboard.db"
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+export EVAGENE_WEBHOOK_SECRET=replace_with_secret_from_webhook_creation_response
+export PORT=4000
+export SQLITE_PATH=./dashboard.db
+
+# Run the server
+npm start
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
 
 ## Smoke test (no real Evagene delivery needed)
 

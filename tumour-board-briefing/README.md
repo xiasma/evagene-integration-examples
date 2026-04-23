@@ -70,17 +70,43 @@ tumour-board-brief <pedigree-id> [--output <file.pdf>] [--models <comma-list>] [
 
 Per-model risk failures do **not** abort the briefing — the model's row is rendered as "not available" and the document still prints.
 
-## First-time setup and run
+## Run it
+
+Only a Python implementation ships: the PDF rendering pipeline (`reportlab` + `svglib`) is the load-bearing dependency, and duplicating it in another language would not add anything.
+
+### Run it in Python 3.11+
 
 ```bash
 cd python
-python -m venv .venv
-# activate (.venv/bin/activate on POSIX, .venv\Scripts\activate on Windows)
-pip install -e .[dev]
 
-# From the demo root:
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
 export EVAGENE_API_KEY=evg_...
-tumour-board-brief <pedigree-id>
+
+# Run the demo
+python -m tumour_board_briefing <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
 ```
 
 ## Architecture

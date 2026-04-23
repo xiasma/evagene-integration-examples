@@ -91,14 +91,68 @@ Every rule lives in a tested helper; the orchestrator is a straight-line composi
 - **Structure** — relationships, eggs, consanguinity coefficients, twin modelling via shared eggs, disease IDs, affection status, and manifestations are preserved exactly. The whole point of a research pedigree is the pattern — we keep it.
 - **Sex** — biological sex is preserved by default (it is load-bearing for Mendelian inference). Pass `--no-keep-sex` to redact.
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder.
+Both implementations expect `EVAGENE_API_KEY` to be set in the environment, and the pedigree UUID as the first positional argument.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m research_anonymiser <pedigree-id>` |
-| **R 4.3+** | `R -e 'install.packages(c("httr2","jsonlite","testthat"))'` | `Rscript inst/bin/anonymise.R <pedigree-id>` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m research_anonymiser <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in R 4.3+
+
+```bash
+cd r
+
+# Install dependencies (user library)
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); if (!dir.exists(loc)) dir.create(loc, recursive = TRUE, showWarnings = FALSE); .libPaths(c(loc, .libPaths())); install.packages(c("httr2", "jsonlite", "testthat"), repos = "https://cloud.r-project.org")'
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+Rscript inst/bin/anonymise.R <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); .libPaths(c(loc, .libPaths())); testthat::test_dir("tests/testthat")'
+```
 
 ## Expected output
 

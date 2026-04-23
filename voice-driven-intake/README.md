@@ -87,16 +87,56 @@ voice-intake <audio-file> [--commit] [--language <ISO>] [--show-transcript] [--s
 | `70` | Model output did not conform to the extraction schema |
 | `71` | Audio file missing, wrong format, too large, or longer than the duration cap |
 
-## One-line run
+## Run it
 
-```
-cd python
-python -m venv .venv && . .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -e '.[dev]'
-python -m voice_driven_intake ../fixtures/sample-counselling.wav --show-transcript
-```
+Only a Python implementation ships: the pipeline depends on `pydub`, the OpenAI Whisper SDK, and the Anthropic SDK, and duplicating it in another language would not add anything.
 
 The sample WAV in `fixtures/` is a **synthetic placeholder** (tones and silence, produced by a short Python script -- see `fixtures/README.md`). For a realistic run, record yourself reading `fixtures/sample-transcript.txt` into a phone or laptop mic and save it as `fixtures/my-dictation.m4a`. The demo's `.gitignore` blocks audio files by default so you cannot accidentally commit your voice.
+
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your API keys (one shell session)
+# Windows PowerShell:
+$env:OPENAI_API_KEY = "sk-..."
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export OPENAI_API_KEY=sk-...
+export ANTHROPIC_API_KEY=sk-ant-...
+export EVAGENE_API_KEY=evg_...
+
+# Transcribe and print the transcript only
+python -m voice_driven_intake ../fixtures/sample-counselling.wav --show-transcript
+
+# Extract the family structure
+python -m voice_driven_intake ../fixtures/sample-counselling.wav
+
+# Extract and commit to Evagene
+python -m voice_driven_intake ../fixtures/sample-counselling.wav --commit
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
 
 ## Expected output
 

@@ -70,12 +70,48 @@ risk-monitor seed
 
 A `cron` line such as `0 2 * * * risk-monitor run --channel slack-webhook --channel-arg $SLACK_URL || true` runs at 02:00 every night; the `|| true` suppresses the non-zero exit code from a change-detection alert so the scheduler does not also email you.
 
-## One-line run
+## Run it
 
+Only a Python implementation ships. `risk-monitor` has three subcommands: `seed` (once), `run` (every schedule tick), and `history`.
+
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key and the SQLite baseline path (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+$env:RISK_MONITOR_DB = "./risk-monitor.db"
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+export RISK_MONITOR_DB=./risk-monitor.db
+
+# Bootstrap the baseline (run once)
+python -m longitudinal_risk_monitor seed
+
+# Recompute and notify (schedule this)
+python -m longitudinal_risk_monitor run
 ```
-python -m venv .venv && source .venv/bin/activate && pip install -e ./python[dev]
-risk-monitor seed                                   # once
-risk-monitor run                                    # every night
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
 ```
 
 ## Expected output

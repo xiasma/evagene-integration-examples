@@ -20,16 +20,41 @@ REST API — specifically `GET /api/pedigrees/{id}/summary`. Full reference at [
 - Node.js 20.10 or later (build only — the extension itself runs in the browser).
 - Chrome 114+, Edge 114+, or Firefox 128+.
 
-## Build
+## Run it
+
+This is a Manifest V3 WebExtension, so "running it" means building the bundle and then loading the `dist/` folder into Chrome, Edge, or Firefox as an unpacked extension. The extension itself runs entirely in the browser; there is no server process.
+
+### Build it in Node 20+
 
 ```bash
+# From the demo root (this folder is the Node project root; there is no node/ subfolder)
+
+# Install dependencies
 npm install
-npm run build        # produces dist/ ready to load as unpacked extension
-npm run watch        # rebuild on change
-npm test             # unit tests
+
+# The API key lives in chrome.storage.local — you paste it into the options
+# page after loading the extension, so no EVAGENE_API_KEY env var is needed
+# at build time.
+# Optional: override the base URL at build time if you self-host Evagene.
+# Windows PowerShell:
+$env:EVAGENE_BASE_URL = "https://evagene.net"
+# macOS / Linux (bash / zsh):
+export EVAGENE_BASE_URL=https://evagene.net
+
+# Build the bundle into dist/
+npm run build
+
+# Rebuild on change (optional)
+npm run watch
+```
+
+Run the tests and linters (optional):
+
+```bash
+npm test
 npm run lint
 npm run typecheck
-npm run manifest-lint   # validates dist/manifest.json + checks every referenced file exists
+npm run manifest-lint
 ```
 
 ## Install the unpacked extension

@@ -73,14 +73,80 @@ call-notes-to-pedigree [<transcript-file>] [--commit] [--model <model>] [--show-
 | `69` | Evagene or Anthropic unreachable |
 | `70` | Model output did not conform to the extraction schema |
 
-## One-line run per language
+## Run it
 
-| Language | First-time setup | Run (read-only) | Run (commit) |
-|---|---|---|---|
-| **Python 3.11+** | `cd python && python -m venv .venv && (activate) && pip install -e .[dev]` | `python -m call_notes_to_pedigree ../fixtures/sample-transcript.txt` | `python -m call_notes_to_pedigree ../fixtures/sample-transcript.txt --commit` |
-| **Node 20+**     | `cd node && npm install` | `npm start -- ../fixtures/sample-transcript.txt` | `npm start -- ../fixtures/sample-transcript.txt --commit` |
+Both implementations always need `ANTHROPIC_API_KEY`; `EVAGENE_API_KEY` is only needed for `--commit`. Piping a transcript on stdin also works (e.g. `cat transcript.txt | python -m call_notes_to_pedigree`).
 
-Piping also works: `cat transcript.txt | python -m call_notes_to_pedigree`.
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your API keys (one shell session)
+# Windows PowerShell:
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export ANTHROPIC_API_KEY=sk-ant-...
+export EVAGENE_API_KEY=evg_...
+
+# Run read-only
+python -m call_notes_to_pedigree ../fixtures/sample-transcript.txt
+
+# Run and commit to Evagene
+python -m call_notes_to_pedigree ../fixtures/sample-transcript.txt --commit
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your API keys (one shell session)
+# Windows PowerShell:
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export ANTHROPIC_API_KEY=sk-ant-...
+export EVAGENE_API_KEY=evg_...
+
+# Run read-only
+npm start -- ../fixtures/sample-transcript.txt
+
+# Run and commit to Evagene
+npm start -- ../fixtures/sample-transcript.txt --commit
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
 
 ## Expected output
 

@@ -65,14 +65,68 @@ couple-carrier-risk --partner-a <file> --partner-b <file> \
 | `69` | Evagene API call failed (HTTP non-2xx, network error, invalid JSON). |
 | `70` | A population-risks response did not match the documented schema. |
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder. Both expect `EVAGENE_API_KEY` to be set in the environment (either exported or via `.env` / `.Renviron`).
+Both implementations expect `EVAGENE_API_KEY` to be set in the environment, and two `--partner-*` file paths on the command line.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m couple_carrier_risk --partner-a ../fixtures/partner-a-23andme.txt --partner-b ../fixtures/partner-b-23andme.txt` |
-| **R 4.3+** | `R -e 'install.packages(c("httr2","jsonlite","testthat"))'` | `Rscript inst/bin/couple-carrier-risk.R --partner-a ../fixtures/partner-a-23andme.txt --partner-b ../fixtures/partner-b-23andme.txt` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m couple_carrier_risk --partner-a ../fixtures/partner-a-23andme.txt --partner-b ../fixtures/partner-b-23andme.txt
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in R 4.3+
+
+```bash
+cd r
+
+# Install dependencies (user library)
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); if (!dir.exists(loc)) dir.create(loc, recursive = TRUE, showWarnings = FALSE); .libPaths(c(loc, .libPaths())); install.packages(c("httr2", "jsonlite", "testthat"), repos = "https://cloud.r-project.org")'
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+Rscript inst/bin/couple-carrier-risk.R --partner-a ../fixtures/partner-a-23andme.txt --partner-b ../fixtures/partner-b-23andme.txt
+```
+
+Run the tests (optional):
+
+```bash
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); .libPaths(c(loc, .libPaths())); testthat::test_dir("tests/testthat")'
+```
 
 ## Expected output
 

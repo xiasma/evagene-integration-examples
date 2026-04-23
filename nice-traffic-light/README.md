@@ -76,16 +76,118 @@ nice-traffic-light <pedigree-id> [--counselee <individual-id>]
 
 Designed so shell pipelines can branch cleanly — `nice-traffic-light <id> && echo "reassure" || echo "refer"`.
 
-## One-line run per language
+## Run it
 
-All four expect `EVAGENE_API_KEY` to be set in the environment (either exported or via `.env`). Work from the language-specific subfolder.
+All four implementations expect `EVAGENE_API_KEY` to be set in the environment, and the pedigree UUID as the first positional argument.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m nice_traffic_light <pedigree-id>` |
-| **Node 20+** | `npm install` | `npm start -- <pedigree-id>` |
-| **.NET 8+** | `dotnet restore` | `dotnet run --project src/NiceTrafficLight -- <pedigree-id>` |
-| **R 4.3+** | `R -e 'install.packages(c("httr2","jsonlite","cli","testthat"))'` | `Rscript inst/bin/nice-traffic-light.R <pedigree-id>` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m nice_traffic_light <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+npm start -- <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
+
+### Run it in .NET 8+
+
+```bash
+cd dotnet
+
+# Restore NuGet packages
+dotnet restore
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+dotnet run --project src/NiceTrafficLight -- <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+dotnet test
+```
+
+### Run it in R 4.3+
+
+```bash
+cd r
+
+# Install dependencies (user library)
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); if (!dir.exists(loc)) dir.create(loc, recursive = TRUE, showWarnings = FALSE); .libPaths(c(loc, .libPaths())); install.packages(c("httr2", "jsonlite", "testthat"), repos = "https://cloud.r-project.org")'
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+Rscript inst/bin/nice-traffic-light.R <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); .libPaths(c(loc, .libPaths())); testthat::test_dir("tests/testthat")'
+```
 
 ## Expected output
 

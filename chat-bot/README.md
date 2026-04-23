@@ -50,18 +50,44 @@ One of `SLACK_SIGNING_SECRET` or `TEAMS_SIGNING_SECRET` must be present.
 
 On any failure (bad signature, bad UUID, Evagene error) the bot replies `200` with a friendly in-channel error message rather than a 5xx, because Slack and Teams hide non-2xx responses from the user.
 
-## One-line run
+## Run it
 
-```bash
-cd node
-npm install
-npm start
-```
-
-Startup prints:
+Only a Node implementation ships: Slack and Teams both expect a single signed HTTP receiver and one language is enough. Startup prints:
 
 ```
 Chat-bot listening on http://localhost:3000/
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your API key, one of the signing secrets, and optional overrides
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+$env:SLACK_SIGNING_SECRET = "replace_with_slack_app_signing_secret"
+$env:TEAMS_SIGNING_SECRET = "replace_with_teams_outgoing_webhook_hmac_token"
+$env:PORT = "3000"
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+export SLACK_SIGNING_SECRET=replace_with_slack_app_signing_secret
+export TEAMS_SIGNING_SECRET=replace_with_teams_outgoing_webhook_hmac_token
+export PORT=3000
+
+# Run the server
+npm start
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
 ```
 
 ## Installing the Slack slash command

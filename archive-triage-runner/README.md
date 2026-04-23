@@ -63,14 +63,68 @@ archive-triage <input-dir> [--output <csv-file>] [--concurrency <N>]
 | `69` | API unreachable for the whole run — not a single pedigree was created. |
 | `70` | The input path is not a directory. |
 
-## One-line run per language
+## Run it
 
-Both expect `EVAGENE_API_KEY` to be set in the environment. Work from the language-specific subfolder.
+Both implementations expect `EVAGENE_API_KEY` to be set in the environment, and the input directory as the first positional argument.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m archive_triage ./archive --output triage.csv` |
-| **.NET 8+** | `dotnet restore` | `dotnet run --project src/ArchiveTriage -- ./archive --output triage.csv` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m archive_triage ./archive --output triage.csv
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in .NET 8+
+
+```bash
+cd dotnet
+
+# Restore NuGet packages
+dotnet restore
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+dotnet run --project src/ArchiveTriage -- ./archive --output triage.csv
+```
+
+Run the tests (optional):
+
+```bash
+dotnet test
+```
 
 ## Expected output
 

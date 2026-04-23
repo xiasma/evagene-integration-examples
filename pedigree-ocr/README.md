@@ -75,23 +75,51 @@ pedigree-ocr <image.png|jpg|pdf> [--commit] [--show-prompt] [--model <model>]
 | `69` | Evagene or Anthropic unreachable |
 | `70` | Model output did not conform to the extraction schema |
 
-## Run
+## Run it
 
-```
+Only a Python implementation ships: the pipeline depends on `pdf2image` and the Anthropic vision SDK, and duplicating it in a second language would not add anything. `ANTHROPIC_API_KEY` is always required; `EVAGENE_API_KEY` is only required with `--commit`.
+
+### Run it in Python 3.11+
+
+```bash
 cd python
-python -m venv .venv
-.venv/Scripts/activate         # Windows
-# or: source .venv/bin/activate  # macOS / Linux
-pip install -e .[dev]
 
-# read-only
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your API keys (one shell session)
+# Windows PowerShell:
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export ANTHROPIC_API_KEY=sk-ant-...
+export EVAGENE_API_KEY=evg_...
+
+# Run read-only
 python -m pedigree_ocr ../fixtures/sample-pedigree-drawing.png
 
-# commit to Evagene
+# Run and commit to Evagene
 python -m pedigree_ocr ../fixtures/sample-pedigree-drawing.png --commit
 
-# audit the prompt + schema without any network call
+# Audit the prompt + schema without any network call
 python -m pedigree_ocr --show-prompt
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
 ```
 
 ## Expected output

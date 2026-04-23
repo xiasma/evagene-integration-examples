@@ -101,17 +101,95 @@ The Go build produces a statically-linked single binary — no runtime required 
 
 Restart the client after saving. The Evagene tools show up alongside any other MCP servers the client knows about.
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder. Both expect `EVAGENE_API_KEY` in the environment.
+All three implementations expect `EVAGENE_API_KEY` in the environment, block on stdin, and write JSON-RPC frames to stdout. Kill with `Ctrl-C`. For day-to-day use you would wire these into a host (Claude Desktop, Cursor) rather than run them by hand — the commands below exist for local testing and packaging.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m evagene_mcp` |
-| **Node 20+** | `npm install` | `npm start` |
-| **Go 1.23+** | `go build -o bin/evagene-mcp ./cmd/evagene-mcp` | `./bin/evagene-mcp` |
+### Run it in Python 3.11+
 
-All three block on stdin / write to stdout, which is what MCP hosts expect. Kill with `Ctrl-C` to exit.
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the MCP server
+python -m evagene_mcp
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the MCP server
+npm start
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
+
+### Run it in Go 1.23+
+
+```bash
+cd go
+
+# Build the binary
+go build -o bin/evagene-mcp ./cmd/evagene-mcp
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the MCP server
+./bin/evagene-mcp
+```
+
+Run the tests (optional):
+
+```bash
+go test ./...
+go vet ./...
+```
 
 ## Tool reference
 

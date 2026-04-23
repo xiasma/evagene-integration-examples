@@ -80,20 +80,109 @@ received_at | event_type | body | prev_hash | row_hash
 
 `row_hash = SHA-256( prev_hash || received_at || event_type || body )` as UTF-8 concatenation, hex-encoded. The first row's `prev_hash` is the empty string. Editing any field of any row later will cause that row's `row_hash` — and every row after it — to disagree with the recomputed chain; `GET /events/verify` returns the ID of the first broken row.
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder.
-
-| Language | First-time setup | Run |
-|---|---|---|
-| **Node 20+**    | `npm install` | `npm start` |
-| **.NET 8+**     | `dotnet restore` | `dotnet run --project src/WebhookAuditBlotter` |
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m webhook_audit_blotter` |
-
-All three print a single line on startup:
+All three implementations listen on `http://localhost:<PORT>/` and print a single line on startup:
 
 ```
 Webhook audit blotter listening on http://localhost:4000/
+```
+
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set the webhook secret and optional overrides (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_WEBHOOK_SECRET = "replace_with_secret_from_webhook_creation_response"
+$env:PORT = "4000"
+$env:SQLITE_PATH = "./blotter.db"
+# macOS / Linux (bash / zsh):
+export EVAGENE_WEBHOOK_SECRET=replace_with_secret_from_webhook_creation_response
+export PORT=4000
+export SQLITE_PATH=./blotter.db
+
+# Run the server
+python -m webhook_audit_blotter
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set the webhook secret and optional overrides (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_WEBHOOK_SECRET = "replace_with_secret_from_webhook_creation_response"
+$env:PORT = "4000"
+$env:SQLITE_PATH = "./blotter.db"
+# macOS / Linux (bash / zsh):
+export EVAGENE_WEBHOOK_SECRET=replace_with_secret_from_webhook_creation_response
+export PORT=4000
+export SQLITE_PATH=./blotter.db
+
+# Run the server
+npm start
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
+
+### Run it in .NET 8+
+
+```bash
+cd dotnet
+
+# Restore NuGet packages
+dotnet restore
+
+# Set the webhook secret and optional overrides (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_WEBHOOK_SECRET = "replace_with_secret_from_webhook_creation_response"
+$env:PORT = "4000"
+$env:SQLITE_PATH = "./blotter.db"
+# macOS / Linux (bash / zsh):
+export EVAGENE_WEBHOOK_SECRET=replace_with_secret_from_webhook_creation_response
+export PORT=4000
+export SQLITE_PATH=./blotter.db
+
+# Run the server
+dotnet run --project src/WebhookAuditBlotter
+```
+
+Run the tests (optional):
+
+```bash
+dotnet test
 ```
 
 ## Smoke test (no real Evagene delivery needed)

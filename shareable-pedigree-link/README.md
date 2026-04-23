@@ -55,14 +55,70 @@ shareable-link <pedigree-id> [--name <suffix>] [--label <human-label>]
 | `64` | Usage error (missing or malformed arguments, missing `EVAGENE_API_KEY`) |
 | `69` | Evagene API unreachable or returned a non-2xx response |
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder. `EVAGENE_API_KEY` must be set in the environment (either exported or via `.env`).
+Both implementations expect `EVAGENE_API_KEY` to be set in the environment, and the pedigree UUID as the first positional argument.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Node 20+** | `npm install` | `npm start -- <pedigree-id>` |
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m shareable_pedigree_link <pedigree-id>` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m shareable_pedigree_link <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+npm start -- <pedigree-id>
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
 
 ## Expected output
 

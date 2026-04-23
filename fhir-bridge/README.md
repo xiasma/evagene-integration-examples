@@ -56,10 +56,59 @@ The `--auth-header` flag takes the literal value of an HTTP header (for example,
 | 69 | Network or HTTP failure against Evagene or the FHIR server. |
 | 70 | Mapping error (unrecognised FHIR shape or missing required field). |
 
-### One-line run
+### Run it
 
-- **Node**: `npm start -- push <pedigree-id> --to https://fhir.example/fhir`
-- **.NET**: `dotnet run --project src/FhirBridge -- push <pedigree-id> --to https://fhir.example/fhir`
+Both implementations expect `EVAGENE_API_KEY` to be set in the environment. The FHIR server URL and optional auth header are passed on the command line, not via env.
+
+#### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+npm start -- push <pedigree-id> --to https://fhir.example/fhir
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
+
+#### Run it in .NET 8+
+
+```bash
+cd dotnet
+
+# Restore NuGet packages
+dotnet restore
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+dotnet run --project src/FhirBridge -- push <pedigree-id> --to https://fhir.example/fhir
+```
+
+Run the tests (optional):
+
+```bash
+dotnet test
+```
 
 ### Expected output
 

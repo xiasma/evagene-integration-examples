@@ -71,14 +71,68 @@ pubfig <pedigree-id> --output <file.svg> [--deidentify] [--label-style initials|
 | `69` | API unreachable or returned a non-2xx response. |
 | `70` | SVG returned by the API could not be parsed. |
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder. Both expect `EVAGENE_API_KEY` to be set in the environment (either exported or via `.env` / `.Renviron`).
+Both implementations expect `EVAGENE_API_KEY` to be set in the environment, the pedigree UUID as the first positional argument, and an explicit `--output` path.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **R 4.3+** | `R -e 'install.packages(c("httr2","jsonlite","xml2","testthat"))'` | `Rscript inst/bin/pubfig.R <pedigree-id> --output fig.svg --deidentify` |
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m publication_figure_renderer <pedigree-id> --output fig.svg --deidentify` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m publication_figure_renderer <pedigree-id> --output fig.svg --deidentify
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in R 4.3+
+
+```bash
+cd r
+
+# Install dependencies (user library)
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); if (!dir.exists(loc)) dir.create(loc, recursive = TRUE, showWarnings = FALSE); .libPaths(c(loc, .libPaths())); install.packages(c("httr2", "jsonlite", "xml2", "testthat"), repos = "https://cloud.r-project.org")'
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+Rscript inst/bin/pubfig.R <pedigree-id> --output fig.svg --deidentify
+```
+
+Run the tests (optional):
+
+```bash
+Rscript -e 'loc <- Sys.getenv("R_LIBS_USER"); .libPaths(c(loc, .libPaths())); testthat::test_dir("tests/testthat")'
+```
 
 ## Expected output
 

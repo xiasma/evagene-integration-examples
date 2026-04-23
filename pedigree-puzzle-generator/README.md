@@ -58,12 +58,70 @@ puzzle-generator [--mode AD|AR|XLR|XLD|MT|random]
 
 **Exit codes:** `0` success · `64` usage error · `69` Evagene API unavailable · `70` internal error.
 
-## One-line run per language
+## Run it
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Python 3.11+** | `cd python && python -m venv .venv && (activate) && pip install -e .[dev]` | `puzzle-generator --mode AR` |
-| **Node 20+**     | `cd node && npm install` | `npm start -- --mode AR` |
+Both implementations expect `EVAGENE_API_KEY` in the environment (the tool mints and deletes pedigrees in your account).
+
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m pedigree_puzzle --mode AR
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+npm start -- --mode AR
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
 
 ## Expected output
 

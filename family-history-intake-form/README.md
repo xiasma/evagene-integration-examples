@@ -49,17 +49,102 @@ Each language folder ships a `.env.example`. Copy to `.env` and fill in.
 | `EVAGENE_API_KEY`  | yes | — | `evg_...` |
 | `PORT`             | no | `3000` | `8080` |
 
-## One-line run per language
+## Run it
 
 All three implementations serve the same form at `http://localhost:<PORT>/`. Start the server, open the URL, fill in the form, submit — you will be redirected to the new pedigree on Evagene.
 
-| Language | First-time setup | Run |
-|---|---|---|
-| **Node 20+**  | `cd node && npm install` | `npm start` |
-| **Python 3.11+** | `cd python && python -m venv .venv && (activate) && pip install -e .[dev]` | `python -m family_intake` |
-| **.NET 8+**   | `cd dotnet && dotnet restore` | `dotnet run --project src/FamilyIntake` |
-
 The demo deliberately does not ship an **R** implementation — a web form is not idiomatic R territory.
+
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+$env:PORT = "3000"
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+export PORT=3000
+
+# Run the server
+python -m family_intake
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in Node 20+
+
+```bash
+cd node
+
+# Install dependencies
+npm install
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+$env:PORT = "3000"
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+export PORT=3000
+
+# Run the server
+npm start
+```
+
+Run the tests (optional):
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+```
+
+### Run it in .NET 8+
+
+```bash
+cd dotnet
+
+# Restore NuGet packages
+dotnet restore
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+$env:PORT = "3000"
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+export PORT=3000
+
+# Run the server
+dotnet run --project src/FamilyIntake
+```
+
+Run the tests (optional):
+
+```bash
+dotnet test
+```
 
 ## Expected flow
 

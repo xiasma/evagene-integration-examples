@@ -57,14 +57,74 @@ xeg-upgrade <input.xeg> [--create] [--name <display-name>] [--preview]
 | `69` | Evagene API unreachable or returned a non-2xx response |
 | `70` | Input file is not a well-formed v1 `.xeg` |
 
-## One-line run per language
+## Run it
 
-Work from the language-specific subfolder, with `EVAGENE_API_KEY` exported (or in `.env`).
+Both implementations expect `EVAGENE_API_KEY` in the environment. Preview is the default; `--create` persists the pedigree.
 
-| Language | First-time setup | Preview | Create |
-|---|---|---|---|
-| **.NET 8+** | `dotnet restore` | `dotnet run --project src/XegUpgrader -- ../fixtures/sample-simple.xeg` | `dotnet run --project src/XegUpgrader -- ../fixtures/sample-simple.xeg --create --name "Hill family"` |
-| **Python 3.11+** | `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m xeg_upgrader ../fixtures/sample-simple.xeg` | `python -m xeg_upgrader ../fixtures/sample-simple.xeg --create --name "Hill family"` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Preview
+python -m xeg_upgrader ../fixtures/sample-simple.xeg
+
+# Create a real pedigree
+python -m xeg_upgrader ../fixtures/sample-simple.xeg --create --name "Hill family"
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
+
+### Run it in .NET 8+
+
+```bash
+cd dotnet
+
+# Restore NuGet packages
+dotnet restore
+
+# Set your Evagene API key (one shell session)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Preview
+dotnet run --project src/XegUpgrader -- ../fixtures/sample-simple.xeg
+
+# Create a real pedigree
+dotnet run --project src/XegUpgrader -- ../fixtures/sample-simple.xeg --create --name "Hill family"
+```
+
+Run the tests (optional):
+
+```bash
+dotnet test
+```
 
 ## Expected output
 

@@ -58,13 +58,44 @@ pedigree-diff <left> <right> [--format text|json|markdown] [--include-unchanged]
 | `69` | API unreachable or returned a non-2xx response |
 | `70` | A snapshot file is missing, unreadable, or malformed |
 
-## One-line run
+## Run it
 
-Work from `python/`.
+Only a Python implementation ships. `EVAGENE_API_KEY` is only required when one of the operands is a pedigree UUID; diffing two saved JSON files works offline.
 
-| First-time setup | Run |
-|---|---|
-| `python -m venv .venv` · (activate) · `pip install -e .[dev]` | `python -m pedigree_diff <left> <right>` |
+### Run it in Python 3.11+
+
+```bash
+cd python
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (cmd / PowerShell):
+.venv\Scripts\activate
+
+# macOS / Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Set your Evagene API key (one shell session; only needed for UUID operands)
+# Windows PowerShell:
+$env:EVAGENE_API_KEY = "evg_..."
+# macOS / Linux (bash / zsh):
+export EVAGENE_API_KEY=evg_...
+
+# Run the demo
+python -m pedigree_diff <left> <right>
+```
+
+Run the tests (optional):
+
+```bash
+pytest
+ruff check
+mypy --strict src
+```
 
 ## Expected output
 
