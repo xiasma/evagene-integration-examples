@@ -95,4 +95,4 @@ All logs go to stderr. Stdout is the MCP transport — a stray write there corru
 
 ## Caveats
 
-See [../README.md](../README.md) for the shared clinical / regulatory caveats. This is an example integration, not a validated clinical tool.
+See [../README.md](../README.md) for the shared model-specific and regulatory caveats. This is an academic / research example, not a validated clinical tool, not a medical device, and not fit for patient care.

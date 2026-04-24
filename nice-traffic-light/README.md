@@ -2,7 +2,7 @@
 
 **Family-history triage in one command.** Point this at an [Evagene](https://evagene.net) pedigree and it replies `GREEN`, `AMBER`, or `RED` — the NICE CG164 / NG101 familial-breast-cancer category for that family — along with the exact triggers that were matched.
 
-Built for the GP, genetic nurse, or clinical geneticist who needs a defensible answer to *"does this family warrant a genetics referral?"* without opening the web UI every time. Exit codes make it trivial to pipe into a referral-letter generator, drop into a clinic dashboard, or fan out across an archive of pedigrees and flag only the families that need a human look.
+This is an academic / research example: it shows how to call Evagene's risk endpoint from four languages and turn the NICE response into a traffic-light output with meaningful exit codes. It is not a clinical tool and must not be used to drive referral decisions.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,24 +10,23 @@ Built for the GP, genetic nurse, or clinical geneticist who needs a defensible a
 
 ## Who this is for
 
-- **GPs / primary-care doctors** running a family-history triage at the point of referral — the NICE categories map directly onto the "refer / routine surveillance / reassure" decision.
-- **Genetic nurses and counsellors** processing a batch of incoming referrals and wanting to prioritise the high-risk families first.
-- **Clinical geneticists** sanity-checking an archive of pedigrees after a policy or coding change — the tool gives you a reproducible green/amber/red per family, scriptable into a CSV.
-- **Integrators / developers** wanting a small, complete example of calling the Evagene risk API cleanly from Python, Node, .NET, or R.
+- **Integrators and developers** wanting a small, complete example of calling the Evagene risk API cleanly from Python, Node, .NET, or R — the same composition reappears in every other demo in this repo.
+- **Researchers** exploring how NICE's rule-based triage behaves across a synthetic or de-identified pedigree dataset — the exit codes make it trivial to script into a CSV summary.
+- **Educators and students** teaching or learning how NICE CG164 / NG101 maps family-history structure to a green / amber / red category. The demo is a readable reference of the wire contract, not a decision-support tool.
 
 ## What NICE CG164 / NG101 actually says
 
 NICE categorises familial breast-cancer risk into three bands, driven by family-history structure (not a continuous lifetime-risk estimate):
 
-| Category | Lifetime risk | Traffic light | Clinical action (paraphrased) |
+| Category | Lifetime risk | Traffic light | Category description (paraphrased) |
 |---|---|---|---|
-| `near_population` | <17% | **Green** | No enhanced surveillance; reassure and discharge to primary care. |
-| `moderate` | 17–30% | **Amber** | Routine surveillance and specialist advice; refer if further significant history emerges. |
-| `high` | ≥30% | **Red** | Meets a high-risk trigger — refer for genetics assessment. |
+| `near_population` | <17% | **Green** | Population-level risk. |
+| `moderate` | 17–30% | **Amber** | Moderate risk band. |
+| `high` | ≥30% | **Red** | Meets a high-risk trigger in the NICE rules. |
 
 Evagene evaluates the pedigree against the specific NICE triggers (age of diagnosis, number of affected relatives, bilateral disease, male breast cancer, etc.) and returns the category plus the list of triggers that fired. This demo surfaces both.
 
-The official guidance is the clinical source of truth: see NICE CG164 (Familial breast cancer, 2013) and NG101 (updated 2023) for the full rules.
+The authoritative reference for the rule text is NICE itself: see NICE CG164 (Familial breast cancer, 2013) and NG101 (updated 2023) for the full rules. This demo reproduces none of the NICE prose and offers no clinical interpretation of the categories — that remains the reader's responsibility.
 
 ## What Evagene surface this uses
 
@@ -239,6 +238,6 @@ The three canonical NICE responses (`near_population`, `moderate`, `high`) live 
 
 ## Caveats
 
-- NICE CG164 / NG101 is a **screening triage tool** that Evagene implements from family-history structure. It is not a continuous lifetime-risk estimate — for that use Tyrer-Cuzick (an IBIS-style approximation) or export the pedigree in `##CanRisk 2.0` format and upload it at [canrisk.org](https://canrisk.org) for the full BOADICEA assessment.
-- The traffic light is a UX convenience; the clinical decision is the category *plus* the triggers. Don't use the colour in isolation.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- This is an **academic / research integration example**, not a clinical tool. It is not medical-grade, not validated for clinical use, and must not inform referral or care decisions.
+- NICE CG164 / NG101 is a rule-based categorisation of family-history structure. It is not a continuous lifetime-risk estimate — for that use Tyrer-Cuzick (an IBIS-style approximation) or export the pedigree in `##CanRisk 2.0` format and upload it at [canrisk.org](https://canrisk.org) for the full BOADICEA assessment.
+- The traffic light is a display convenience; the useful information is the category *plus* the triggers. Don't read anything into the colour in isolation.

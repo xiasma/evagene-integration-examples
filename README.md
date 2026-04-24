@@ -1,8 +1,10 @@
 # Evagene integration examples
 
-Small, focused examples showing how to integrate with [**Evagene**](https://evagene.com) — a clinical-grade pedigree drawing, management, and risk analysis platform. Each demo solves one concrete job for one type of user, and ships in the languages that make sense for it. **Python**, **Node.js / TypeScript**, **.NET (C#)**, **R**, and **Go** are all represented.
+Small, focused examples showing how to integrate with [**Evagene**](https://evagene.com) — a pedigree drawing, management, and risk analysis platform. Each demo solves one concrete job for one type of reader, and ships in the languages that make sense for it. **Python**, **Node.js / TypeScript**, **.NET (C#)**, **R**, and **Go** are all represented.
 
-If you've ever wanted to hook a family-history intake form, a clinic webhook listener, a research risk calculator, an AI agent, a Slack bot, an EHR browser extension, or a teaching notebook up to Evagene — start here.
+The repository is **academic, research, and educational** in purpose. It is a library of illustrative integration examples for developers, researchers, educators, and students — not a clinical product, not a diagnostic tool, and not fit for patient care or any other clinical workflow. See *Caveats* at the bottom before reading further.
+
+If you've ever wanted to see how a family-history intake form, a webhook listener, a research risk calculator, an AI agent, a Slack bot, an EHR browser extension, or a teaching notebook could talk to Evagene — start here.
 
 ## Start here
 
@@ -58,7 +60,7 @@ If you've ever wanted to hook a family-history intake form, a clinic webhook lis
 |---|---|---|
 | [fhir-bridge](./fhir-bridge/) | Two-way sync between Evagene pedigrees and FHIR R5 `FamilyMemberHistory` Bundles; push a pedigree to a FHIR server, pull a FHIR patient in | Node · .NET |
 | [webhook-audit-blotter](./webhook-audit-blotter/) | HMAC-verified webhook receiver that writes a tamper-evident SQLite log with a hash-chained schema | Node · .NET · Python |
-| [clinic-referral-dashboard](./clinic-referral-dashboard/) | Live clinic dashboard — webhook-verified events + Server-Sent Events + embedded pedigree cards with NICE category | Node |
+| [clinic-referral-dashboard](./clinic-referral-dashboard/) | Live referral-board dashboard — webhook-verified events + Server-Sent Events + embedded pedigree cards with NICE category | Node |
 | [longitudinal-risk-monitor](./longitudinal-risk-monitor/) | Scheduled job (cron / systemd / GitHub Actions) that alerts Slack / stdout / file when any pedigree's NICE category changes | Python |
 | [xeg-upgrader](./xeg-upgrader/) | Legacy Evagene v1 `.xeg` XML → current pedigree; parse-preview or create | .NET · Python |
 | [shareable-pedigree-link](./shareable-pedigree-link/) | Mint a scoped read-only API key and return an `<iframe>`-ready embed URL the patient can share with relatives | Node · Python |
@@ -75,7 +77,7 @@ Each demo's folder has its own `README.md` with a value-first explanation, prere
 ## Which demo should I look at first?
 
 - **You want to see Evagene's REST API in action, end-to-end:** [nice-traffic-light](./nice-traffic-light/). It's the smallest, and every other demo reuses its architecture.
-- **You're building a clinical web form that creates pedigrees:** [family-history-intake-form](./family-history-intake-form/).
+- **You're prototyping a web form that captures a pedigree:** [family-history-intake-form](./family-history-intake-form/).
 - **You want Evagene inside your team's Slack or Teams:** [chat-bot](./chat-bot/).
 - **You're wiring Evagene into hospital EHR / records infrastructure:** [webhook-audit-blotter](./webhook-audit-blotter/), [clinic-referral-dashboard](./clinic-referral-dashboard/), and [fhir-bridge](./fhir-bridge/).
 - **You're doing research or cohort work:** [archive-triage-runner](./archive-triage-runner/), [bayesmendel-comparator](./bayesmendel-comparator/), [research-cohort-anonymiser](./research-cohort-anonymiser/), [notebook-explorer](./notebook-explorer/).
@@ -116,11 +118,11 @@ Authoritative endpoint reference: **[https://evagene.net/help/](https://evagene.
 
 ## Caveats
 
-These are **example integrations**, not validated clinical tools. Any use in a clinical context must go through the usual clinical-governance process.
+This repository is **academic and research material**. The demos are illustrative integration examples — not validated clinical tools, not medical devices, not decision-support products, and not fit for patient care, referral decisions, or any other clinical workflow. Nothing in the repository is offered as a substitute for a qualified clinician or for a regulated clinical product.
 
 Risk-model caveats apply as they do on the Evagene product itself:
 
 - **Tyrer-Cuzick** is an IBIS-style approximation of the 2004 algorithm, not the official IBIS binary.
-- **BOADICEA is not bundled** — Evagene exports a `##CanRisk 2.0` pedigree file that the clinician uploads at [canrisk.org](https://canrisk.org) for the full BOADICEA assessment.
+- **BOADICEA is not bundled** — Evagene exports a `##CanRisk 2.0` pedigree file that the reader can upload at [canrisk.org](https://canrisk.org) for the full BOADICEA assessment.
 - **BayesMendel models** (BRCAPRO, MMRpro, PancPRO) return mutation carrier probabilities, not deterministic diagnoses. Cite Parmigiani / Chen / Wang as appropriate.
-- **LLM-driven demos** (call-notes, pedigree-ocr, voice-driven-intake) are extraction aids, not authoritative clinical tools — always review the structured output before committing.
+- **LLM-driven demos** (call-notes, pedigree-ocr, voice-driven-intake) are extraction examples for study and experimentation — always review the structured output, and do not treat the extraction as authoritative.

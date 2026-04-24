@@ -2,7 +2,7 @@
 
 **Hand a pedigree off to BOADICEA in one command.** Point this at an [Evagene](https://evagene.net) pedigree and it writes the `##CanRisk 2.0` file you need to upload to [canrisk.org](https://canrisk.org) — optionally opening the site in your browser so you can drop the file in immediately.
 
-Built for the clinical geneticist who draws the family in Evagene and then runs the multi-gene panel (BOADICEA / BWA, PanelPRO profiles) on canrisk.org. No copy-and-paste, no manual exports — one command, a file on disk, and a working browser tab.
+This is an academic / research example of fetching a non-JSON payload from the Evagene API and transporting it to a downstream research tool. It is a reference implementation, not a clinical bridge.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,9 +10,9 @@ Built for the clinical geneticist who draws the family in Evagene and then runs 
 
 ## Who this is for
 
-- **Clinical geneticists and genetic counsellors** running BOADICEA on canrisk.org as part of their familial-breast-cancer workup, who draw the pedigree in Evagene.
-- **Research groups** processing an archive of pedigrees for BOADICEA scoring — the CLI is trivial to wrap in a shell loop or a batch job.
-- **Integrators / developers** wanting a small, complete example of fetching a non-JSON payload from the Evagene API and writing it to disk, in Python, Node, .NET, or R.
+- **Developers and integrators** wanting a small, complete example of fetching a non-JSON payload from the Evagene API and writing it to disk, in Python, Node, .NET, or R.
+- **Research groups** processing an archive of synthetic or de-identified pedigrees for BOADICEA scoring on canrisk.org — the CLI is trivial to wrap in a shell loop or a batch job.
+- **Educators and students** learning how pedigree data flows between platforms via an interchange file format.
 
 ## What Evagene surface this uses
 
@@ -209,6 +209,6 @@ A realistic `##CanRisk 2.0` file lives at `fixtures/sample-canrisk.txt` and is u
 
 ## Caveats
 
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care.
 - **BOADICEA is not bundled.** This demo exports the file; [canrisk.org](https://canrisk.org) runs the model. The academic terms of use on canrisk.org apply.
 - The CanRisk 2.0 format is defined by the Centre for Cancer Genetic Epidemiology (Cambridge). Evagene produces it; this demo simply transports it.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.

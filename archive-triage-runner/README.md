@@ -1,8 +1,8 @@
 # Archive triage runner
 
-**Point this at a folder of GEDCOM files and walk away with a defensible CSV of which families still warrant a genetics review.** For every `.ged` in the directory, the runner imports the pedigree into [Evagene](https://evagene.net), runs the NICE CG164 / NG101 familial-breast-cancer model, and appends one CSV row — `pedigree_id, proband_name, category, refer_for_genetics, triggers_matched_count, error`. A single clean command across an archive of hundreds of families.
+**Point this at a folder of GEDCOM files and walk away with a CSV summarising the NICE category per family.** For every `.ged` in the directory, the runner imports the pedigree into [Evagene](https://evagene.net), runs the NICE CG164 / NG101 familial-breast-cancer model, and appends one CSV row — `pedigree_id, proband_name, category, refer_for_genetics, triggers_matched_count, error`. A single clean command across an archive of hundreds of families.
 
-Pairs with the **nice-traffic-light** demo: that one gives you a single-family green / amber / red; this one gives you the same decision at archive scale.
+This is an academic / research example of a batch pipeline (`create pedigree → import GEDCOM → run risk`) in Python and .NET. Pairs with the **nice-traffic-light** demo: that one gives you a single-family green / amber / red; this one gives you the same computation at archive scale. It is not a clinical triage product.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and configuring `EVAGENE_API_KEY` / `EVAGENE_BASE_URL`.
 
@@ -10,10 +10,9 @@ Pairs with the **nice-traffic-light** demo: that one gives you a single-family g
 
 ## Who this is for
 
-- **Clinical geneticists** sweeping a historical archive after a policy or coding change — the CSV is a reproducible record of which families meet a NICE trigger today.
-- **Genetic counsellors** prioritising a backlog of referrals by category before they open the pedigree editor.
-- **Clinical informaticians** adding a nightly batch job that flags new incoming pedigrees against NICE so clinical review only sees the amber / red families.
-- **Integrators / developers** who want a minimal end-to-end example of "create pedigree -> import GEDCOM -> run risk" against the Evagene REST API in Python or .NET.
+- **Developers and integrators** who want a minimal end-to-end example of "create pedigree → import GEDCOM → run risk" against the Evagene REST API in Python or .NET.
+- **Researchers** running a batch NICE categorisation over a synthetic or de-identified GEDCOM archive, and wanting a CSV for downstream analysis.
+- **Educators** demonstrating an asynchronous worker pool, bounded concurrency, and per-row error capture in a small, readable codebase.
 
 ## What Evagene surfaces this uses
 
@@ -172,7 +171,7 @@ Every file has one responsibility; every function has one level of abstraction.
 
 ## Caveats
 
-- NICE CG164 / NG101 is a **screening triage tool** driven by family-history structure, not a continuous lifetime-risk estimate. For a continuous estimate, feed the pedigree to Tyrer-Cuzick (an IBIS-style approximation in Evagene) or export a `##CanRisk 2.0` file and upload it at [canrisk.org](https://canrisk.org) for the full BOADICEA assessment.
-- The CSV is a **decision aid**, not the decision. Always review the amber / red families in the Evagene UI before triaging referrals.
+- This is an **academic / research example, not a clinical triage product**, not a medical device, and not fit for patient care. The CSV is illustrative output for study or downstream research — nothing in it should drive a referral or care decision.
+- NICE CG164 / NG101 is a rule-based categorisation of family-history structure, not a continuous lifetime-risk estimate. For a continuous estimate, feed the pedigree to Tyrer-Cuzick (an IBIS-style approximation in Evagene) or export a `##CanRisk 2.0` file and upload it at [canrisk.org](https://canrisk.org) for the full BOADICEA assessment.
 - Failed rows leave a partial pedigree behind in your Evagene account (the runner captures the `pedigree_id` so you can clean up). For a periodic batch, either delete the partial pedigrees or re-use them — don't assume the archive starts clean every run.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- Use synthetic or de-identified GEDCOMs when running experiments. Don't load real patient archives through this demo.

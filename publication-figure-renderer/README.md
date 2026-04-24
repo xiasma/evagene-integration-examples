@@ -2,7 +2,7 @@
 
 **A pedigree you can paste straight into a paper.** Point this at an [Evagene](https://evagene.net) pedigree and one command writes out a print-quality SVG, optionally with every display name replaced by the standard clinical-genetics convention (`I-1`, `II-3`, `III-2`) so the figure is ready for open publication.
 
-Built for researchers preparing case reports, methods papers, or cohort studies, and for editors running a final pre-submission pass that the figure carries no re-identifiable information.
+This is an academic / research example: it is aimed squarely at research write-up, methods papers, and teaching material. Pull a figure for a paper, de-identify it, paste it in.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,10 +10,10 @@ Built for researchers preparing case reports, methods papers, or cohort studies,
 
 ## Who this is for
 
-- **Clinical researchers and genetic counsellors** writing up a family for a journal, needing the pedigree at print resolution with generation-number labels rather than patient names.
-- **Cohort-paper authors** fanning the tool out across dozens of pedigrees in a methods paper and wanting a single reproducible command per figure.
-- **Journal editors and research ethics reviewers** sanity-checking that a submitted figure carries no re-identifiable information — the deidentified SVG is the only thing that ever leaves the clinic.
-- **Integrators** wanting a minimal example of the Evagene SVG-export endpoint and a safe way to rewrite the resulting XML without regex.
+- **Researchers** writing up a family (synthetic, consented, or de-identified) for a journal, needing the pedigree at print resolution with generation-number labels rather than display names.
+- **Cohort-paper authors** fanning the tool out across a batch of pedigrees and wanting a single reproducible command per figure.
+- **Educators** producing teaching figures that follow the standard `I-1 / II-3 / III-2` convention.
+- **Developers and integrators** wanting a minimal example of the Evagene SVG-export endpoint and a safe way to rewrite the resulting XML without regex.
 
 ## What this demo does
 
@@ -181,6 +181,6 @@ Tests assert *structural* parity — attribute sets, element counts, and text co
 
 ## Caveats
 
+- This is an **academic / research example, not a validated de-identification tool**, not a medical device, and not fit for patient care. Any published figure that relies on real pedigrees remains the author's responsibility — including consent, ethics approval, and institutional review.
 - Deidentification only rewrites the visible labels. It does *not* strip disease colour-coding, symbol shapes, or the structural shape of the pedigree itself, any of which can in principle re-identify a small enough family. Always review the output before publication.
 - The `--width` and `--height` overrides update the root SVG attributes only; they leave the `viewBox` untouched so the figure scales cleanly at any resolution.
-- This is an example integration, not a validated de-identification tool. Clinical-research governance applies.

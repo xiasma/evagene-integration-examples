@@ -1,6 +1,8 @@
 # Longitudinal risk monitor
 
-**A nightly sweep that tells you exactly which families' risk category changed today — and nothing else.** Point this at your [Evagene](https://evagene.net) account on a schedule and you get a quiet "nothing to do" report most days and a prioritised alert the moment a pedigree slips from GREEN to AMBER (or AMBER to RED) — typically because a newly added affected relative has tipped a NICE trigger. Pairs with the `webhook-audit-blotter` demo: webhooks are real-time, this is the end-of-day sanity sweep.
+**A scheduled sweep that tells you exactly which pedigrees' risk category changed since the last check — and nothing else.** Point this at an [Evagene](https://evagene.net) account on a schedule and you get a quiet "nothing to do" report most days, and an attention-worthy notification the moment a pedigree moves between NICE categories. Pairs with the `webhook-audit-blotter` demo: webhooks are real-time, this is the end-of-day sanity sweep.
+
+This is an academic / research example of a scheduled change-detection worker against the Evagene risk API. It is a reference implementation to study and fork — not a clinical monitoring product.
 
 > **New to Evagene integrations?** Start with [../getting-started.md](../getting-started.md) — it covers registering at [evagene.net](https://evagene.net), minting an API key, and choosing pedigrees to monitor.
 
@@ -8,9 +10,9 @@
 
 ## Who this is for
 
-- **Genetics service leads** wanting a daily inbox-sized summary of every family on their books.
-- **Genetic counsellors** who look after a growing cohort and cannot manually re-run risk every time a family-history field changes.
-- **Integrators** adding continuous risk-surveillance to an existing clinical dashboard, escalation system, or MDT prep routine.
+- **Developers and integrators** looking for a worked example of scheduled API polling, change detection, and multi-sink notification (stdout / file / Slack) against a REST endpoint.
+- **Researchers** running the monitor against a synthetic or de-identified dataset to observe how NICE categorisation shifts as family history is added or corrected.
+- **Educators** teaching scheduled workers and baseline-diff patterns in a small, readable codebase.
 
 ## What Evagene surface this uses
 
@@ -147,6 +149,6 @@ Each module owns one responsibility; every collaborator is injected at the compo
 
 ## Caveats
 
-- The NICE model is a **screening-triage** tool derived from family-history structure. It is not a continuous lifetime-risk estimate — use Tyrer-Cuzick (an IBIS-style approximation) or export to `##CanRisk 2.0` for BOADICEA at [canrisk.org](https://canrisk.org).
-- This is an example integration, not a validated clinical tool — clinical governance applies.
-- The SQLite baseline is your service's state. Back it up; a lost DB means the next `run` will treat every current category as "new" unless you re-seed.
+- This is an **academic / research example, not a validated clinical tool, not a medical device, and not fit for patient care.** Use it against synthetic or de-identified pedigrees — never as a live monitoring service.
+- The NICE model is a rule-based categorisation of family-history structure. It is not a continuous lifetime-risk estimate — use Tyrer-Cuzick (an IBIS-style approximation) or export to `##CanRisk 2.0` for BOADICEA at [canrisk.org](https://canrisk.org).
+- The SQLite baseline is this demo's state. Back it up; a lost DB means the next `run` will treat every current category as "new" unless you re-seed.

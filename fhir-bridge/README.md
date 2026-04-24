@@ -2,13 +2,15 @@
 
 Round-trip a family-history pedigree between Evagene and any FHIR R5 server: push an Evagene pedigree out as a Bundle of `FamilyMemberHistory` resources, or pull such a Bundle back and reconstruct the pedigree. One command per direction.
 
+This is an academic / research example of Evagene ↔ FHIR R5 mapping. It is a reference implementation to study and fork — not a clinical integration product.
+
 > **Before you start:** read [`../getting-started.md`](../getting-started.md). It covers Evagene registration, API-key minting, and the two environment variables this demo reads. Everything below assumes you have done that.
 
 ## Who this is for
 
-- **Hospital IT teams** wiring Evagene into an EHR or shared patient record and needing the family history to flow in both directions.
-- **Integration engineers** evaluating Evagene against their FHIR estate who want a short, honest demonstration of what round-trips cleanly and what does not.
-- **Clinical informaticians** who need a starting point for their own mapping conventions.
+- **Developers and integration engineers** who want a short, honest demonstration of what round-trips cleanly between Evagene and FHIR R5 and what does not.
+- **Researchers** prototyping a bridge for a synthetic or de-identified dataset between Evagene and a FHIR sandbox.
+- **Educators and students** studying a structural round-trip between two domain data models.
 
 ## Which Evagene surfaces it uses
 
@@ -180,11 +182,11 @@ The table is reversible. Codes not listed are skipped with a warning.
 
 ## Caveats
 
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Exercise it against synthetic FHIR and synthetic Evagene data.
 - **Lossy mapping.** FHIR `FamilyMemberHistory.relationship` uses broad SNOMED / v3 codes that do not always pin down sidedness or half/full degree. Unknown or ambiguous codes are skipped; this demo does not invent a relation it cannot prove.
 - **No FHIR extensions.** Evagene-specific fields that do not map cleanly into `FamilyMemberHistory` (consanguinity, ancestry, monozygotic-twin marker, adopted/fostered flags, pedigree coordinates) are *not* carried across. Treat the bridge as a floor, not a ceiling.
 - **Consent and privacy.** `FamilyMemberHistory` contains sensitive third-party information. The demo does not assert any basis for sharing; run it only against endpoints you are authorised to write to, and keep your `--auth-header` value out of shell history.
 - **FHIR R5 only.** The demo is pinned to the R5 release (`https://hl7.org/fhir/R5`). Earlier releases use a different `relationship` cardinality and are not supported.
-- **Not a validated clinical tool.** These are illustrative integrations. Any clinical use must go through normal governance.
 
 ## Fixtures
 

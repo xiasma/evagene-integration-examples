@@ -1,8 +1,10 @@
 # Call notes to pedigree
 
-**Paste a counselling-session transcript, get a structured family history ready to review in ten seconds — and, one flag away, a real pedigree in [Evagene](https://evagene.net).**
+**Paste a transcript, get a structured family history ready to review in ten seconds — and, one flag away, a real pedigree in [Evagene](https://evagene.net).**
 
-The tool reads a free-text transcript from stdin or a file, asks Claude (via your own Anthropic API key) to extract proband, parents, grandparents, and siblings, and prints the result as pretty JSON plus a human-readable preview. With `--commit`, it then uses the Evagene REST API to create the pedigree and wire the relatives up — the same sequence the `family-history-intake-form` demo uses, so the on-screen result matches what a clinician would have typed by hand.
+The tool reads a free-text transcript from stdin or a file, asks Claude (via your own Anthropic API key) to extract proband, parents, grandparents, and siblings, and prints the result as pretty JSON plus a human-readable preview. With `--commit`, it then uses the Evagene REST API to create the pedigree and wire the relatives up — the same sequence the `family-history-intake-form` demo uses.
+
+This is an academic / research example of a BYOK LLM pipeline that keeps the transcript out of Evagene's infrastructure. It is a reference implementation for study and experimentation, not a clinical extraction tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and configuring `EVAGENE_API_KEY` / `EVAGENE_BASE_URL`.
 
@@ -10,9 +12,9 @@ The tool reads a free-text transcript from stdin or a file, asks Claude (via you
 
 ## Who this is for
 
-- **Genetic counsellors and genetic nurses** who would rather talk to a patient than type into a form. Record (or scribble) the session, paste it in, review the extracted structure, commit when happy.
-- **Triage clinicians** capturing a quick family history at referral who want a draft pedigree ready for the specialist to annotate.
-- **Integrators** wanting a short, auditable example of a BYOK LLM pipeline that keeps the patient transcript out of Evagene's infrastructure.
+- **Developers and integrators** wanting a short, auditable example of a BYOK LLM pipeline where the transcript is sent directly to the user's chosen LLM provider and never passes through Evagene.
+- **Researchers** studying how well a structured extraction schema holds up against synthetic counselling transcripts — the `--show-prompt` flag exposes the exact system prompt for audit.
+- **Educators and students** exploring tool-use / structured-output prompting and the mechanics of a two-stage (extract → commit) pipeline with an explicit review step.
 
 ## Which Evagene surfaces this uses
 
@@ -33,11 +35,11 @@ The tool reads a free-text transcript from stdin or a file, asks Claude (via you
                       (your EVAGENE_API_KEY)
 ```
 
-Evagene never sees the raw transcript. Only the extracted, structured family data — the same fields a clinician would type into the intake form — reaches Evagene, and only when you explicitly pass `--commit`.
+Evagene never sees the raw transcript. Only the extracted, structured family data — the same fields the intake form demo captures — reaches Evagene, and only when you explicitly pass `--commit`.
 
 ## Prerequisites
 
-1. An **Anthropic API key** — [console.anthropic.com](https://console.anthropic.com). Export it as `ANTHROPIC_API_KEY`. Confirm your organisation's Anthropic data-handling terms suit your clinical context before passing real transcripts.
+1. An **Anthropic API key** — [console.anthropic.com](https://console.anthropic.com). Export it as `ANTHROPIC_API_KEY`. Review Anthropic's data-handling terms before passing anything sensitive through the pipeline — and prefer synthetic transcripts for experimentation.
 2. An **Evagene account and API key** with `write` scope for `--commit` — see [../getting-started.md](../getting-started.md).
 3. A recent runtime for the language you prefer.
 
@@ -211,7 +213,7 @@ Every module has one responsibility. The `LlmGateway` and `HttpGateway` abstract
 
 ## Caveats
 
-- **Always review before `--commit`.** LLM extraction is imperfect. Run once read-only, eyeball the JSON and preview, fix the transcript or re-run before committing to Evagene.
-- **Transcripts may contain PHI.** With `ANTHROPIC_API_KEY` set, the raw transcript is sent to Anthropic's API. Confirm your Anthropic data-policy (zero-retention, Zero Data Retention add-on, enterprise terms, etc.) suits your clinical context before passing real patient material.
-- **Diseases and conditions are captured as free-text `notes`, not coded.** The schema keeps proband / parents / grandparents / siblings structured; disease diagnoses mentioned in the transcript are preserved in a per-relative `notes` field so a clinician can read them, but they are not translated into Evagene's structured disease codes. That is intentional — structured disease coding is future work, and getting it wrong silently is worse than leaving it to the clinician.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Experiment with synthetic transcripts; do not feed real patient material through the pipeline.
+- **Always review before `--commit`.** LLM extraction is imperfect. Run once read-only, eyeball the JSON and preview, fix the transcript or re-run before anything is written.
+- **Transcripts travel to a third-party LLM.** With `ANTHROPIC_API_KEY` set, the raw transcript is sent to Anthropic's API. Whatever you feed in leaves your environment — another reason to stick to synthetic data for experimentation and to review Anthropic's data-handling terms before going further.
+- **Diseases and conditions are captured as free-text `notes`, not coded.** The schema keeps proband / parents / grandparents / siblings structured; disease diagnoses mentioned in the transcript are preserved in a per-relative `notes` field so a reader can see them, but they are not translated into Evagene's structured disease codes. Structured disease coding is future work, and getting it wrong silently is worse than leaving it to the reader.

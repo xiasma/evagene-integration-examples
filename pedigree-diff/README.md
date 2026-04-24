@@ -1,8 +1,8 @@
 # Pedigree diff
 
-**Know what changed since the last appointment, in one command.** Feed this two pedigree IDs (or two JSON snapshots you saved earlier) and it prints a human-readable change log: who was added, who was removed, what was corrected, what new diagnoses entered the family history.
+**Know what changed between two points in time, in one command.** Feed this two pedigree IDs (or two JSON snapshots you saved earlier) and it prints a human-readable change log: who was added, who was removed, what was corrected, what new diagnoses entered the family history.
 
-Built for the clinician opening a chart before a follow-up consultation and the integrator who already records `pedigree.*` webhooks and wants to turn "event fired at 09:14" into "Mary, the maternal aunt, was diagnosed with ovarian cancer at 52". Pairs naturally with the [webhook-audit-blotter](../webhook-audit-blotter/) — the blotter captures that _something_ happened; this demo tells you _what it meant_.
+This is an academic / research example of computing a structural, semantically-useful diff between two `PedigreeDetail` payloads. Pairs naturally with the [webhook-audit-blotter](../webhook-audit-blotter/) — the blotter captures that _something_ happened; this demo shows how to summarise _what changed_. It is a reference implementation, not a clinical record-review tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,10 +10,9 @@ Built for the clinician opening a chart before a follow-up consultation and the 
 
 ## Who this is for
 
-- **GPs, genetic counsellors, and clinical geneticists** reviewing what has changed in a family's history between consultations — the output reads as a brief of-record note you can paste straight into a letter.
-- **Integrators** operating a webhook receiver who need to turn a stream of low-level `individual.created` / `individual.updated` events into a narrative a clinician can act on.
-- **Audit teams** diffing a pedigree against a pre-incident snapshot to identify exactly what changed.
-- **Researchers** reconciling a pedigree import against the original submission.
+- **Integrators and developers** operating a webhook receiver who want a worked example of turning a stream of low-level `individual.created` / `individual.updated` events into a human-readable narrative.
+- **Researchers** reconciling a pedigree import against the original submission, or diffing a synthetic dataset before and after a processing step.
+- **Educators and students** studying how to diff structured domain objects with deterministic ordering and pluggable output formats.
 
 ## What Evagene surface this uses
 
@@ -21,7 +20,7 @@ Built for the clinician opening a chart before a follow-up consultation and the 
 - **Authentication** — long-lived API key via `X-API-Key: evg_...`.
 - **Interactive API reference** — [https://evagene.net/docs](https://evagene.net/docs) (Swagger) or [https://evagene.net/redoc](https://evagene.net/redoc).
 
-The CLI can operate entirely offline against two saved JSON files, or fetch one or both sides live from the Evagene API. Mix and match freely — a common pattern is to save a snapshot at the end of each clinic and diff the live pedigree against it on the next visit.
+The CLI can operate entirely offline against two saved JSON files, or fetch one or both sides live from the Evagene API. Mix and match freely — a common experimental pattern is to save a snapshot at one point and diff the live pedigree against it later to see what has changed.
 
 ## Prerequisites
 
@@ -164,7 +163,7 @@ Every module has a single responsibility; no file reaches into another's interna
 
 ## Caveats
 
+- This is an **academic / research example, not a clinical record-review tool**, not a medical device, and not fit for patient care.
 - The tool reports observable differences between the two snapshots. Date-of-birth "corrections" and "removals" in the output reflect what changed in the recorded data, not necessarily what happened in reality — the comparison cannot distinguish a typo fix from a re-elicited history.
 - Evagene's event model records birth and death dates on individuals and a list of diagnosis events per disease, but the `age_at_diagnosis` value and the associated event date are not always populated for every dataset. When a diagnosis lacks an explicit date, `--since` cannot filter it by year; the conservative choice is to include it. This is called out plainly because filtering silently would be worse than filtering loosely.
 - Relationship labels are computed from the pedigree graph (parents, children, partners). Unusual or incomplete graphs fall back to "relative".
-- This is an example integration, not a validated clinical-governance tool. Clinical and regulatory governance applies.

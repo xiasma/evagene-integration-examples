@@ -2,7 +2,9 @@
 
 **Photograph a hand-drawn pedigree, get a structured family history ready to review in one command -- and, one flag away, a real pedigree in [Evagene](https://evagene.net).**
 
-The tool reads a photograph, scan, or PDF of a hand-drawn pedigree, asks Claude Vision (via your own Anthropic API key) to interpret the symbols -- squares, circles, filled shapes, slashes, double lines, MZ-twin chevrons -- and prints the result as pretty JSON plus a human-readable preview. With `--commit`, it uses the Evagene REST API to create the pedigree with proband, parents, grandparents, and siblings wired up -- the same sequence the `call-notes-to-pedigree` and `family-history-intake-form` demos use.
+The tool reads a photograph, scan, or PDF of a hand-drawn pedigree, asks Claude Vision (via your own Anthropic API key) to interpret the symbols -- squares, circles, filled shapes, slashes, double lines, MZ-twin chevrons -- and prints the result as pretty JSON plus a human-readable preview. With `--commit`, it uses the Evagene REST API to create the pedigree with proband, parents, grandparents, and siblings wired up.
+
+This is an academic / research example of a BYOK multimodal-LLM pipeline that keeps the image out of Evagene's infrastructure. It is a reference implementation for study and experimentation, not a clinical OCR tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** -- it covers registering at [evagene.net](https://evagene.net), minting an API key, and configuring `EVAGENE_API_KEY` / `EVAGENE_BASE_URL`.
 
@@ -10,10 +12,9 @@ The tool reads a photograph, scan, or PDF of a hand-drawn pedigree, asks Claude 
 
 ## Who this is for
 
-- **Genetic counsellors** who sketch a pedigree on paper during a consultation and want a digital draft waiting in Evagene before the next session.
-- **Teachers and clinical educators** converting textbook figures or training-set drawings into structured pedigrees.
-- **Archivists** digitising pre-electronic case notes -- decades of pedigrees drawn on the back of a referral letter.
-- **Integrators** wanting a short, auditable example of a BYOK multimodal-LLM pipeline that keeps the image out of Evagene's infrastructure.
+- **Developers and integrators** wanting a short, auditable example of a BYOK multimodal-LLM pipeline that keeps the image out of Evagene's infrastructure.
+- **Researchers** studying how a vision model interprets pedigree symbols — squares, circles, filled shapes, slashes, chevrons — against a synthetic or textbook-figure corpus.
+- **Educators and students** exploring multimodal prompting with tool-use / structured output, and the two-stage extract-then-commit shape of a review-gated LLM pipeline.
 
 ## Which Evagene surfaces this uses
 
@@ -34,11 +35,11 @@ The tool reads a photograph, scan, or PDF of a hand-drawn pedigree, asks Claude 
                                   (your EVAGENE_API_KEY)
 ```
 
-Evagene never sees the image. Only the extracted, structured family data -- the same fields a clinician would type into the intake form -- reaches Evagene, and only when you explicitly pass `--commit`. The image and API keys are never logged; log lines that reference the image say `<image redacted, N KB>`.
+Evagene never sees the image. Only the extracted, structured family data -- the same fields the intake form demo captures -- reaches Evagene, and only when you explicitly pass `--commit`. The image and API keys are never logged; log lines that reference the image say `<image redacted, N KB>`.
 
 ## Prerequisites
 
-1. An **Anthropic API key** -- [console.anthropic.com](https://console.anthropic.com). Export as `ANTHROPIC_API_KEY`. Confirm your organisation's Anthropic data-handling terms suit your clinical context before passing real drawings.
+1. An **Anthropic API key** -- [console.anthropic.com](https://console.anthropic.com). Export as `ANTHROPIC_API_KEY`. Review Anthropic's data-handling terms before passing anything sensitive; prefer synthetic or textbook drawings for experimentation.
 2. An **Evagene account and API key** with `write` scope for `--commit` -- see [../getting-started.md](../getting-started.md).
 3. **Python 3.11+**.
 4. **Poppler** (for `.pdf` input only): on Windows install from [oschwartz10612/poppler-windows](https://github.com/oschwartz10612/poppler-windows/releases) and add its `bin/` to `PATH`; on macOS `brew install poppler`; on Debian/Ubuntu `apt install poppler-utils`. PNG / JPG input needs no extra binaries.
@@ -183,8 +184,8 @@ The `LlmGateway`, `PdfRenderer`, and `HttpGateway` abstractions let the tests ex
 
 ## Caveats
 
-- **Always review before `--commit`.** OCR and symbol interpretation are imperfect. Run once read-only, eyeball the JSON and preview, fix the image or re-run before committing to Evagene. A vision model will sometimes miss a slash, read a filled circle as clear on a faint photocopy, or collapse MZ-twin chevrons into "two sisters".
-- **Images may contain PHI.** With `ANTHROPIC_API_KEY` set, the drawing bytes are sent to Anthropic's API. Confirm your Anthropic data-handling terms (zero-retention, ZDR add-on, enterprise agreement, etc.) suit your clinical context before passing real patient material. Redact names and identifiers on the drawing beforehand if in doubt.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Use it on synthetic or textbook drawings; do not send real patient imagery through the pipeline.
+- **Always review before `--commit`.** OCR and symbol interpretation are imperfect. Run once read-only, eyeball the JSON and preview, fix the image or re-run before anything is written. A vision model will sometimes miss a slash, read a filled circle as clear on a faint photocopy, or collapse MZ-twin chevrons into "two sisters".
+- **Images leave your environment.** With `ANTHROPIC_API_KEY` set, the drawing bytes are sent to Anthropic's API. Whatever you upload leaves your machine — another reason to stick to synthetic or textbook material and to review Anthropic's data-handling terms before any experiment.
 - **Symbols the schema does not express -- twins, consanguinity, multiple marriages, step-relatives -- land in free-text `notes`, not structured fields.** That is intentional: a reviewer should translate a drawing's shading or chevron into a coded Evagene relationship, not a vision model. Review the notes and fix up in the Evagene UI.
-- **Diseases are captured as free-text `notes`, not coded.** The schema keeps proband / parents / grandparents / siblings structured; any affection information mentioned on the drawing is preserved in a per-relative `notes` field so a clinician can read it, but not translated into Evagene's structured disease codes.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- **Diseases are captured as free-text `notes`, not coded.** The schema keeps proband / parents / grandparents / siblings structured; any affection information mentioned on the drawing is preserved in a per-relative `notes` field so a reader can see it, but not translated into Evagene's structured disease codes.

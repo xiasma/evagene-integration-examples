@@ -1,8 +1,10 @@
 # Voice-driven intake
 
-**Hold the mic, talk through a family history for a minute, and get a structured pedigree ready to review in [Evagene](https://evagene.net) -- single-handed, no typing.**
+**Talk through a family history, get a structured pedigree ready to review in [Evagene](https://evagene.net).**
 
 The tool reads an audio recording (`.wav`, `.m4a`, `.mp3`, `.webm`, `.ogg`), transcribes it with OpenAI Whisper using your own API key, asks Claude (also your own key) to pull out the proband and relatives, and prints the result as pretty JSON plus a human-readable preview. With `--commit`, it then uses the Evagene REST API to create the pedigree and wire the relatives up.
+
+This is an academic / research example of a BYOK two-provider pipeline (Whisper → Claude → Evagene) with the audio and transcript kept out of Evagene's infrastructure. It is a reference implementation for study and experimentation, not a clinical intake tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** -- it covers registering at [evagene.net](https://evagene.net), minting an API key, and configuring `EVAGENE_API_KEY` / `EVAGENE_BASE_URL`.
 
@@ -10,9 +12,9 @@ The tool reads an audio recording (`.wav`, `.m4a`, `.mp3`, `.webm`, `.ogg`), tra
 
 ## Who this is for
 
-- **Genetic counsellors** who prefer dictation to typing. Record the patient visit (or dictate after), review the extracted structure, commit when happy.
-- **Mobile / visiting clinicians** capturing a family history single-handed -- phone in one hand, kettle in the other -- between home visits.
-- **Integrators** wanting a short, auditable example of a BYOK two-provider pipeline (Whisper + Claude) that keeps the recording and the raw transcript out of Evagene's infrastructure.
+- **Developers and integrators** wanting a short, auditable example of a BYOK two-provider pipeline (Whisper + Claude) where the recording and the raw transcript never pass through Evagene.
+- **Researchers** studying structured extraction from speech transcripts in a small, readable codebase, against synthetic recordings.
+- **Educators and students** exploring speech-to-structured-data pipelines, including chunking at silence boundaries, two-LLM orchestration, and an explicit review-before-commit flow.
 
 ## Which Evagene surfaces this uses
 
@@ -38,7 +40,7 @@ The tool reads an audio recording (`.wav`, `.m4a`, `.mp3`, `.webm`, `.ogg`), tra
                         (your EVAGENE_API_KEY)
 ```
 
-The pipeline sees two distinct vendors. Confirm that **both** your OpenAI and Anthropic data-handling terms (zero-retention / enterprise / BAA, as applicable) are acceptable for your clinical context before running real recordings through this. Evagene never sees the audio or the transcript -- only the extracted structured family, and only when you pass `--commit`.
+The pipeline sees two distinct vendors. Prefer synthetic recordings for experimentation, and review **both** OpenAI's and Anthropic's data-handling terms before feeding anything sensitive in. Evagene never sees the audio or the transcript -- only the extracted structured family, and only when you pass `--commit`.
 
 The tool never writes the audio or the transcript to disk except in two explicit places: the temporary chunk slices created by ``pydub`` when a long recording is cut at silence boundaries (deleted when the run finishes), and the transcript printed to stdout when you pass `--show-transcript`. It never logs either.
 
@@ -207,10 +209,10 @@ Every module has one responsibility. The `AudioProbe`, `TranscriptionGateway`, `
 
 ## Caveats
 
-- **Always review before `--commit`.** Two LLMs run in series (speech-to-text, then structured extraction). Either one can get a name or an age wrong. Run once read-only, eyeball the JSON and preview, fix the transcript or re-run before committing to Evagene.
-- **Audio and transcripts may contain PHI.** The audio is sent to OpenAI; the transcript is sent to Anthropic. Two sets of data-handling terms apply. Confirm both policies (zero-retention add-ons, enterprise agreements, BAAs) suit your clinical context before passing real patient material.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Experiment with synthetic or self-recorded material; do not feed real patient recordings through the pipeline.
+- **Always review before `--commit`.** Two LLMs run in series (speech-to-text, then structured extraction). Either one can get a name or an age wrong. Run once read-only, eyeball the JSON and preview, fix the transcript or re-run before anything is written.
+- **Audio and transcripts leave your environment.** The audio is sent to OpenAI; the transcript is sent to Anthropic. Two sets of third-party data-handling terms apply — read them before experimenting with anything sensitive, and prefer synthetic recordings.
 - **ffmpeg is required.** `pydub` reads non-WAV formats and slices long recordings via `ffmpeg`. If it is not on your PATH, the tool will fail with a clear error on any `.m4a` / `.mp3` / `.webm` input.
-- **Duration cap defaults to 30 minutes.** Raise with `VOICE_INTAKE_MAX_DURATION_S` if you really need to push a long consultation through -- and expect transcription cost and latency to scale with length.
+- **Duration cap defaults to 30 minutes.** Raise with `VOICE_INTAKE_MAX_DURATION_S` if you need to push a longer recording through -- and expect transcription cost and latency to scale with length.
 - **The sample `.wav` in `fixtures/` is synthetic** (tones and silence). It exercises the audio-loading and chunk-planning code paths but does not contain real speech; Whisper will return roughly nothing for it. Record your own short dictation to see an end-to-end run.
-- **Diseases and conditions are captured as free-text `notes`, not coded.** The schema keeps proband / parents / grandparents / siblings structured; disease diagnoses mentioned in the transcript are preserved in a per-relative `notes` field so a clinician can read them, but they are not translated into Evagene's structured disease codes. That is intentional -- getting structured disease coding wrong silently is worse than leaving it to the clinician.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- **Diseases and conditions are captured as free-text `notes`, not coded.** The schema keeps proband / parents / grandparents / siblings structured; disease diagnoses mentioned in the transcript are preserved in a per-relative `notes` field so a reader can see them, but they are not translated into Evagene's structured disease codes. That is intentional -- getting structured disease coding wrong silently is worse than leaving it to the reader.

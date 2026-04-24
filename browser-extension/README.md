@@ -1,14 +1,16 @@
 # Evagene Pedigree Lookup — browser extension
 
-See a patient ID on any web page — inside your EHR, a pathology report, a spreadsheet, or an email — and get the Evagene pedigree summary in a side panel with one click. No EHR integration project, no data round-trip: the extension reads identifiers off the page you already have open.
+**See a pedigree identifier on any web page and open the Evagene summary in a side panel with one click.** The extension scans the DOM for UUID-shaped identifiers and injects a lookup button next to each one; the service worker calls the Evagene API and renders the summary locally.
+
+This is an academic / research example of a Manifest V3 WebExtension talking to the Evagene API from a browser. It is a reference implementation to study and fork — not a clinical-bridge product.
 
 > First-time setup (Evagene account, API key, base URL): see [`../getting-started.md`](../getting-started.md). This README assumes you have completed that once.
 
 ## Who this is for
 
-- **Clinicians and genetic counsellors** whose workflow touches an EHR that already shows patient identifiers but cannot be modified to embed Evagene directly.
-- **Small-clinic IT** who want a zero-integration bridge between an existing system and an Evagene account.
-- **Integrators** starting a richer, EHR-specific extension and looking for a correct Manifest V3 skeleton to fork.
+- **Developers and integrators** starting a richer, site-specific extension and looking for a correct Manifest V3 skeleton to fork.
+- **Researchers and educators** demonstrating how a browser extension can annotate identifiers on an external page and fetch structured data from an API, against synthetic or test content.
+- **Students** studying the Manifest V3 content-script / service-worker / side-panel split.
 
 ## Evagene surface
 
@@ -111,7 +113,7 @@ The content script never calls `evagene.net` directly. Manifest V3 explicitly di
 - The API key lives in `chrome.storage.local`, which is not synced across devices.
 - Recommended key scope is `read`. The extension only calls `GET /api/pedigrees/{id}/summary`. A read-only key cannot mutate pedigree data.
 - The extension emits no telemetry and makes no other network calls.
-- The content script runs on `<all_urls>` so it can annotate identifiers in any EHR. Narrow this in `manifest.json`'s `content_scripts.matches` array if you know the exact URLs you care about — the smaller the scope, the smaller the blast radius.
+- The content script runs on `<all_urls>` so it can annotate identifiers on any page during experimentation. Narrow this in `manifest.json`'s `content_scripts.matches` array if you know the exact URLs you care about — the smaller the scope, the smaller the blast radius.
 
 ## Browser limits we know about
 
@@ -121,4 +123,4 @@ The content script never calls `evagene.net` directly. Manifest V3 explicitly di
 
 ## Caveats
 
-This is an example integration, not a clinical decision tool. It displays information returned by the Evagene API; all interpretation and any action taken belongs to the clinician.
+This is an **academic / research example, not a clinical tool**, not a medical device, and not fit for patient care. The extension is a thin display of whatever the Evagene API returns — use it against synthetic or test identifiers, and do not rely on it for any clinical decision.

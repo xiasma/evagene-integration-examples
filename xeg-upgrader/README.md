@@ -1,8 +1,8 @@
 # xeg-upgrader
 
-**Migrate legacy Evagene v1 `.xeg` XML pedigrees into the current data model.** Point this at an archived `.xeg` file and it validates the file against [Evagene](https://evagene.net), prints a summary of the individuals, relationships, eggs, events, and diseases recovered from it, and — when you are happy with the preview — creates a real pedigree from it in one command.
+**Parse legacy Evagene v1 `.xeg` XML pedigrees into the current data model.** Point this at an archived `.xeg` file and it validates the file against [Evagene](https://evagene.net), prints a summary of the individuals, relationships, eggs, events, and diseases recovered from it, and — with `--create` — imports it into a new pedigree in one command.
 
-Built for clinics migrating off an older on-premise Evagene deployment, genetic nurses with a folder of archived files that predate the JSON/register model, and developers writing one-off scripts that consume `.xeg` files.
+This is an academic / research example of talking to Evagene's file-import surface cleanly from .NET or Python. It is a reference implementation, not a migration product.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,9 +10,9 @@ Built for clinics migrating off an older on-premise Evagene deployment, genetic 
 
 ## Who this is for
 
-- **Clinics migrating archives** — take a folder of `.xeg` files off an older deployment, preview each one to catch silently-dropped data, then commit the clean ones.
-- **Genetic counsellors / nurses** who still receive the occasional `.xeg` file from a collaborating site — a single command verifies the file is intact before the family is opened in the canvas.
-- **Integrators / developers** wanting a small, complete example of talking to Evagene's file-import surface cleanly from .NET or Python.
+- **Developers and integrators** wanting a small, complete example of talking to Evagene's file-import surface cleanly from .NET or Python.
+- **Researchers** with `.xeg` files from a legacy deployment who want a scripted way to parse them, preview the summary, and optionally import the structure into a current-model pedigree for further analysis.
+- **Educators and students** studying the preview-then-commit pattern for a file-import pipeline.
 
 ## What Evagene surfaces this uses
 
@@ -185,6 +185,6 @@ Under `--create` the same block is followed by the new pedigree's ID and URL.
 
 ## Caveats
 
-- This is an example integration, not a validated migration tool. For a large archive, preview every file first and spot-check commit results in the Evagene web app.
+- This is an **academic / research example, not a validated migration tool**, not a medical device, and not fit for patient care. For anything bigger than study or experimentation, preview every file by hand and verify against a qualified human in the loop.
 - The legacy `.xeg` schema carried fields the current data model does not (layout coordinates, certain event sub-types). Evagene's parser translates what it can and drops or maps the rest — the parse summary reports what survived the translation.
 - Preview mode still needs to create (and delete) a scratch pedigree because `POST /api/pedigrees/{id}/import/xeg?mode=parse` is scoped to an owned pedigree even when it does not mutate it. The scratch pedigree is soft-deleted on exit.

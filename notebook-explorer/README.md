@@ -1,12 +1,12 @@
 # Notebook explorer
 
-**Drive Evagene's risk engine from a notebook and watch the numbers move.** Open the notebook, pick a pedigree from your Evagene account, and explore how the risk outputs shift as you vary inputs: add an affected relative, step through Tyrer-Cuzick reproductive-history fields, or turn the Falconer heritability knob on a multifactorial model. Two kernels, one narrative.
+**Drive Evagene's risk engine from a notebook and watch the numbers move.** Open the notebook, pick a pedigree from your Evagene account, and explore how the risk outputs shift as you vary inputs: add a relative with an affected status, step through Tyrer-Cuzick reproductive-history fields, or turn the Falconer heritability knob on a multifactorial model. Two kernels, one narrative.
 
-Built for people who learn and teach by poking at a model:
+This is an academic / research / educational example, aimed at people who learn and teach by poking at a model:
 
 - **Researchers** writing a methods paper — "risk under varied assumptions" is the whole section, and a notebook is the right artefact.
 - **Educators** teaching liability-threshold intuition or the structure of family-history criteria — sliders make the abstract concrete.
-- **Anyone** wanting a runnable reference for how Evagene's risk outputs shift under what-if inputs, without wiring up a UI.
+- **Students and developers** wanting a runnable reference for how Evagene's risk outputs shift under what-if inputs, without wiring up a UI.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -161,11 +161,11 @@ Per kernel:
 
 ## Caveats
 
+- These notebooks are **academic / research / educational material, not validated clinical tools**, not medical devices, and not fit for patient care. They are for exploring, teaching, and writing up — not for real-world risk assessment.
 - **Interactive cells mutate a scratch clone, never your original pedigree.** The clone is deleted in the closing cell.
 - **If the notebook aborts before the closing cell, the scratch clone survives** — delete it manually (see above).
 - **Tyrer-Cuzick** is an IBIS-style approximation, not the licensed IBIS tool. **BOADICEA** is not bundled with Evagene; export a CanRisk v2 file and upload at [canrisk.org](https://canrisk.org) for the full multi-gene / PRS calculation.
 - **Multifactorial recurrence risk** here is Evagene's Falconer liability-threshold output (with Carter-effect and consanguinity modifiers); it is not a substitute for a published empirical recurrence-risk table for the specific condition.
-- These are example integrations, not validated clinical tools. Clinical decisions should go through the usual multidisciplinary governance.
 
 ## Suggested reading
 

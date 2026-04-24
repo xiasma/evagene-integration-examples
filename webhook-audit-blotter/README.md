@@ -2,7 +2,7 @@
 
 **A tamper-evident record of every pedigree change.** Register this server as a webhook endpoint in [Evagene](https://evagene.net), and every `pedigree.*`, `individual.*`, `analysis.completed`, and `import.completed` event is HMAC-verified and written into a SQLite log whose rows are hash-chained — any later tampering with a row breaks the chain and is reported by a single `GET /events/verify` call.
 
-Designed for compliance, medical-records, and clinical-audit teams who need a defensible answer to *"show me, in order, every change made to this pedigree, and prove the log has not been edited."*
+This is an academic / research example of a HMAC-verified webhook receiver with a hash-chained audit log. It is a reference implementation to read, run against synthetic events, and fork — not a production audit system and not a clinical compliance artefact.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,10 +10,9 @@ Designed for compliance, medical-records, and clinical-audit teams who need a de
 
 ## Who this is for
 
-- **Compliance officers** needing an immutable record of pedigree and analysis activity for audit trails (ISO 27001, HIPAA, UK DSPT).
-- **Clinical-records teams** reconciling Evagene activity against a master patient record.
-- **Security engineers** standing up a webhook receiver with the recommended HMAC + constant-time verification pattern, without reinventing the boilerplate.
-- **Integrators / developers** wanting a complete, minimal example of a webhook receiver in Node, .NET, and Python that all share the same architecture.
+- **Integrators and developers** wanting a complete, minimal example of a webhook receiver in Node, .NET, and Python that all share the same architecture.
+- **Security engineers and students** studying the recommended HMAC + constant-time verification pattern, and the mechanics of a hash-chained append-only log — in a codebase small enough to read top to bottom.
+- **Researchers** looking for a drop-in receiver that captures a timeline of pedigree events for later analysis of synthetic or de-identified datasets.
 
 ## What Evagene surface this uses
 
@@ -228,7 +227,7 @@ Expected: `204` on `/webhook`, a single JSON-lines row from `/events`, and `{"ok
 
 ## Caveats
 
-- This is a **single-node** demo. A production audit log that survives crashes, horizontal scaling, and insider threat needs a durable append-only store (WORM storage, external timestamping, or a transparency-log backend). Don't ship the SQLite file as-is to production.
+- This is an **academic / research example, not a production audit system and not a clinical compliance tool.** Do not use it to satisfy any real audit, regulatory, or records-keeping requirement.
+- This is a **single-node** demo. A production audit log that survives crashes, horizontal scaling, and insider threat needs a durable append-only store (WORM storage, external timestamping, or a transparency-log backend). Don't ship the SQLite file as-is.
 - The hash chain detects tampering *after the fact* — it does not prevent it. An attacker with write access to the database can recompute every row's hash. For strong guarantees, periodically anchor the latest `row_hash` in a separate, independently-controlled system (a signed email digest, another organisation's audit feed, a public transparency log).
-- This demo records the raw signed body. Depending on what events you subscribe to, that may include patient-identifying information — apply the same data-handling controls you would to any other clinical audit artefact.
-- This is an example integration, not a validated clinical-governance tool. Clinical and regulatory governance applies.
+- This demo records the raw signed body. Depending on what events you subscribe to, that may include patient-identifying information — apply the same data-handling controls you would to any other sensitive data store, and prefer synthetic or de-identified pedigrees for experimentation.

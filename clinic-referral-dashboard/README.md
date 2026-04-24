@@ -1,6 +1,8 @@
-# Clinic referral dashboard
+# Referral dashboard
 
-**A live triage board for your genetics intake clinic.** Register this server as a webhook endpoint in [Evagene](https://evagene.net) and every new pedigree (and every finished import) appears as a card on a shared web dashboard within milliseconds. Click a card and the pedigree is drawn inline with its NICE category labelled, so a triage nurse can make a referral decision without leaving the dashboard.
+**A live card view of Evagene webhook events.** Register this server as a webhook endpoint in [Evagene](https://evagene.net) and every new pedigree (and every finished import) appears as a card on a shared web dashboard within milliseconds. Click a card and the pedigree is drawn inline with its NICE category labelled.
+
+This is an academic / research example of a two-layer receiver: a hash-chained audit blotter underneath, and a Server-Sent Events dashboard on top. It is a reference implementation to read and fork — not a clinical intake product.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -8,9 +10,9 @@
 
 ## Who this is for
 
-- **Genetics-service triage nurses** scanning newly created pedigrees during an intake clinic.
-- **Clinical leads** who want a low-ceremony, on-the-wall dashboard showing the live state of the referral queue.
-- **Integrators** building a bespoke clinical front-end on top of Evagene webhooks — the two-layer split (audit-blotter + dashboard) is a copy-paste starting point.
+- **Integrators and developers** building a bespoke front-end on top of Evagene webhooks — the two-layer split (audit-blotter + dashboard) is a copy-paste starting point.
+- **Researchers and educators** wanting a live view of webhook deliveries against a synthetic or de-identified dataset, to observe how pedigree events flow through the system.
+- **Students** studying an end-to-end Server-Sent Events pattern (signed receiver → persistence → pub/sub → live DOM updates) in a small codebase.
 
 ## What Evagene surface this uses
 
@@ -62,7 +64,7 @@ Copy `node/.env.example` to `node/.env` and fill in the values.
 Only a Node implementation ships. Startup prints:
 
 ```
-Clinic referral dashboard listening on http://localhost:4000/
+Referral dashboard listening on http://localhost:4000/
 ```
 
 Open `http://localhost:4000/` in a browser. The header shows "Live" once the SSE connection is up. Trigger a pedigree create in Evagene (or synthesise a signed delivery — see below) and a card appears at the top of the list.
@@ -145,7 +147,7 @@ The **blotter layer** (SignatureVerifier, EventStore, WebhookHandler) is the sam
 
 ## Caveats
 
-- **Single-node demo.** The SSE broker and SQLite audit log are in-process. A production dashboard serving multiple triage rooms or surviving a restart without dropping subscriptions needs an external pub/sub (Redis, NATS) and a durable append-only store.
-- **Not a validated clinical tool.** This is an illustrative integration; clinical and regulatory governance applies before any decision is acted on.
-- **NICE category only.** The dashboard surfaces the NICE triage label that Evagene returns. For other models (Tyrer-Cuzick, BOADICEA, BRCAPRO), see the [nice-traffic-light](../nice-traffic-light) and [canrisk-bridge](../canrisk-bridge) demos.
-- **Audit log trust.** The hash chain detects tampering after the fact — see the [webhook-audit-blotter caveats](../webhook-audit-blotter/README.md#caveats) for the full picture before relying on it for compliance evidence.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Use synthetic or de-identified pedigrees — never drive referral or care decisions from the dashboard.
+- **Single-node demo.** The SSE broker and SQLite audit log are in-process. Anything more ambitious needs an external pub/sub (Redis, NATS) and a durable append-only store.
+- **NICE category only.** The dashboard surfaces the NICE label that Evagene returns. For other models (Tyrer-Cuzick, BOADICEA, BRCAPRO), see the [nice-traffic-light](../nice-traffic-light) and [canrisk-bridge](../canrisk-bridge) demos.
+- **Audit log trust.** The hash chain detects tampering after the fact — see the [webhook-audit-blotter caveats](../webhook-audit-blotter/README.md#caveats) for the full picture.

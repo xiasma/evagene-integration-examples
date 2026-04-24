@@ -1,8 +1,8 @@
 # Couple carrier risk
 
-**Point this at two 23andMe raw genotype files — one per reproductive partner — and it prints a per-disease couple-offspring-risk table in under a minute.** The demo uploads each partner into a disposable [Evagene](https://evagene.net) pedigree, fetches their ancestry-conditioned carrier-frequency summaries, and combines them into one row per autosomal-recessive or X-linked-recessive disease, including a genuine cross-partner estimate when both carrier frequencies are known.
+**Point this at two 23andMe raw genotype files and get a per-disease couple-offspring-risk table in under a minute.** The demo uploads each partner into a disposable [Evagene](https://evagene.net) pedigree, fetches their ancestry-conditioned carrier-frequency summaries, and combines them into one row per autosomal-recessive or X-linked-recessive disease, including a cross-partner estimate when both carrier frequencies are known.
 
-Useful when a reproductive-medicine clinician or IVF coordinator is holding two genotype downloads and wants a quick triage before ordering a formal expanded carrier panel.
+This is an academic / research example of combining Evagene's 23andMe raw import with the ancestry-gated `population-risks` endpoint. It is a reference implementation, not a carrier-screening service.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to work against. Every demo assumes that is done.
 
@@ -10,10 +10,9 @@ Useful when a reproductive-medicine clinician or IVF coordinator is holding two 
 
 ## Who this is for
 
-- **Reproductive-medicine genetic counsellors** screening a couple ahead of an IVF / PGT-M decision and wanting a reproducible first pass.
-- **IVF clinic coordinators** triaging couples whose direct-to-consumer genotypes are the only data at hand before ordering a validated panel.
-- **Carrier-screening programmes** prototyping the workflow before committing to a specific laboratory partner.
-- **Developers** who want a worked example of Evagene's 23andMe raw import plus the ancestry-gated `population-risks` endpoint.
+- **Developers and integrators** who want a worked example of Evagene's 23andMe raw import plus the ancestry-gated `population-risks` endpoint.
+- **Researchers** comparing per-disease carrier-frequency outputs across synthetic or consented genotype pairs.
+- **Educators and students** studying how ancestry-conditioned carrier frequencies combine for a couple, and the limits of Hardy-Weinberg assumptions.
 
 ## What Evagene surface this uses
 
@@ -174,15 +173,15 @@ Sickle cell anaemia  autosomal_recessive  7.0000%  5.0000%  0.1225%             
 
 ## Test fixtures
 
-- `fixtures/partner-a-23andme.txt`, `fixtures/partner-b-23andme.txt` — two small synthetic 23andMe raw TSVs with ~25 SNPs covering every clinical-SNP code path the API exercises, plus a handful of Y-chromosome rows so sex inference has something to work with. Partner A's Y rows carry calls (male); partner B's are all `--` (female).
+- `fixtures/partner-a-23andme.txt`, `fixtures/partner-b-23andme.txt` — two small synthetic 23andMe raw TSVs with ~25 SNPs covering every code path the API exercises, plus a handful of Y-chromosome rows so sex inference has something to work with. Partner A's Y rows carry calls (male); partner B's are all `--` (female).
 - `fixtures/sample-population-risks.json` — a realistic `GET /api/individuals/{id}/population-risks` response (sickle cell, cystic fibrosis, DMD) for the unit tests.
 
 All fixtures are synthetic. **No real genotypes are included. Do not commit real 23andMe downloads to this repository.**
 
 ## Caveats
 
-- This is an **illustrative example**, not a validated carrier-screening tool. Clinical decisions must go through the usual multidisciplinary governance — direct-to-consumer genotypes are screening hints, not diagnoses.
-- 23andMe raw files cover only a pre-selected set of clinically-reported SNPs. Most AR carrier-screening panels cover hundreds of genes not on the 23andMe chip; a "no carrier rows" result from this demo does **not** mean a couple has no reproductive genetic risk.
+- This is an **academic / research example, not a validated carrier-screening tool**, not a medical device, and not fit for patient care. Anything real belongs with a qualified professional, validated panels, and proper governance — this demo is study material.
+- 23andMe raw files cover only a pre-selected set of reported SNPs. Most AR carrier-screening panels cover hundreds of genes not on the 23andMe chip; a "no carrier rows" result from this demo does **not** mean a couple has no reproductive genetic risk.
 - The cross-partner refinement (`cf_a * cf_b / 4` for AR, `cf_female / 4` for XLR) is the textbook Hardy-Weinberg estimate and ignores mutation heterogeneity, consanguinity, and incomplete panel detection. The Evagene `population-risks` response includes `panel_detection_rate` and `residual_carrier_frequency` for diseases where that refinement is available — see `fixtures/sample-population-risks.json` for the shape.
 - The `/api/individuals/{id}/population-risks` endpoint is **ancestry-gated**: if the individual has no recorded ancestries, it returns an empty list with an explanatory message rather than a misleading global number. Run with `--ancestry-a` / `--ancestry-b` set to an explicit population key when you want reproducible results, or rely on Evagene's `auto` inference when the 23andMe data carries ancestry hints.
 - The demo creates and deletes scratch data on your Evagene account. Pedigree deletion is soft (it moves to trash); individual deletion is hard. Pass `--no-cleanup` to inspect the scratch pedigree in the web UI before it is tidied.

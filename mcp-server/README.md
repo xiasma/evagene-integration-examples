@@ -2,7 +2,7 @@
 
 **Plug Evagene into any MCP-aware AI assistant.** Drop this server's stanza into your Claude Desktop, Cursor, or custom-agent config, give it your [Evagene](https://evagene.net) API key, and the agent can list your pedigrees, pull full family-history detail, describe a family in structured English, list available risk models, run a named risk model, and even add individuals or relatives — all over Anthropic's Model Context Protocol.
 
-The result: an AI session that can reason over your actual pedigrees instead of dummy data, pulling and (with a `write`-scoped key) mutating family-history structure on demand.
+This is an academic / research example of an MCP server that wraps the Evagene REST API. It is a reference implementation for developers and researchers building AI tooling — not a clinical agent.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,9 +10,9 @@ The result: an AI session that can reason over your actual pedigrees instead of 
 
 ## Who this is for
 
-- **Developers building AI assistants** that need first-class access to a user's pedigrees — Claude Desktop plugins, Cursor agents, bespoke LangChain / MCP clients.
-- **Genetic counsellors piloting LLM-assisted workflows** who want their assistant to draft a family summary, pull up a risk number, or add a newly-identified relative without leaving the chat.
-- **Clinical-AI researchers** prototyping agentic pedigree triage or multi-step family-history reasoning against a live API.
+- **Developers building AI assistants** that need access to a user's pedigrees — Claude Desktop plugins, Cursor agents, bespoke LangChain / MCP clients.
+- **Researchers** prototyping agentic pedigree analysis or multi-step family-history reasoning against a live API, using synthetic or de-identified data.
+- **Educators and students** studying how the Model Context Protocol wraps a REST API with typed tool definitions.
 
 ## What Evagene surface this uses
 
@@ -244,7 +244,7 @@ The canonical REST responses (`sample-list-pedigrees.json`, `sample-pedigree-det
 
 ## Caveats
 
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Treat any agent built on top of it as study or prototype material; do not wire it into clinical workflows.
 - **The agent can do whatever your API key scopes allow.** An `analyze` key lets it run risk calculations; a `write` key lets it mutate pedigree data. Mint narrow keys, audit what the agent does, and do not run these tools unattended without oversight. Revoke a key at any time from the Evagene account settings.
-- **Describe-pedigree summaries are deterministic, but still summaries.** They are designed for LLM prompt injection, not for clinical record-keeping. Use `get_pedigree` if you need the raw structure.
-- **Risk models carry model-specific caveats.** Tyrer-Cuzick is an IBIS-style approximation; BOADICEA is not bundled (Evagene can export a `##CanRisk 2.0` file and you upload it at canrisk.org). NICE is a categorical triage, not a continuous risk.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- **Describe-pedigree summaries are deterministic, but still summaries.** They are designed for LLM prompt injection, not for record-keeping. Use `get_pedigree` if you need the raw structure.
+- **Risk models carry model-specific caveats.** Tyrer-Cuzick is an IBIS-style approximation; BOADICEA is not bundled (Evagene can export a `##CanRisk 2.0` file and you upload it at canrisk.org). NICE is a rule-based categorisation, not a continuous risk.

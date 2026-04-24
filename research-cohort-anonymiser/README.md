@@ -2,7 +2,7 @@
 
 **Paste a pedigree ID and get a research-safe copy of the family in one command.** Names are replaced with generation-indexed identifiers (`I-1`, `II-3`, `III-1`, ...); dates of birth are rounded to a bucket you choose; free-text notes and comments are stripped; structure (relationships, eggs, twin modelling, consanguinity coefficients, disease IDs, affection status) is preserved exactly. Write the output to stdout, to a file, or as a brand-new pedigree on the same [Evagene](https://evagene.net) account.
 
-Useful when you are about to share a pedigree outside the clinic and would rather not rely on remembering to scrub every direct identifier by hand.
+This is an academic / research example: a first-pass scaffold for preparing pedigrees for a paper, supplement, or data repository. It is a reference implementation, not a validated de-identification service.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,7 +10,7 @@ Useful when you are about to share a pedigree outside the clinic and would rathe
 
 ## Important — read before using
 
-This tool performs **structural de-identification**, not HIPAA Safe-Harbor de-identification. In particular it does not:
+This tool performs **structural de-identification**, not HIPAA Safe-Harbor de-identification. It is an academic / research scaffold, not a validated de-identification product. In particular it does not:
 
 - remove identifiers hidden inside free-text *values* (only free-text *keys* named `note` / `comment` / `description` are stripped);
 - coarsen geographic information or rare disease combinations that might re-identify a family;
@@ -25,9 +25,9 @@ The k-anonymity estimate prints alongside the pedigree and is deliberately coars
 
 ## Who this is for
 
-- **Researchers** preparing pedigrees for a paper, supplement, or data repository.
-- **Research genetic counsellors** sharing an interesting family with a collaborator.
-- **Data stewards** building bulk de-identification pipelines for an archive.
+- **Researchers** preparing synthetic or consented pedigrees for a paper, supplement, or data repository.
+- **Research-data developers and integrators** prototyping a bulk de-identification pipeline for an archive.
+- **Educators and students** studying the mechanics of structural de-identification, k-anonymity tripwires, and round-trip rebuild via the `add-relative` endpoint.
 - **Developers** who want a small, readable example of round-tripping Evagene `PedigreeDetail` JSON.
 
 ## What Evagene surfaces this uses
@@ -228,8 +228,8 @@ If the Evagene response shape changes, update the source fixture and regenerate 
 
 ## Caveats
 
+- This is an **academic / research example, not a validated de-identification tool**, not a medical device, and not fit for patient care.
 - **Structural de-identification only.** See the banner at the top of this README.
 - **k-anonymity is a signal, not a proof.** Small pedigrees will almost always produce k = 1. Use the estimate to notice re-identification risk, not to certify safety.
-- **Free-text values are not scrubbed.** The rule only looks at property *keys*. If you maintain a clinic-reference scheme whose values encode patient initials, you will need a bespoke pass.
+- **Free-text values are not scrubbed.** The rule only looks at property *keys*. If your own data conventions encode identifiers in the values, you will need a bespoke pass.
 - **The `--as-new-pedigree` rebuild is best-effort for complex topologies.** It walks the egg graph breadth-first from the proband and issues one `add-relative` call per non-proband individual. Pedigrees with sibling-in-law partnerships, multiple marriages, or other structures outside the `add-relative` enum may need manual tidying afterwards.
-- This is an example integration, not a validated clinical tool.

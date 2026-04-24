@@ -1,8 +1,10 @@
 # Pedigree puzzle generator
 
-**Generate a fresh "what is the mode of inheritance?" pedigree puzzle in one command — a drawn pedigree hosted on [Evagene](https://evagene.net), a question card, and an answer key, ready for your students.**
+**Generate a fresh "what is the mode of inheritance?" pedigree puzzle in one command — a drawn pedigree hosted on [Evagene](https://evagene.net), a question card, and an answer key, ready for a classroom.**
 
 Pick a Mendelian mode (AD, AR, XLR, XLD, MT) or leave the default (`random`) and the tool builds a synthetic three- or four-generation family, draws it as a pedigree on your Evagene account, downloads the SVG, and writes a matching **question.md** and **answer.md** pair into a timestamped folder. The scratch pedigree is deleted when the run finishes so your account stays tidy; the files stay.
+
+This is an educational / academic example: it is pure teaching material, with no clinical relevance and no real pedigree data involved.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and configuring `EVAGENE_API_KEY` / `EVAGENE_BASE_URL`.
 
@@ -10,7 +12,7 @@ Pick a Mendelian mode (AD, AR, XLR, XLD, MT) or leave the default (`random`) and
 
 ## Who this is for
 
-- **Medical-school and genetics lecturers** who want an endless supply of unique puzzles without drawing them by hand.
+- **Lecturers and teaching staff** who want an endless supply of unique puzzles without drawing them by hand.
 - **Textbook authors and e-learning producers** needing attributable, clean SVGs of example pedigrees.
 - **Students preparing for exams** — run the tool with `--mode random`, solve the puzzle, then open `answer.md` to check.
 
@@ -169,7 +171,7 @@ If `--no-cleanup` is passed, the scratch pedigree stays on your account at `<EVA
 
 ## Caveats
 
-- This generator produces **synthetic, didactic** pedigrees. They use idealised Mendelian rules (full penetrance, no de novo, no anticipation) — realistic clinical pedigrees will look messier. Do not present the output as clinical case material.
+- This is an **academic / educational example**. The generated pedigrees are synthetic teaching artefacts and carry no clinical meaning. Do not present the output as real case material.
+- This generator uses **idealised Mendelian rules** (full penetrance, no de novo, no anticipation) — realistic pedigrees in research or clinical datasets will look messier.
 - The disease catalogue is fixed by the Evagene service. If you ask for a disease name it cannot find, the run fails fast with a `DiseaseNotFoundError`.
-- "Mode of inheritance" is the teaching answer; real-world risk calculation takes many more features into account. For proper risk assessment use the dedicated Evagene risk models (see [https://evagene.net/docs](https://evagene.net/docs)).
-- This is an example integration, not a validated clinical tool. Clinical governance applies to any use of pedigree software in a clinical setting.
+- "Mode of inheritance" is the teaching answer; real-world risk analysis takes many more features into account and belongs with qualified professionals.

@@ -1,6 +1,8 @@
 # Getting started with Evagene integrations
 
-This repository contains small, focused integration examples for [**Evagene**](https://evagene.net) — a clinical-grade pedigree drawing, management, and risk analysis platform. Each demo solves one concrete job for one type of user, and is shipped in several languages so you can copy the version that matches your stack.
+This repository contains small, focused integration examples for [**Evagene**](https://evagene.net) — a pedigree drawing, management, and risk analysis platform. Each demo solves one concrete job for one type of reader, and is shipped in several languages so you can copy the version that matches your stack.
+
+The repository is **academic and research material** — illustrative integration examples for developers, researchers, educators, and students. It is not a clinical product, not a diagnostic tool, and not fit for patient care or any clinical workflow. See *What this repository is not* at the bottom of this page before running anything against real data.
 
 This document covers the one-time setup every demo expects: how to register, get an API key, and point the code at the Evagene service. Work through it once — every demo after that is a short `README.md` and a `run` command.
 
@@ -68,4 +70,4 @@ API keys have configurable per-minute and per-day rate limits. Defaults are gene
 
 ## What this repository is not
 
-These are **example integrations**, not validated clinical tools. They illustrate how to talk to Evagene from each language. Any decision made in a clinical context must go through the usual clinical governance — read the Evagene product disclaimers for the full picture. The risk-model caveats (Tyrer-Cuzick is an IBIS-style approximation; BOADICEA is not bundled but exported to canrisk.org) apply here too.
+These are **example integrations** — academic and research material. They illustrate how to talk to Evagene from each language. They are not validated clinical tools, not medical devices, not decision-support products, and not fit for patient care. Treat every demo as a learning artefact to read, run against synthetic data, and fork — not as something to drop into a live clinical workflow. The risk-model caveats (Tyrer-Cuzick is an IBIS-style approximation; BOADICEA is not bundled but exported to canrisk.org) apply here too.

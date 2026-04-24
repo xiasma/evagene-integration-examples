@@ -1,6 +1,8 @@
 # Cascade screening letters
 
-**Draft a personalised cascade-screening invitation letter for every at-risk relative in a pedigree, in one command.** Point this at an [Evagene](https://evagene.net) pedigree whose proband carries a clinically actionable variant and the tool asks the Evagene register who the first- and second-degree relatives are, runs an analysis template against the pedigree to generate a conservative, family-specific letter body, and writes one Markdown file per relative into a folder the counsellor can proof-read before sending.
+**Draft a personalised letter for every first- and second-degree relative in a pedigree, in one command.** Point this at an [Evagene](https://evagene.net) pedigree and the tool asks the Evagene register who the first- and second-degree relatives are, runs an analysis template against the pedigree to generate a family-specific letter body, and writes one Markdown file per relative into a folder for review.
+
+This is an academic / research example of combining the Evagene family register with the analysis-templates endpoint. It is a reference implementation, not a clinical letter-generation tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -8,9 +10,9 @@
 
 ## Who this is for
 
-- **Genetic counsellors** and **genetic nurses** running cascade-screening programmes — when a proband's variant is identified, you owe a letter to every relative who might share it. This tool does the first draft so you spend your time reviewing, not typing.
-- **Cancer-genetics services** with a back-log of families to contact after a positive BRCA1 / BRCA2 / Lynch-syndrome result.
-- **Integrators / developers** wanting a worked example of combining the Evagene family register with the analysis-templates endpoint.
+- **Developers and integrators** wanting a worked example of combining the Evagene family register with the analysis-templates endpoint.
+- **Researchers and educators** experimenting with variable-injection patterns in LLM-generated document output, using synthetic pedigrees.
+- **Students** studying how to compose a register query, a template-run call, and a per-relative document write into one cohesive pipeline.
 
 ## What it does, step by step
 
@@ -20,7 +22,7 @@
 4. Runs the template once against the pedigree via `POST /api/templates/{id}/run?pedigree_id=...` to produce a family-specific letter body (proband name, disease list, risk summary injected).
 5. Composes one letter per at-risk relative locally — a personalised salutation and relationship sentence followed by the template body — and writes it to a Markdown file.
 
-The counsellor reviews each file, adds clinic letterhead and contact details, and sends it.
+In a real workflow (which this demo is not), a reader would review each file, add appropriate letterhead and contact details, and decide what to do with it. As an academic example, leave the output in place and treat it as study material.
 
 ## What Evagene surfaces this uses
 
@@ -198,7 +200,7 @@ Both languages follow the same shape; each module has a single responsibility.
 
 ## Caveats
 
-- **Generated letters are drafts.** A counsellor must read every one before it is sent. The tool does not replace clinical review; it removes the typing.
-- **Personal and medical information** ends up in the output folder. Keep it on a trusted disk, and delete files once they have been sent. The demo does not encrypt anything.
-- **The auto-created default template is conservative** ("you may wish to consider speaking with your genetic counsellor about...") but it is still a starting point. Review the template text at [https://evagene.net](https://evagene.net) under your account's analysis templates before production use, and edit or replace it to match your service's house style.
-- **Consent, data-protection and governance are the clinician's responsibility.** This is an example integration, not a validated clinical workflow. Clinical governance, patient-consent rules, and local data-protection obligations apply in the usual way — the tool enforces none of them.
+- This is an **academic / research example, not a validated clinical workflow**, not a medical device, and not fit for patient care. Do not use it to send real letters to real relatives.
+- **Generated letters are example drafts.** They are illustrative output — review every line, and treat them as study material, not correspondence.
+- **Personal information, if you use real data, ends up in the output folder.** The demo does not encrypt anything. Prefer synthetic pedigrees for experimentation; if real data is ever used, apply the same data-handling controls you would to any other sensitive document.
+- **The auto-created default template is a conservative starting point** ("you may wish to consider speaking with your genetic counsellor about..."). Review and replace it to match whatever style is appropriate for the context you are experimenting in.

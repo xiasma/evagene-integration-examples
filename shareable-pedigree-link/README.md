@@ -1,6 +1,8 @@
 # Shareable pedigree link
 
-**Paste your pedigree ID and get an iframe snippet your family can read — without handing anyone a login.** The command mints a fresh read-only API key against your [Evagene](https://evagene.net) account, wraps the key into an `<iframe>` pointing at the embeddable viewer, and prints the whole HTML block to stdout. Drop it into a family-history website, a shared document, or an email, and relatives see the same pedigree you do — read-only, revocable, and scoped so it cannot modify anything.
+**Paste a pedigree ID and get an `<iframe>` snippet that renders the pedigree read-only — without handing anyone a login.** The command mints a fresh read-only API key against your [Evagene](https://evagene.net) account, wraps the key into an `<iframe>` pointing at the embeddable viewer, and prints the whole HTML block to stdout.
+
+This is an academic / research example of the Evagene API-key creation endpoint and the embeddable-viewer URL shape. It is a reference implementation to study and fork — not a patient-facing sharing product.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree.
 
@@ -8,9 +10,9 @@
 
 ## Who this is for
 
-- **Patients** who have built a family pedigree in Evagene and want to circulate it to relatives — aunts, uncles, grown children — for review or corroboration, without giving anyone account access.
-- **Patient-portal integrators** building a "share with family" button on top of Evagene; this is the shape of the server call that sits behind it.
-- **Developers** who want a short, clean example of the API-key creation endpoint and the embeddable-viewer URL shape.
+- **Developers and integrators** who want a short, clean example of the API-key creation endpoint and the embeddable-viewer URL shape.
+- **Researchers and educators** prototyping embeddable views of a pedigree in a demo site or notebook, against synthetic data.
+- **Students** studying scoped-key generation and iframe-embed mechanics in a small, readable codebase.
 
 ## What Evagene surfaces this uses
 
@@ -158,8 +160,8 @@ The `iframe` block is what you paste into your family site or email; the receipt
 
 ## Caveats
 
-- **The minted key lives in the URL's query string.** Anyone with a copy of the iframe `src` can see the pedigree; the key has `read` scope only, but it is still a credential. Share the snippet over private channels (email, a password-protected family site). Do not paste it into a public GitHub gist, a public blog, or a page indexed by search engines.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Prototype against synthetic or de-identified pedigrees.
+- **The minted key lives in the URL's query string.** Anyone with a copy of the iframe `src` can read the pedigree; the key has `read` scope only, but it is still a credential. Share only through private channels during experimentation, and never paste it into a public gist, blog, or page indexed by search engines.
 - **Every invocation mints a new key.** If you run the command five times you will have five active keys, each of which works until revoked. Prune stale ones at [https://evagene.net/account/api-keys](https://evagene.net/account/api-keys) — Evagene caps you at 20 keys per account.
 - **The minted key is never written anywhere except stdout.** The demo does not log it, does not save it to a file, and does not echo it to stderr. That is deliberate — if you wrap this demo in a shell pipeline, be careful not to log the whole stdout stream.
-- **Read-only means read-only.** Relatives viewing the iframe cannot edit the pedigree, run risk calculations, or mint further keys. If a viewer needs write access they need their own Evagene account.
-- This is an example integration, not a validated clinical tool. Clinical governance applies to any decision made from a shared pedigree.
+- **Read-only means read-only.** Anyone viewing the iframe cannot edit the pedigree, run risk calculations, or mint further keys. If a viewer needs write access they need their own Evagene account.

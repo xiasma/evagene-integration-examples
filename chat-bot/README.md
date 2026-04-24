@@ -1,6 +1,8 @@
 # Chat-bot: Evagene in Slack and Microsoft Teams
 
-**Paste a pedigree ID in your team chat and get the NICE triage decision back in seconds.** `/evagene <pedigree-id>` in Slack (or `@Evagene <pedigree-id>` in Teams) replies in-channel with the pedigree's display name, the proband's name, a small SVG thumbnail link, and the NICE GREEN/AMBER/RED category plus the triggers that caused it. One tap from seeing a family in chat to knowing whether it should go to genetics.
+**Paste a pedigree ID in chat and get the NICE category back in seconds.** `/evagene <pedigree-id>` in Slack (or `@Evagene <pedigree-id>` in Teams) replies in-channel with the pedigree's display name, the proband's name, a small SVG thumbnail link, and the NICE GREEN/AMBER/RED category plus the triggers that caused it.
+
+This is an academic / research example of a signed-webhook chat surface in front of Evagene — full signature verification, rendering, and error handling in a small Node codebase. It is a reference implementation, not a clinical triage tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and finding a pedigree ID to try.
 
@@ -8,9 +10,9 @@
 
 ## Who this is for
 
-- **Clinical teams** triaging family histories in a shared Slack or Teams channel rather than emailing pedigree links around.
-- **Multi-disciplinary tumour boards** wanting a single chat command to pull a pedigree snapshot into the meeting thread.
-- **Integrators** standing up a signed-webhook chat surface in front of Evagene, with the full signature-verification, rendering, and error-handling pattern already written.
+- **Integrators and developers** standing up a signed-webhook chat surface in front of Evagene, with the full signature-verification, rendering, and error-handling pattern already written.
+- **Researchers and educators** demonstrating Evagene output in a shared channel against a synthetic or de-identified dataset.
+- **Students** studying the Slack slash-command + Teams outgoing-webhook contracts in one readable codebase.
 
 ## What Evagene surface this uses
 
@@ -170,7 +172,7 @@ curl -i -X POST http://localhost:3000/slack/commands/evagene \
 
 ## Caveats
 
-- **SVG rendering is asymmetric.** Slack does not render SVG inline, so we link to the pedigree's `export.svg`. Teams cards *could* render a base64-embedded PNG, but we link instead, keeping the bot dependency-free. If you need an inline thumbnail, convert SVG to PNG in a separate microservice - do not add `sharp` / `librsvg` into this bot.
-- **The bot exposes pedigree names and NICE categories in a chat channel.** Channel membership is your access-control boundary. Review whether that matches your information-governance policy before rolling out.
-- **NICE CG164 / NG101 classification** is a rule-based triage aid, not a diagnostic. Treat the GREEN / AMBER / RED output as a conversation starter, not a clinical decision.
-- This is an example integration, not a validated clinical tool. Clinical governance applies as it would to any other chat surface.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care. Use it with synthetic or de-identified pedigrees — not live patient data in a real channel.
+- **SVG rendering is asymmetric.** Slack does not render SVG inline, so we link to the pedigree's `export.svg`. Teams cards *could* render a base64-embedded PNG, but we link instead, keeping the bot dependency-free. If you need an inline thumbnail, convert SVG to PNG in a separate microservice — do not add `sharp` / `librsvg` into this bot.
+- **The bot would expose pedigree names and NICE categories in a chat channel.** Channel membership is your access-control boundary. Review whether that matches your information-governance policy before experimenting even with synthetic data.
+- **NICE CG164 / NG101 classification** is a rule-based categorisation, not a diagnostic. The GREEN / AMBER / RED output is illustrative, not a decision.

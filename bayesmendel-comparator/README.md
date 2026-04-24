@@ -2,7 +2,7 @@
 
 **Same pedigree, three classical cancer-risk models, one side-by-side table.** Point this at an [Evagene](https://evagene.net) pedigree and it prints BRCAPRO, MMRpro, and PancPRO carrier probabilities and future-risk projections in a single comparison you can read in five seconds. The models live in the BayesMendel R library; Evagene runs them behind its REST API, so this demo stays a thin client.
 
-Useful when someone on an MDT asks "what does *BRCAPRO* say here — and does it agree with MMRpro?" and you want a reproducible answer rather than three separate UI trips.
+This is an academic / research example of fanning out three REST calls and composing the responses into one readable comparison. It is a reference implementation, not a clinical cancer-risk tool.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,10 +10,9 @@ Useful when someone on an MDT asks "what does *BRCAPRO* say here — and does it
 
 ## Who this is for
 
-- **Medical oncologists** presenting a family at an MDT and needing the BayesMendel numbers in one place alongside the family-history triage.
-- **Clinical geneticists** comparing model outputs when no single model fits a mixed-cancer family cleanly, or when writing up a case for audit.
-- **Research genetic counsellors** fanning out model comparisons across a cohort and piping the CSV into a spreadsheet or notebook.
-- **R users** (and Python developers) who want a minimal, readable example of calling Evagene's `risk/calculate` endpoint for the BayesMendel models.
+- **R and Python developers** who want a minimal, readable example of calling Evagene's `risk/calculate` endpoint for the BayesMendel models.
+- **Researchers** fanning out model comparisons across a synthetic or de-identified cohort and piping the CSV into a spreadsheet or notebook.
+- **Educators and students** studying how three related risk models differ on the same family structure.
 
 ## What the three models actually compute
 
@@ -186,8 +185,8 @@ The `csv` format emits the same content as a header plus three rows, suitable fo
 
 ## Caveats
 
-- BRCAPRO, MMRpro, and PancPRO are **mutation-carrier probability models**, not deterministic diagnoses. A high posterior is a trigger for genetic testing — it is not testing. Clinical decisions should go through the usual multidisciplinary governance.
+- This is an **academic / research example, not a validated clinical tool**, not a medical device, and not fit for patient care.
+- BRCAPRO, MMRpro, and PancPRO are **mutation-carrier probability models**, not deterministic diagnoses. A high posterior is a signal, not a finding. Any real-world decision belongs with a qualified professional and through the appropriate governance — this demo is not part of that path.
 - The models were trained on specific founder populations (non-Ashkenazi is the default; set `allef_type` in the request body for Ashkenazi or Italian priors) and on cancer types present at the time of publication. They do not incorporate PALB2, ATM, CHEK2, PMS2, or polygenic risk scores — use BOADICEA (export the CanRisk file from Evagene and upload at [canrisk.org](https://canrisk.org)) if you need those.
 - Each model only scores the cancer types it was built for. Families with mixed phenotypes will look reassuring under one model and alarming under another — that is why the comparison exists, not because the models disagree on biology.
 - Attributions: BRCAPRO (Parmigiani, Berry, Aguilar, *Am J Hum Genet* 1998); MMRpro (Chen et al., *JAMA* 2006); PancPRO (Wang et al., *J Clin Oncol* 2007). The underlying library is [BayesMendel](https://projects.iq.harvard.edu/bayesmendel).
-- This is an example integration, not a validated clinical tool. Clinical governance applies.

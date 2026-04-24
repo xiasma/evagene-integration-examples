@@ -1,8 +1,8 @@
 # Tumour-board briefing
 
-**One pedigree in, one print-ready PDF out.** Point this at an [Evagene](https://evagene.net) pedigree and it generates a self-contained briefing for an oncology MDT / tumour-board meeting: cover page, pedigree figure, six-model risk summary, the triggers and criteria each model flagged, and the clinical caveats that belong on every handout.
+**One pedigree in, one print-ready PDF out.** Point this at an [Evagene](https://evagene.net) pedigree and it generates a self-contained PDF: cover page, pedigree figure, six-model risk summary, the triggers and criteria each model flagged, plus the model-specific caveats that go with each figure.
 
-Designed for the clinician who is about to walk into a tumour board with nine cases on the slide deck and wants a defensible paper copy of each one without rebuilding the document by hand.
+This is an academic / research example of composing several Evagene REST endpoints (pedigree detail, SVG export, risk calculation per model) into a single document artefact. It is not a clinical tool and must not be used to produce real handouts for a tumour-board or MDT meeting.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and picking a pedigree to try the demos against.
 
@@ -10,10 +10,9 @@ Designed for the clinician who is about to walk into a tumour board with nine ca
 
 ## Who this is for
 
-- **Oncology MDT convenors** assembling the paperwork for a weekly tumour board.
-- **Clinical geneticists** preparing per-case briefings for a joint clinic or a referring MDT.
-- **Genetic counsellors and specialist nurses** who need a printable handout to accompany a consultation.
-- **Integrators / developers** wanting a working example of the Evagene REST API across several endpoints (pedigree detail, SVG export, risk calculation), composed into a real artefact.
+- **Integrators and developers** wanting a working example of the Evagene REST API across several endpoints (pedigree detail, SVG export, risk calculation), composed into a real document artefact.
+- **Researchers** exploring how six different risk models score the same synthetic pedigree, side-by-side, as a read-only PDF.
+- **Educators** preparing teaching material that shows how the model outputs map onto a single case study — with the output clearly marked as example / academic material, never as a real briefing.
 
 ## What Evagene surfaces this uses
 
@@ -30,8 +29,8 @@ Designed for the clinician who is about to walk into a tumour board with nine ca
 2. **Pedigree figure** — the SVG from Evagene, rendered for print.
 3. **Risk summary table** — one row per model, with headline figure, notes, and any threshold flags (e.g. Manchester ≥20%).
 4. **Triggers and criteria met** — per-model bullet points (e.g. the NICE high-risk triggers that fired, or the Manchester contributions).
-5. **Caveats** — the non-negotiable clinical language for each model (Tyrer-Cuzick is an IBIS-style approximation; BOADICEA is not bundled; Manchester thresholds sit at ≥10% and ≥20%; and so on).
-6. **Footer on every page** — generation timestamp, "Not a validated clinical tool — clinical governance applies", pedigree ID and page number.
+5. **Caveats** — the model-specific caveats for each figure (Tyrer-Cuzick is an IBIS-style approximation; BOADICEA is not bundled; Manchester thresholds sit at ≥10% and ≥20%; and so on), and the "academic / research example, not a validated clinical tool" disclaimer.
+6. **Footer on every page** — generation timestamp, "Academic / research example — not a validated clinical tool", pedigree ID and page number.
 
 ## Prerequisites
 
@@ -76,7 +75,7 @@ Only a Python implementation ships: the PDF rendering pipeline (`reportlab` + `s
 
 ### Run it in Python 3.11+
 
-**Note on PDF rendering:** this demo embeds the Evagene SVG pedigree directly as a ReportLab `Drawing` (via `svglib`) — no Cairo, no ImageMagick, no separate raster pipeline. `svglib` falls back to Helvetica when an SVG font face isn't available locally, so the figure glyphs in the generated PDF may not be pixel-identical to the Evagene web UI — this is cosmetic, not clinical.
+**Note on PDF rendering:** this demo embeds the Evagene SVG pedigree directly as a ReportLab `Drawing` (via `svglib`) — no Cairo, no ImageMagick, no separate raster pipeline. `svglib` falls back to Helvetica when an SVG font face isn't available locally, so the figure glyphs in the generated PDF may not be pixel-identical to the Evagene web UI — a purely cosmetic difference.
 
 ```bash
 cd python
@@ -137,7 +136,7 @@ Every module has one responsibility. `PdfSink` exists so the orchestrator tests 
 
 ## Caveats
 
-- **This is an example integration, not a validated clinical tool.** Clinical governance applies to any decision made from the briefing.
+- **This is an academic / research example, not a validated clinical tool, not a medical device, and not fit for patient care.** The generated PDF is illustrative material — do not present it as a real tumour-board or MDT briefing, and do not use it to inform any clinical decision.
 - **Tyrer-Cuzick** on this briefing is an IBIS-style approximation of the published Tyrer, Duffy & Cuzick 2004 model — not the official IBIS Breast Cancer Risk Evaluator. For a fully-validated run, export the pedigree as a `##CanRisk 2.0` pedigree file from Evagene and upload it at [canrisk.org](https://canrisk.org).
 - **BOADICEA** is not bundled with Evagene. The CanRisk export is the official route.
 - **Manchester thresholds** quoted on the briefing follow Evans et al. — BRCA1 / BRCA2 score ≥16 corresponds to ≈10% carrier probability; combined score ≥20 corresponds to ≈20%.

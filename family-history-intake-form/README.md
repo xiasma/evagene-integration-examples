@@ -2,7 +2,9 @@
 
 **Capture three generations of family history in under two minutes, end up with a fully-structured pedigree in [Evagene](https://evagene.net).**
 
-Paste a handful of names and birth years into a one-page web form; the server calls the Evagene REST API to create the pedigree, designates the patient as the proband, and wires up parents, grandparents, and any siblings via the `/register/add-relative` endpoint. On success the browser lands on the Evagene web app at the new pedigree — ready for the clinician to add diagnoses, import a GEDCOM, or run a risk calculation.
+Paste a handful of names and birth years into a one-page web form; the server calls the Evagene REST API to create the pedigree, designates the proband, and wires up parents, grandparents, and any siblings via the `/register/add-relative` endpoint. On success the browser lands on the Evagene web app at the new pedigree.
+
+This is an academic / research example of orchestrating several Evagene REST endpoints (create pedigree → create proband → add-relative) behind a small web form. It is a reference implementation to study and fork — not a clinical intake product.
 
 > **New to Evagene integrations?** Start with **[../getting-started.md](../getting-started.md)** — it covers registering at [evagene.net](https://evagene.net), minting an API key, and configuring `EVAGENE_API_KEY` / `EVAGENE_BASE_URL`.
 
@@ -10,9 +12,9 @@ Paste a handful of names and birth years into a one-page web form; the server ca
 
 ## Who this is for
 
-- **GPs and primary-care doctors** running a family-history triage at the point of referral — intake takes 90 seconds instead of hand-drawing a pedigree on the back of a referral letter.
-- **Genetic nurses** who need a quick, structured way to capture a new family's skeleton before they sit down with the proband.
-- **Practice IT / integrators** wanting a small, auditable example of how to orchestrate `create pedigree → create proband → add-relative` against the Evagene API.
+- **Developers and integrators** wanting a small, auditable example of how to orchestrate `create pedigree → create proband → add-relative` against the Evagene API.
+- **Researchers and students** prototyping a structured way to capture a synthetic family's skeleton for experimentation — in three side-by-side language implementations.
+- **Educators** using the form as a teaching artefact for API orchestration and proband-centred pedigree construction.
 
 ## What Evagene surfaces this uses
 
@@ -30,9 +32,9 @@ Paste a handful of names and birth years into a one-page web form; the server ca
 | **Paternal grandparents** | Paternal grandmother + grandfather (name, year each) |
 | **Siblings** | Up to 4 rows: name, relationship (sister / brother / half-sister / half-brother), year |
 
-Every field except the patient's name is optional. Blank rows are skipped — the resulting pedigree contains only the relatives you typed.
+Every field except the proband's name is optional. Blank rows are skipped — the resulting pedigree contains only the relatives you typed.
 
-Diagnoses, DNA results, consanguinity, and the rest of Evagene's clinical detail live in the web app. The intake form is deliberately structural — it builds the skeleton, then hands you off to Evagene to put flesh on it.
+Diagnoses, DNA results, consanguinity, and the rest of the detail live in the Evagene web app. The intake form is deliberately structural — it builds the skeleton, then hands you off to Evagene to add detail.
 
 ## Prerequisites
 
@@ -155,7 +157,7 @@ dotnet test
    - creates the proband individual and adds them to the pedigree;
    - marks the proband (`PATCH /api/individuals/{id} { "proband": 1 }`);
    - calls `/register/add-relative` for each filled-in relative, in parent-before-grandchild order so every `relative_of` resolves.
-4. On success, the browser is redirected to `<EVAGENE_BASE_URL>/pedigrees/<new-id>` so the clinician lands on the pedigree in Evagene, ready to annotate.
+4. On success, the browser is redirected to `<EVAGENE_BASE_URL>/pedigrees/<new-id>` so the reader lands on the newly-created pedigree in Evagene, ready to annotate.
 
 If anything fails, the user sees an error page naming the step that failed (e.g. *"Evagene rejected the add-relative call for the maternal grandmother"*). No partial pedigrees are surfaced — the ID of the partially-built pedigree is also shown so it can be cleaned up or resumed in the web app.
 
@@ -191,6 +193,5 @@ Every file has one responsibility; every function one level of abstraction.
 
 ## Caveats
 
-- The intake form is a **structural capture tool**, not a replacement for a clinical family-history interview. Don't use it as the only channel for gathering family history in a clinical setting.
-- Years of birth are treated as public, low-sensitivity data. If you deploy this form against real patient input, add consent copy and make sure the connection to your Evagene instance is TLS-terminated.
-- This is an example integration, not a validated clinical tool. Clinical governance applies.
+- This is an **academic / research example**, not a clinical tool, not a medical device, and not fit for patient care. Use it with synthetic or de-identified data for study and prototyping — not to capture real family history in any clinical workflow.
+- Years of birth are treated here as low-sensitivity data. If you fork this demo for a setting with real patient input, add consent copy, proper data-handling, and TLS termination before anything real is typed in.
